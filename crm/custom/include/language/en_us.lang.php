@@ -1,0 +1,57 @@
+<?php
+$GLOBALS['app_list_strings']['account_type_dom']=array (
+  '' => '',
+  'Charity' => 'Charity',
+  'Analyst' => 'Analyst',
+  'Competitor' => 'Competitor',
+  'Customer' => 'Customer',
+  'Integrator' => 'Integrator',
+  'Investor' => 'Investor',
+  'Partner' => 'Partner',
+  'Press' => 'Press',
+  'Prospect' => 'Prospect',
+  'Reseller' => 'Reseller',
+  'Other' => 'Other',
+);
+$GLOBALS['app_list_strings']['lead_source_dom']=array (
+  '' => '',
+  'Facebook' => 'Facebook',
+  'Website' => 'Website',
+  'Million_Makers_teams' => 'Million Makers teams',
+  'Recommendation' => 'Recommendation',
+  'General' => 'General',
+  'Other' => 'Other',
+  'Cold Call' => 'Cold Call',
+  'Existing Customer' => 'Existing Customer',
+  'Self Generated' => 'Self Generated',
+  'Employee' => 'Employee',
+  'Partner' => 'Partner',
+  'Public Relations' => 'Public Relations',
+  'Direct Mail' => 'Direct Mail',
+  'Conference' => 'Conference',
+  'Trade Show' => 'Trade Show',
+  'Word of mouth' => 'Word of mouth',
+  'Email' => 'Email',
+  'Campaign' => 'Campaign',
+);
+$GLOBALS['app_list_strings']['fp_event_type_list']=array (
+  '' => '',
+  'Charity_Dinner' => 'Charity Dinner',
+  'Charity_Ball' => 'Charity Ball',
+  'Awards_Dinner' => 'Awards Dinner',
+  'Golf_Day' => 'Golf Day',
+  'Luncheon' => 'Luncheon',
+  'Other' => 'Other',
+);
+
+$GLOBALS['app_list_strings']['lead_status_dom']=array (
+  '' => '',
+  'New' => 'New',
+  'Sent' => 'Sent Email',
+  'Sent2' => 'Sent Reminder Email',
+  'Telephoned' => 'Telephoned',
+  'Replied' => 'Replied [Not this event]',
+  'Replied2' => 'Replied [Recommended]',
+  'Replied3' => 'Replied [Not the right contact]',
+  'Dead' => 'Opt Out',
+);
