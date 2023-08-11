@@ -5801,3 +5801,9 @@ Fri Aug 11 02:16:01 2023 [271][-none-][FATAL] cron.php: running as daemon is not
 Fri Aug 11 02:17:03 2023 [278][-none-][FATAL] cron.php: running as daemon is not allowed in allowed_cron_users in config.php. Exiting.
 Fri Aug 11 02:18:01 2023 [285][-none-][FATAL] cron.php: running as daemon is not allowed in allowed_cron_users in config.php. Exiting.
 Fri Aug 11 02:19:01 2023 [290][-none-][FATAL] cron.php: running as daemon is not allowed in allowed_cron_users in config.php. Exiting.
+Fri Aug 11 02:20:05 2023 [295][-none-][FATAL] cron.php: running as daemon is not allowed in allowed_cron_users in config.php. Exiting.
+Fri Aug 11 02:21:03 2023 [300][-none-][FATAL] cron.php: running as daemon is not allowed in allowed_cron_users in config.php. Exiting.
+Fri Aug 11 02:22:02 2023 [305][-none-][FATAL] cron.php: running as daemon is not allowed in allowed_cron_users in config.php. Exiting.
+Fri Aug 11 02:23:02 2023 [310][-none-][FATAL] cron.php: running as daemon is not allowed in allowed_cron_users in config.php. Exiting.
+Fri Aug 11 02:24:01 2023 [315][-none-][FATAL] cron.php: running as daemon is not allowed in allowed_cron_users in config.php. Exiting.
+Fri Aug 11 02:25:02 2023 [320][-none-][FATAL] cron.php: running as daemon is not allowed in allowed_cron_users in config.php. Exiting.
