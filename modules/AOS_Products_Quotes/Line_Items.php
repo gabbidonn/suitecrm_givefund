@@ -63,13 +63,13 @@ function display_lines($focus, $field, $value, $view)
                 </script>";
 
             while ($row = $focus->db->fetchByAssoc($result)) {
-                $line_item = new AOS_Products_Quotes();
+                $line_item = BeanFactory::newBean('AOS_Products_Quotes');
                 $line_item->retrieve($row['id'], false);
                 $line_item = json_encode($line_item->toArray());
 
                 $group_item = 'null';
                 if ($row['group_id'] != null) {
-                    $group_item = new AOS_Line_Item_Groups();
+                    $group_item = BeanFactory::newBean('AOS_Line_Item_Groups');
                     $group_item->retrieve($row['group_id'], false);
                     $group_item = json_encode($group_item->toArray());
                 }
@@ -87,7 +87,7 @@ function display_lines($focus, $field, $value, $view)
         $sql = "SELECT pg.id, pg.group_id FROM aos_products_quotes pg LEFT JOIN aos_line_item_groups lig ON pg.group_id = lig.id WHERE pg.parent_type = '".$focus->object_name."' AND pg.parent_id = '".$focus->id."' AND pg.deleted = 0 ORDER BY lig.number ASC, pg.number ASC";
 
         $result = $focus->db->query($sql);
-        $sep = get_number_seperators();
+        $sep = get_number_separators();
 
         $html .= "<table border='0' width='100%' cellpadding='0' cellspacing='0'>";
 
@@ -101,7 +101,7 @@ function display_lines($focus, $field, $value, $view)
         $service = '';
 
         while ($row = $focus->db->fetchByAssoc($result)) {
-            $line_item = new AOS_Products_Quotes();
+            $line_item = BeanFactory::newBean('AOS_Products_Quotes');
             $line_item->retrieve($row['id']);
 
 
@@ -119,7 +119,7 @@ function display_lines($focus, $field, $value, $view)
                 $serviceCount = 0;
                 $group_id = $row['group_id'];
 
-                $group_item = new AOS_Line_Item_Groups();
+                $group_item = BeanFactory::newBean('AOS_Line_Item_Groups');
                 $group_item->retrieve($row['group_id']);
 
                 $groupStart .= "<tr>";

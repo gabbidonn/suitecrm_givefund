@@ -54,8 +54,9 @@ if (!isset($_REQUEST['mode']) || ($_REQUEST['mode'] == "")) {
     die("No mode specified.");
 }
 
-if (!file_exists($base_tmp_upgrade_dir)) {
-    mkdir($base_tmp_upgrade_dir, 0755, true);
+if (!file_exists($base_tmp_upgrade_dir) && !mkdir($base_tmp_upgrade_dir, 0755,
+        true) && !is_dir($base_tmp_upgrade_dir)) {
+    throw new \RuntimeException(sprintf('Directory "%s" was not created', $base_tmp_upgrade_dir));
 }
 
 $unzip_dir      = mk_temp_dir($base_tmp_upgrade_dir);
@@ -177,8 +178,10 @@ switch ($install_type) {
         while ($f = $d->read()) {
             if ($f == "." || $f == "..") {
                 continue;
-            } elseif (preg_match("/(.*)\.lang\.php\$/", $f, $match)) {
-                $new_lang_name = $match[1];
+            } else {
+                if (preg_match("/(.*)\.lang\.php\$/", $f, $match)) {
+                    $new_lang_name = $match[1];
+                }
             }
         }
         if ($new_lang_name == "") {
@@ -232,12 +235,16 @@ $hidden_fields .= "<input type=hidden name=\"s_manifest\" value='".base64_encode
 if (empty($new_studio_mod_files)) {
     if (!empty($mode) && $mode == 'Uninstall') {
         echo $mod_strings['LBL_UW_UNINSTALL_READY'];
-    } elseif ($mode == 'Disable') {
-        echo $mod_strings['LBL_UW_DISABLE_READY'];
-    } elseif ($mode == 'Enable') {
-        echo $mod_strings['LBL_UW_ENABLE_READY'];
     } else {
-        echo $mod_strings['LBL_UW_PATCH_READY'];
+        if ($mode == 'Disable') {
+            echo $mod_strings['LBL_UW_DISABLE_READY'];
+        } else {
+            if ($mode == 'Enable') {
+                echo $mod_strings['LBL_UW_ENABLE_READY'];
+            } else {
+                echo $mod_strings['LBL_UW_PATCH_READY'];
+            }
+        }
     }
 } else {
     echo $mod_strings['LBL_UW_PATCH_READY2'];
@@ -327,8 +334,10 @@ switch ($mode) {
         if ($install_type == "langpack") {
             print($mod_strings['LBL_UW_LANGPACK_READY_UNISTALL']);
             echo '<br><br>';
-        } elseif ($install_type != "module") {
-            print($mod_strings['LBL_UW_FILES_REMOVED']);
+        } else {
+            if ($install_type != "module") {
+                print($mod_strings['LBL_UW_FILES_REMOVED']);
+            }
         }
         break;
     case "Disable":

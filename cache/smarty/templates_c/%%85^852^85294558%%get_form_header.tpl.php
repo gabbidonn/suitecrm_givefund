@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2021-07-06 14:06:22
+<?php /* Smarty version 2.6.33, created on 2023-08-11 02:18:09
          compiled from include/get_form_header.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'strpos', 'include/get_form_header.tpl', 1, false),)), $this); ?>
@@ -17,7 +17,7 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'strpos', 'i
         <?php $this->assign('keywords', "array('class=\"button\"', 'class=\"button\"', 'class=button', '</form>')"); ?>
         <?php $this->assign('match', false); ?>
 
-        <?php $_from = $this->_tpl_vars['keywords']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+        <?php $_from = $this->_tpl_vars['keywords']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['left']):
 ?>
             <?php if ($this->_tpl_vars['other_text']): ?>

@@ -1,5 +1,5 @@
 <?php
-// created: 2021-07-06 14:06:09
+// created: 2023-08-11 02:17:07
 $mod_strings = array (
   'LBL_ID' => 'ID',
   'LBL_DATE_ENTERED' => 'Date Created',
@@ -28,7 +28,7 @@ $mod_strings = array (
   'LBL_SALUTATION' => 'Salutation',
   'LBL_FIRST_NAME' => 'First Name:',
   'LBL_LAST_NAME' => 'Last Name:',
-  'LBL_TITLE' => 'Title:',
+  'LBL_TITLE' => 'Job Title:',
   'LBL_DEPARTMENT' => 'Department:',
   'LBL_DO_NOT_CALL' => 'Do Not Call:',
   'LBL_HOME_PHONE' => 'Home Phone:',
@@ -57,7 +57,7 @@ $mod_strings = array (
   'LBL_ALT_STREET' => 'Other Address',
   'LBL_STREET' => 'Street',
   'LBL_CITY' => 'City:',
-  'LBL_STATE' => 'State:',
+  'LBL_STATE' => 'State/Region:',
   'LBL_POSTAL_CODE' => 'Postal Code:',
   'LBL_COUNTRY' => 'Country:',
   'LBL_CONTACT_INFORMATION' => 'CONTACT DETAILS:',
@@ -85,11 +85,9 @@ $mod_strings = array (
   'LBL_ACCOUNT_ID' => 'Account ID',
   'LBL_ACCOUNT_NAME' => 'Company Name:',
   'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
-  'LBL_ADD_BUSINESSCARD' => 'Add Business Card',
   'LBL_ALTERNATE_ADDRESS' => 'Other Address:',
   'LBL_ANY_ADDRESS' => 'Any Address:',
   'LBL_ANY_PHONE' => 'Any Phone:',
-  'LBL_BUSINESSCARD' => 'Convert Lead',
   'LBL_CONTACT_ID' => 'Contact ID',
   'LBL_CONTACT_NAME' => 'Lead Name:',
   'LBL_CONTACT_OPP_FORM_TITLE' => 'Lead-Opportunity:',
@@ -139,7 +137,7 @@ $mod_strings = array (
   'LBL_LIST_PHONE' => 'Office Phone',
   'LBL_LIST_REFERED_BY' => 'Referred By',
   'LBL_LIST_STATUS' => 'Status',
-  'LBL_LIST_TITLE' => 'Title',
+  'LBL_LIST_TITLE' => 'Job Title',
   'LBL_MODULE_NAME' => 'Leads',
   'LBL_MODULE_TITLE' => 'Leads: Home',
   'LBL_NEW_FORM_TITLE' => 'New Lead',

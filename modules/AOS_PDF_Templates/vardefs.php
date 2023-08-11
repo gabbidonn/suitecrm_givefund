@@ -143,7 +143,7 @@ $dictionary['AOS_PDF_Templates'] = array(
     'required' => false,
     'name' => 'pdfheader',
     'vname' => 'LBL_HEADER',
-    'type' => 'text',
+    'type' => 'longtext',
     'massupdate' => 0,
     'comments' => '',
     'help' => '',
@@ -162,7 +162,7 @@ $dictionary['AOS_PDF_Templates'] = array(
     'required' => false,
     'name' => 'pdffooter',
     'vname' => 'LBL_FOOTER',
-    'type' => 'text',
+    'type' => 'longtext',
     'massupdate' => 0,
     'comments' => '',
     'help' => '',
@@ -337,7 +337,7 @@ $dictionary['AOS_PDF_Templates'] = array(
 ),
     'relationships'=>array(
 ),
-    'optimistic_lock'=>true,
+    'optimistic_locking'=>true,
 );
 require_once('include/SugarObjects/VardefManager.php');
 VardefManager::createVardef('AOS_PDF_Templates', 'AOS_PDF_Templates', array('basic','assignable','security_groups'));

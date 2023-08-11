@@ -82,19 +82,18 @@ class nusoap_wsdlcache
      */
     public $debug_str = '';
 
-    /**
-    * constructor
-    *
-    * @param string $cache_dir directory for cache-files
-    * @param integer $cache_lifetime lifetime for caching-files in seconds or 0 for unlimited
-    * @access public
-    */
-    public function nusoap_wsdlcache($cache_dir='.', $cache_lifetime=0)
-    {
-        $this->fplock = array();
-        $this->cache_dir = $cache_dir != '' ? $cache_dir : '.';
-        $this->cache_lifetime = $cache_lifetime;
-    }
+	/**
+	* constructor
+	*
+	* @param string $cache_dir directory for cache-files
+	* @param integer $cache_lifetime lifetime for caching-files in seconds or 0 for unlimited
+	* @access public
+	*/
+	function __construct($cache_dir='.', $cache_lifetime=0) {
+		$this->fplock = array();
+		$this->cache_dir = $cache_dir != '' ? $cache_dir : '.';
+		$this->cache_lifetime = $cache_lifetime;
+	}
 
     /**
     * creates the filename used to cache a wsdl instance
@@ -145,7 +144,7 @@ class nusoap_wsdlcache
                 $this->releaseMutex($filename);
                 return null;
             }
-            $fp = @fopen($filename, "r");
+            $fp = @fopen($filename, 'rb');
             if ($fp) {
                 $s = implode("", @file($filename));
                 fclose($fp);
@@ -158,7 +157,7 @@ class nusoap_wsdlcache
             return (!is_null($s)) ? unserialize($s) : null;
         }
         $this->debug("Unable to obtain mutex for $filename in get");
-        
+
         return null;
     }
 
@@ -176,7 +175,7 @@ class nusoap_wsdlcache
             $this->debug("Lock for $filename already exists");
             return false;
         }
-        $this->fplock[md5($filename)] = fopen($filename.".lock", "w");
+        $this->fplock[md5($filename)] = fopen($filename.".lock", 'wb');
         if ($mode == "r") {
             return flock($this->fplock[md5($filename)], LOCK_SH);
         }
@@ -195,20 +194,20 @@ class nusoap_wsdlcache
         $filename = $this->createFilename($wsdl_instance->wsdl);
         $s = serialize($wsdl_instance);
         if ($this->obtainMutex($filename, "w")) {
-            $fp = fopen($filename, "w");
+            $fp = fopen($filename, 'wb');
             if (! $fp) {
                 $this->debug("Cannot write $wsdl_instance->wsdl ($filename) in cache");
                 $this->releaseMutex($filename);
                 return false;
             }
-            fputs($fp, $s);
+            fwrite($fp, $s);
             fclose($fp);
             $this->debug("Put $wsdl_instance->wsdl ($filename) in cache");
             $this->releaseMutex($filename);
             return true;
         }
         $this->debug("Unable to obtain mutex for $filename in put");
-        
+
         return false;
     }
 

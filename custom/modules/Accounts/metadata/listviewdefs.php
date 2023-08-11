@@ -1,6 +1,6 @@
 <?php
-$listViewDefs ['Accounts'] = 
-array (
+// created: 2023-08-10 16:22:39
+$listViewDefs['Accounts'] = array (
   'NAME' => 
   array (
     'width' => '20%',
@@ -198,5 +198,3 @@ array (
     'default' => false,
   ),
 );
-;
-?>

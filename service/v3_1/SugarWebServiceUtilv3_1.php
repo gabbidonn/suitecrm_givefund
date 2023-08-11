@@ -294,7 +294,7 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
 
         if ($value->module_dir == 'Bugs') {
             require_once('modules/Releases/Release.php');
-            $seedRelease = new Release();
+            $seedRelease = BeanFactory::newBean('Releases');
             $options = $seedRelease->get_releases(true, "Active");
             $options_ret = array();
             foreach ($options as $name=>$value) {
@@ -401,18 +401,7 @@ class SugarWebServiceUtilv3_1 extends SugarWebServiceUtilv3
             $show_deleted = 1;
         }
         $order_by=$seed->process_order_by($order_by, null);
-
-        if ($seed->bean_implements('ACL') && ACLController::requireOwner($seed->module_dir, 'list')) {
-            global $current_user;
-            $owner_where = $seed->getOwnerWhere($current_user->id);
-            if (!empty($owner_where)) {
-                if (empty($where)) {
-                    $where = $owner_where;
-                } else {
-                    $where .= ' AND '.  $owner_where;
-                }
-            }
-        }
+        
         $params = array();
         if ($favorites) {
             $params['favorites'] = true;

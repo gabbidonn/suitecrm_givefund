@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2021 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -38,6 +38,8 @@
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
+use SuiteCRM\CleanCSV;
+
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
@@ -51,16 +53,43 @@ function getDelimiter()
     global $sugar_config;
     global $current_user;
 
-    if (!empty($sugar_config['export_excel_compatible'])) {
-        return "\t";
-    }
-
     $delimiter = ','; // default to "comma"
     $userDelimiter = $current_user->getPreference('export_delimiter');
     $delimiter = empty($sugar_config['export_delimiter']) ? $delimiter : $sugar_config['export_delimiter'];
     $delimiter = empty($userDelimiter) ? $delimiter : $userDelimiter;
 
     return $delimiter;
+}
+
+/**
+ * Prints the encoded CSV to the output buffer with the right headers for downloading.
+ *
+ * @param string $csv The CSV, UTF-8 encoded
+ * @param string $name The name of the document
+ */
+function printCSV($csv, $name) {
+    global $locale, $sugar_config;
+
+    // Excel correctly detects the CSV encoding for utf8+bom files. utf16(+bom) only works on Excel for Windows,
+    // but fails with Excel on macOS.
+    if (!empty($sugar_config['export_excel_compatible'])) {
+        $charset = 'UTF-8';
+        $data = $locale->addBOM($csv, $charset);
+    } else {
+        $charset = $locale->getExportCharset();
+        $data = $locale->translateCharset($csv, 'UTF-8', $charset);
+    }
+
+    header("Pragma: cache");
+    header("Content-type: text/comma-separated-values; charset=" . $charset);
+    header("Content-Disposition: attachment; filename=\"{$name}.csv\"");
+    header("Content-transfer-encoding: binary");
+    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+    header("Last-Modified: " . TimeDate::httpTime());
+    header("Cache-Control: post-check=0, pre-check=0", false);
+    header("Content-Length: " . mb_strlen($data, '8bit'));
+
+    print $data;
 }
 
 
@@ -81,21 +110,45 @@ function export($type, $records = null, $members = false, $sample=false)
     global $timedate;
     global $mod_strings;
     global $current_language;
+    global $log;
     $sampleRecordNum = 5;
 
     //Array of fields that should not be exported, and are only used for logic
     $remove_from_members = array("ea_deleted", "ear_deleted", "primary_address");
     $focus = 0;
 
-    $bean = $beanList[$type];
+    $db = DBManagerFactory::getInstance();
+    if (empty($db)){
+        $log->fatal('export: not able to get db instance');
+        throw new RuntimeException('Unexpected error. See logs.');
+    }
+
+    if (empty($beanList[$db->quote($type)])) {
+        $log->security("export: trying to access an invalid module '" . $db->quote($type) . "'");
+        throw new RuntimeException('Unexpected error. See logs.');
+    }
+
+    $bean = $beanList[$db->quote($type)];
+
     require_once($beanFiles[$bean]);
     $focus = new $bean;
     $searchFields = array();
-    $db = DBManagerFactory::getInstance();
 
-    if ($records) {
-        $records = explode(',', $records);
-        $records = "'" . implode("','", $records) . "'";
+    $records = $db->quote($records);
+    $recordsArray = [];
+
+    if (!empty($records)) {
+        $recordsArray = explode(',', $records);
+    }
+
+    if (!empty($recordsArray)) {
+        $quotedRecords = [];
+
+        foreach ($recordsArray as $record) {
+            $quotedRecords[] = $db->quote($record);
+        }
+
+        $records = "'" . implode("','", $quotedRecords) . "'";
         $where = "{$focus->table_name}.id in ($records)";
     } elseif (isset($_REQUEST['all'])) {
         $where = '';
@@ -115,32 +168,11 @@ function export($type, $records = null, $members = false, $sample=false)
             ACLController::displayNoAccess();
             sugar_die('');
         }
-        if (ACLController::requireOwner($focus->module_dir, 'export')) {
-            if (!empty($where)) {
-                $where .= ' AND ';
-            }
-            $where .= $focus->getOwnerWhere($current_user->id);
+
+        $accessWhere = $focus->buildAccessWhere('export');
+        if (!empty($accessWhere)) {
+            $where .= empty($where) ? $accessWhere : ' AND ' . $accessWhere;
         }
-        /* BEGIN - SECURITY GROUPS */
-        if (ACLController::requireSecurityGroup($focus->module_dir, 'export')) {
-            require_once('modules/SecurityGroups/SecurityGroup.php');
-            global $current_user;
-            $owner_where = $focus->getOwnerWhere($current_user->id);
-            $group_where = SecurityGroup::getGroupWhere($focus->table_name, $focus->module_dir, $current_user->id);
-            if (!empty($owner_where)) {
-                if (empty($where)) {
-                    $where = " (".  $owner_where." or ".$group_where.")";
-                } else {
-                    $where .= " AND (".  $owner_where." or ".$group_where.")";
-                }
-            } else {
-                if (!empty($where)) {
-                    $where .= ' AND ';
-                }
-                $where .= $group_where;
-            }
-        }
-        /* END - SECURITY GROUPS */
     }
     // Export entire list was broken because the where clause already has "where" in it
     // and when the query is built, it has a "where" as well, so the query was ill-formed.
@@ -193,15 +225,7 @@ function export($type, $records = null, $members = false, $sample=false)
         $field_labels[$key] = translateForExport($dbname, $focus);
     }
 
-    $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-    if ($locale->getExportCharset() == 'UTF-8' &&
-        ! preg_match('/macintosh|mac os x|mac_powerpc/i', $user_agent)) { // Bug 60377 - Mac Excel doesn't support UTF-8
-        //Bug 55520 - add BOM to the exporting CSV so any symbols are displayed correctly in Excel
-        $BOM = "\xEF\xBB\xBF";
-        $content = $BOM;
-    } else {
-        $content = '';
-    }
+    $content = '';
 
     // setup the "header" line with proper delimiters
     $content .= "\"".implode("\"".getDelimiter()."\"", array_values($field_labels))."\"\r\n";
@@ -294,9 +318,9 @@ function export($type, $records = null, $members = false, $sample=false)
                 }
                 }
 
-
                 // Keep as $key => $value for post-processing
-                $new_arr[$key] = preg_replace("/\"/", "\"\"", $value);
+                $cleanCSV = new CleanCSV();
+                $new_arr[$key] = preg_replace("/\"/", "\"\"", $cleanCSV->escapeField($value));
             }
 
             // Use Bean ID as key for records
@@ -433,8 +457,8 @@ function export($type, $records = null, $members = false, $sample=false)
 
 /**
  * Parse custom related fields
- * @param $line string CSV line
- * @param $record array of current line
+ * @param string $line CSV line
+ * @param array $record of current line
  * @return mixed string CSV line
  */
 function parseRelateFields($line, $record, $customRelateFields)
@@ -878,18 +902,24 @@ function get_field_order_mapping($name='', $reorderArr = '', $exclude = true)
                 $name = 'contacts';
             }
             //if module is of type company
-            elseif ($focus instanceof Company) {
-                $name = 'accounts';
-            }
-            //if module is of type Sale
-            elseif ($focus instanceof Sale) {
-                $name = 'opportunities';
-            }//if module is of type File
-            elseif ($focus instanceof Issue) {
-                $name = 'bugs';
-            }//all others including type File can use basic
             else {
-                $name = 'Notes';
+                if ($focus instanceof Company) {
+                    $name = 'accounts';
+                }
+                //if module is of type Sale
+                else {
+                    if ($focus instanceof Sale) {
+                        $name = 'opportunities';
+                    }//if module is of type File
+                    else {
+                        if ($focus instanceof Issue) {
+                            $name = 'bugs';
+                        }//all others including type File can use basic
+                        else {
+                            $name = 'Notes';
+                        }
+                    }
+                }
             }
         }
 
@@ -931,6 +961,7 @@ function get_field_order_mapping($name='', $reorderArr = '', $exclude = true)
     //if no array was passed in, pass back either the list of ordered columns by module, or the entireorder array
     if (empty($name)) {
         return $field_order_array;
+    } else {
+        return $field_order_array[strtolower($name)];
     }
-    return $field_order_array[strtolower($name)];
 }

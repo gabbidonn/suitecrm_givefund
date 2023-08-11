@@ -94,19 +94,7 @@ class Task extends SugarBean
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function Task()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     public $new_schema = true;
@@ -121,7 +109,7 @@ class Task extends SugarBean
 
     public function get_summary_text()
     {
-        return "$this->name";
+        return (string)$this->name;
     }
 
     public function create_export_query($order_by, $where, $relate_link_join='')
@@ -166,7 +154,7 @@ class Task extends SugarBean
         global $app_strings;
 
         if (isset($this->contact_id)) {
-            $contact = new Contact();
+            $contact = BeanFactory::newBean('Contacts');
             $contact->retrieve($this->contact_id);
 
             if ($contact->id != "") {
@@ -202,16 +190,18 @@ class Task extends SugarBean
 
         if (is_subclass_of($parent, 'Person')) {
             $query = "SELECT first_name, last_name, assigned_user_id parent_name_owner from $parent->table_name where id = '$this->parent_id'";
-        } elseif (is_subclass_of($parent, 'File')) {
-            $query = "SELECT document_name, assigned_user_id parent_name_owner from $parent->table_name where id = '$this->parent_id'";
         } else {
-            $query = "SELECT name ";
-            if (isset($parent->field_defs['assigned_user_id'])) {
-                $query .= " , assigned_user_id parent_name_owner ";
+            if (is_subclass_of($parent, 'File')) {
+                $query = "SELECT document_name, assigned_user_id parent_name_owner from $parent->table_name where id = '$this->parent_id'";
             } else {
-                $query .= " , created_by parent_name_owner ";
+                $query = "SELECT name ";
+                if (isset($parent->field_defs['assigned_user_id'])) {
+                    $query .= " , assigned_user_id parent_name_owner ";
+                } else {
+                    $query .= " , created_by parent_name_owner ";
+                }
+                $query .= " from $parent->table_name where id = '$this->parent_id'";
             }
-            $query .= " from $parent->table_name where id = '$this->parent_id'";
         }
         $result = $this->db->query($query, true, " Error filling in additional detail fields: ");
 
@@ -224,12 +214,14 @@ class Task extends SugarBean
         }
         if (is_subclass_of($parent, 'Person') and $row != null) {
             $this->parent_name = $locale->getLocaleFormattedName(stripslashes($row['first_name']), stripslashes($row['last_name']));
-        } elseif (is_subclass_of($parent, 'File') && $row != null) {
-            $this->parent_name = $row['document_name'];
-        } elseif ($row != null) {
-            $this->parent_name = stripslashes($row['name']);
         } else {
-            $this->parent_name = '';
+            if (is_subclass_of($parent, 'File') && $row != null) {
+                $this->parent_name = $row['document_name'];
+            } elseif ($row != null) {
+                $this->parent_name = stripslashes($row['name']);
+            } else {
+                $this->parent_name = '';
+            }
         }
     }
 
@@ -257,8 +249,10 @@ class Task extends SugarBean
             } else {
                 $taskClass = 'overdueTask';
             }
-        } elseif ($dd	== $today) {
-            $taskClass = 'todaysTask';
+        } else {
+            if ($dd	== $today) {
+                $taskClass = 'todaysTask';
+            }
         }
         $task_fields['DATE_DUE']= "<font class='$taskClass'>$date_due</font>";
         if ($override_date_for_subpanel) {
@@ -268,7 +262,7 @@ class Task extends SugarBean
 
     public function get_list_view_data()
     {
-        global $action, $currentModule, $focus, $current_module_strings, $app_list_strings, $timedate;
+        global $mod_strings, $app_list_strings, $timedate;
 
         $override_date_for_subpanel = false;
         if (!empty($_REQUEST['module']) && $_REQUEST['module'] !='Calendar' && $_REQUEST['module'] !='Tasks' && $_REQUEST['module'] !='Home') {
@@ -323,7 +317,8 @@ class Task extends SugarBean
         $task_fields['CONTACT_PHONE']= $this->contact_phone;
         $task_fields['TITLE'] = '';
         if (!empty($task_fields['CONTACT_NAME'])) {
-            $task_fields['TITLE'] .= $current_module_strings['LBL_LIST_CONTACT'].": ".$task_fields['CONTACT_NAME'];
+            $title = !empty($mod_strings['LBL_LIST_CONTACT']) ? $mod_strings['LBL_LIST_CONTACT'] . ': ' : '';
+            $task_fields['TITLE'] .= $title . $task_fields['CONTACT_NAME'];
         }
         if (!empty($this->parent_name)) {
             $task_fields['TITLE'] .= "\n".$app_list_strings['parent_type_display'][$this->parent_type].": ".$this->parent_name;
@@ -351,7 +346,7 @@ class Task extends SugarBean
         }
 
         $xtpl->assign("TASK_STATUS", (isset($task->status)?$app_list_strings['task_status_dom'][$task->status]:""));
-        $xtpl->assign("TASK_DESCRIPTION", $task->description);
+        $xtpl->assign("TASK_DESCRIPTION", nl2br($task->description));
 
         return $xtpl;
     }
@@ -375,11 +370,13 @@ class Task extends SugarBean
             }
             /* BEGIN - SECURITY GROUPS */
             //parent_name_owner not being set for whatever reason so we need to figure this out
-            elseif (!empty($this->parent_type) && !empty($this->parent_id)) {
-                global $current_user;
-                $parent_bean = BeanFactory::getBean($this->parent_type, $this->parent_id);
-                if ($parent_bean !== false) {
-                    $is_owner = $current_user->id == $parent_bean->assigned_user_id;
+            else {
+                if (!empty($this->parent_type) && !empty($this->parent_id)) {
+                    global $current_user;
+                    $parent_bean = BeanFactory::getBean($this->parent_type, $this->parent_id);
+                    if ($parent_bean !== false) {
+                        $is_owner = $current_user->id == $parent_bean->assigned_user_id;
+                    }
                 }
             }
             require_once("modules/SecurityGroups/SecurityGroup.php");
@@ -437,11 +434,12 @@ class Task extends SugarBean
         $def = $this->field_defs['status'];
         if (isset($def['default'])) {
             return $def['default'];
-        }
-        $app = return_app_list_strings_language($GLOBALS['current_language']);
-        if (isset($def['options']) && isset($app[$def['options']])) {
-            $keys = array_keys($app[$def['options']]);
-            return $keys[0];
+        } else {
+            $app = return_app_list_strings_language($GLOBALS['current_language']);
+            if (isset($def['options']) && isset($app[$def['options']])) {
+                $keys = array_keys($app[$def['options']]);
+                return $keys[0];
+            }
         }
 
         return '';

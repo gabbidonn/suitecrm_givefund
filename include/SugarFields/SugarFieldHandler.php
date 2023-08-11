@@ -48,19 +48,7 @@ class SugarFieldHandler
     {
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function SugarFieldHandler()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     public static function fixupFieldType($field)
@@ -120,7 +108,7 @@ class SugarFieldHandler
                     !is_dir('include/SugarFields/Fields/'.$field)) {
                     return null;
                 }
-                $file = 'include/SugarFields/Fields/Base/SugarFieldBase.php';
+                $file = get_custom_file_if_exists('include/SugarFields/Fields/Base/SugarFieldBase.php');
                 $type = 'Base';
             }
             require_once($file);

@@ -54,20 +54,8 @@ class AOS_ContractsDashlet extends DashletGeneric
         $this->searchFields = $dashletData['AOS_ContractsDashlet']['searchFields'];
         $this->columns = $dashletData['AOS_ContractsDashlet']['columns'];
 
-        $this->seedBean = new AOS_Contracts();
+        $this->seedBean = BeanFactory::newBean('AOS_Contracts');
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function AOS_ContractsDashlet($id, $def = null)
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($id, $def);
-    }
+
 }

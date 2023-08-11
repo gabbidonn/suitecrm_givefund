@@ -302,7 +302,7 @@
       'required' => false,
       'name' => 'pdfheader',
       'vname' => 'LBL_HEADER',
-      'type' => 'text',
+      'type' => 'longtext',
       'massupdate' => 0,
       'comments' => '',
       'help' => '',
@@ -321,7 +321,7 @@
       'required' => false,
       'name' => 'pdffooter',
       'vname' => 'LBL_FOOTER',
-      'type' => 'text',
+      'type' => 'longtext',
       'massupdate' => 0,
       'comments' => '',
       'help' => '',
@@ -542,7 +542,7 @@
       'relationship_role_column_value' => 'AOS_PDF_Templates',
     ),
   ),
-  'optimistic_lock' => true,
+  'optimistic_locking' => true,
   'indices' => 
   array (
     'id' => 

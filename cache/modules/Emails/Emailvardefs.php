@@ -119,6 +119,8 @@
       'vname' => 'description',
       'source' => 'non-db',
       'inline_edit' => false,
+      'rows' => 6,
+      'cols' => 80,
     ),
     'deleted' => 
     array (
@@ -431,6 +433,25 @@
         'name' => 'displaySubjectField',
         'returns' => 'html',
         'include' => 'modules/Emails/include/displaySubjectField.php',
+        'onListView' => true,
+      ),
+    ),
+    'attachment' => 
+    array (
+      'name' => 'attachment',
+      'vname' => 'LBL_ATTACHMENTS',
+      'type' => 'function',
+      'source' => 'non-db',
+      'massupdate' => 0,
+      'importable' => 'false',
+      'duplicate_merge' => 'disabled',
+      'studio' => 'visible',
+      'inline_edit' => false,
+      'function' => 
+      array (
+        'name' => 'displayAttachmentField',
+        'returns' => 'html',
+        'include' => 'modules/Emails/include/displayAttachmentField.php',
         'onListView' => true,
       ),
     ),
@@ -850,8 +871,13 @@
       'lhs_key' => 'id',
       'rhs_module' => 'Meetings',
       'rhs_table' => 'meetings',
-      'rhs_key' => 'parent_id',
-      'relationship_type' => 'one-to-many',
+      'rhs_key' => 'id',
+      'relationship_type' => 'many-to-many',
+      'join_table' => 'emails_beans',
+      'join_key_lhs' => 'email_id',
+      'join_key_rhs' => 'bean_id',
+      'relationship_role_column' => 'bean_module',
+      'relationship_role_column_value' => 'Meetings',
     ),
   ),
   'indices' => 
@@ -910,6 +936,15 @@
       'fields' => 
       array (
         0 => 'category_id',
+      ),
+    ),
+    5 => 
+    array (
+      'name' => 'idx_email_uid',
+      'type' => 'index',
+      'fields' => 
+      array (
+        0 => 'uid',
       ),
     ),
   ),

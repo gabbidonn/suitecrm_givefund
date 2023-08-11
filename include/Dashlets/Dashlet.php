@@ -105,21 +105,6 @@ class Dashlet
     }
 
     /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function Dashlet($id)
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($id);
-    }
-
-
-    /**
      * Returns the HTML for the configure icon
      *
      * @return string HTML
@@ -250,8 +235,8 @@ class Dashlet
         $template->assign('REFRESH_ICON', $this->setRefreshIcon());
         $template->assign('DELETE_ICON', $this->setDeleteIcon());
         $moduleName = '';
-        if (!is_object($this->seedBean)) {
-            $GLOBALS['log']->warn('incorrect seed bean');
+        if (!isset($this->seedBean) || !is_object($this->seedBean)) {
+            $GLOBALS['log']->info('seedBean not set, or not an object, for Dashlet: ' . get_class($this));
         } else {
             $moduleName = $this->seedBean->module_name;
         }
@@ -379,11 +364,26 @@ class Dashlet
             $autoRefresh = $this->autoRefresh;
         }
 
-        return $autoRefresh * 1000;
+        $ret = $autoRefresh * 1000;
+
+        /**
+           This number is used by setInterval() function in JS
+           We should consider a limit of 2**31 -1
+           https://stackoverflow.com/questions/12633405/what-is-the-maximum-delay-for-setinterval/12633556#comment78208539_12633488
+         */
+        if ($ret > (pow(2, 31) - 1)) {
+            $ret = pow(2, 31) - 1;
+            LoggerManager::getLogger()->warn(
+                "The value of autoRefresh key in Dashlet: {$this->title} must be less than 2.147.483 seconds."
+                ."{$autoRefresh} was configured. Using 2.147.483 seconds instead."
+            );
+        }
+
+        return $ret;
     }
 
     /**
-     * Override this if your dashlet is configurable (this is called when the the configureDashlet form is shown)
+     * Override this if your dashlet is configurable (this is called when the configureDashlet form is shown)
      * Filters the array for only the parameters it needs to save
      *
      * @param array $req the array to pull options from
@@ -452,8 +452,9 @@ class Dashlet
         $dashletDefs = $current_user->getPreference('dashlets', 'Home'); // load user's dashlets config
         if (isset($dashletDefs[$this->id]['options'])) {
             return $dashletDefs[$this->id]['options'];
+        } else {
+            return array();
         }
-        return array();
     }
 
     /**

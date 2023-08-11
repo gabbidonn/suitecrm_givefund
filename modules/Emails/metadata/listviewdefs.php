@@ -66,6 +66,9 @@ $viewdefs['Emails']['ListView'] = array(
                     'customCode' => '<a data-action="emails-import-multiple" title="{$MOD.LBL_IMPORT}">{$MOD.LBL_IMPORT}</a>'
                 ),
                 array(
+                    'customCode' => '<a data-action="emails-delete-multiple" title="{$MOD.LBL_BUTTON_DELETE_IMAP}">{$MOD.LBL_BUTTON_DELETE_IMAP}</a>'
+                ),
+                array(
                     'customCode' => '<a data-action="emails-mark" data-for="unread" title="{$MOD.LBL_MARK_UNREAD}">{$MOD.LBL_MARK_UNREAD}</a>',
                 ),
                 array(
@@ -108,6 +111,9 @@ $viewdefs['Emails']['ListView'] = array(
             array(
                 'file' => 'modules/Emails/include/ListView/MarkEmails.js',
             ),
+            [
+                'file' => 'modules/Emails/include/ListView/DeleteEmailAction.js',
+            ],
         ),
         'options' => array(
             'hide_edit_link' => true
@@ -120,6 +126,7 @@ $listViewDefs['Emails'] = array(
         'width' => '32',
         'label' => 'LBL_LIST_FROM_ADDR',
         'default' => true,
+        'sortable' => false,
     ),
     'INDICATOR' => array(
         'width' => '32',
@@ -134,7 +141,8 @@ $listViewDefs['Emails'] = array(
         'label' => 'LBL_LIST_SUBJECT',
         'default' => true,
         'link' => false,
-        'customCode' => ''
+        'customCode' => '',
+        'sortable' => false,
     ),
     'HAS_ATTACHMENT' => array(
         'width' => '32',
@@ -148,27 +156,32 @@ $listViewDefs['Emails'] = array(
         'label' => 'LBL_ASSIGNED_TO_NAME',
         'module' => 'Employees',
         'id' => 'ASSIGNED_USER_ID',
-        'default' => false
+        'default' => false,
+        'sortable' => false,
     ),
     'DATE_ENTERED' => array(
         'width' => '32',
         'label' => 'LBL_DATE_ENTERED',
         'default' => true,
+        'sortable' => false,
     ),
     'DATE_SENT_RECEIVED' => array(
         'width' => '32',
         'label' => 'LBL_LIST_DATE_SENT_RECEIVED',
         'default' => true,
+        'sortable' => false,
+        'force_show_sort_direction' => true
     ),
     'TO_ADDRS_NAMES' => array(
         'width' => '32',
         'label' => 'LBL_LIST_TO_ADDR',
         'default' => false,
+        'sortable' => false,
     ),
-    'CATEGORY_ID' =>
-        array(
-            'width' => '10%',
-            'label' => 'LBL_LIST_CATEGORY',
-            'default' => true,
-        ),
+    'CATEGORY_ID' => array(
+        'width' => '10%',
+        'label' => 'LBL_LIST_CATEGORY',
+        'default' => true,
+        'sortable' => false,
+    ),
 );

@@ -29,21 +29,6 @@ class jjwg_Address_Cache extends jjwg_Address_Cache_sugar
     }
 
     /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function jjwg_Address_Cache($init=true)
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($init);
-    }
-
-
-    /**
      * Load Configuration Settings using Administration Module
      * See jjwg_Maps module for setting config
      * $GLOBALS['jjwg_config_defaults']
@@ -51,7 +36,7 @@ class jjwg_Address_Cache extends jjwg_Address_Cache_sugar
      */
     public function configuration()
     {
-        $this->jjwg_Maps = new jjwg_Maps();
+        $this->jjwg_Maps = BeanFactory::newBean('jjwg_Maps');
         $this->settings = $GLOBALS['jjwg_config'];
     }
 
@@ -122,7 +107,7 @@ class jjwg_Address_Cache extends jjwg_Address_Cache_sugar
 
                     // Note: The modules 'name' field is used for the 'address'
                     // 'status' is not saved in the cache table.
-                    $cache = new jjwg_Address_Cache();
+                    $cache = BeanFactory::newBean('jjwg_Address_Cache');
                     $cache->update_modified_by = true;
                     $cache->name = $aInfo['address'];
                     $cache->lat = $aInfo['lat'];

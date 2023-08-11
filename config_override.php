@@ -1,7 +1,8 @@
 <?php
 /***CONFIGURATOR***/
 $sugar_config['disable_persistent_connections'] = false;
-$sugar_config['http_referer']['list'][0] = 'business37.web-hosting.com';
+//$sugar_config['http_referer']['list'][0] = 'business37.web-hosting.com';
+$sugar_config['http_referer']['list'][] = 'localhost';
 $sugar_config['list_max_entries_per_page'] = '30';
 $sugar_config['default_module_favicon'] = false;
 $sugar_config['dashlet_auto_refresh_min'] = '30';

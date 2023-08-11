@@ -50,7 +50,7 @@ class OpportunityFormBase
     {
         require_once('include/formbase.php');
 
-        $focus = new Opportunity();
+        $focus = BeanFactory::newBean('Opportunities');
         $query = '';
         $baseQuery = 'select id, name, sales_stage,amount, date_closed  from opportunities where deleted!=1 and (';
 
@@ -87,7 +87,7 @@ class OpportunityFormBase
             global $mod_strings;
         }
         global $app_strings;
-        $cols = sizeof($rows[0]) * 2 + 1;
+        $cols = count($rows[0]) * 2 + 1;
         $form = '<table width="100%"><tr><td>'.$mod_strings['MSG_DUPLICATE']. '</td></tr><tr><td height="20"></td></tr></table>';
 
         $form .= "<form action='index.php' method='post' name='dupOpps'><input type='hidden' name='selectedOpportunity' value=''>";
@@ -179,7 +179,7 @@ EOQ;
             return '';
         }
         if (empty($lead)) {
-            $lead = new Lead();
+            $lead = BeanFactory::newBean('Leads');
         }
         global $mod_strings, $sugar_config;
         $showaccount = $showaccount && $sugar_config['require_accounts'];
@@ -294,7 +294,7 @@ EOQ;
 </tr>
 EOQ;
         //carry forward custom lead fields to opportunities during Lead Conversion
-        $tempOpp = new Opportunity();
+        $tempOpp = BeanFactory::newBean('Opportunities');
         if (method_exists($lead, 'convertCustomFieldsForm')) {
             $lead->convertCustomFieldsForm($the_form, $tempOpp, $prefix);
         }
@@ -317,7 +317,7 @@ EOQ;
 
         $javascript = new javascript();
         $javascript->setFormName($formname);
-        $javascript->setSugarBean(new Opportunity());
+        $javascript->setSugarBean(BeanFactory::newBean('Opportunities'));
         $javascript->addRequiredFields($prefix);
         $the_form .=$javascript->getScript();
         $mod_strings = $temp_strings;
@@ -427,7 +427,7 @@ EOQ;
 
         $javascript = new javascript();
         $javascript->setFormName($formname);
-        $javascript->setSugarBean(new Opportunity());
+        $javascript->setSugarBean(BeanFactory::newBean('Opportunities'));
         $javascript->addRequiredFields($prefix);
         $the_form .=$javascript->getScript();
 
@@ -443,7 +443,7 @@ EOQ;
 
         require_once('include/formbase.php');
 
-        $focus = new Opportunity();
+        $focus = BeanFactory::newBean('Opportunities');
         if ($useRequired &&  !checkRequired($prefix, array_keys($focus->required_fields))) {
             return null;
         }

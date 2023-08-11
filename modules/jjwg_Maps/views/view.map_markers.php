@@ -11,19 +11,7 @@ class Jjwg_MapsViewMap_Markers extends SugarView
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function Jjwg_MapsViewMap_Markers()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     public function display()
@@ -737,7 +725,7 @@ function setODataTable() {
                         "mColumns": "all"
                     },
                 ],
-                "sSwfPath": "http://cdn.datatables.net/tabletools/2.2.2/swf/copy_csv_xls_pdf.swf"
+                "sSwfPath": "//cdn.datatables.net/tabletools/2.2.2/swf/copy_csv_xls_pdf.swf"
             },
             "fnDrawCallback": function(oSettings) {
                 if (typeof window.parent.resizeDataTables == 'function') {
@@ -745,7 +733,7 @@ function setODataTable() {
                 }
                 setODataTableShown();
             },
-            "oLanguage": { "sUrl": "modules/jjwg_Maps/DataTables/media/language/<?php echo strtolower($GLOBALS['current_language']); ?>.lang.js" },
+            "oLanguage": { "sUrl": "modules/jjwg_Maps/DataTables/media/language/<?php echo $GLOBALS['current_language']; ?>.lang.js" },
             "aaData": map_markers,
             "aoColumns": [
                 {

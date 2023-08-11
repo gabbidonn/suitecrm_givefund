@@ -1,4 +1,5 @@
 <?php
+
 namespace Robo\Config;
 
 use Consolidation\Config\Util\ConfigOverlay;
@@ -15,6 +16,11 @@ class Config extends ConfigOverlay implements GlobalOptionDefaultValuesInterface
     const DECORATED = 'options.decorated';
 
     /**
+     * @var array
+     */
+    protected $defaults;
+
+    /**
      * Create a new configuration object, and initialize it with
      * the provided nested array containing configuration data.
      */
@@ -22,7 +28,7 @@ class Config extends ConfigOverlay implements GlobalOptionDefaultValuesInterface
     {
         parent::__construct();
 
-        $this->import($data);
+        $this->import($data ?: []);
         $this->defaults = $this->getGlobalOptionDefaultValues();
     }
 
@@ -70,6 +76,10 @@ class Config extends ConfigOverlay implements GlobalOptionDefaultValuesInterface
 
     /**
      * Remove the 'options.' prefix from the global options list.
+     *
+     * @param array $globalOptions
+     *
+     * @return array
      */
     protected function trimPrefixFromGlobalOptions($globalOptions)
     {

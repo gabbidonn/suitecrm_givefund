@@ -58,22 +58,6 @@ class Sale extends Basic
     }
 
     /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 8.0,
-     *     please update your code, use __construct instead
-     */
-    public function Sale()
-    {
-        $deprecatedMessage =
-            'PHP4 Style Constructors are deprecated and will be remove in 8.0, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
-
-    /**
      * @param string $order_by
      * @param string $where
      * @param array $filter
@@ -153,7 +137,7 @@ class Sale extends Basic
         //"amount_usdollar" is really amount_basecurrency. We need to save a copy of the amount in the base currency.
         if (isset($this->amount) && !number_empty($this->amount)) {
             if (!number_empty($this->currency_id)) {
-                $currency = new Currency();
+                $currency = BeanFactory::newBean('Currencies');
                 $currency->retrieve($this->currency_id);
                 $this->amount_usdollar = $currency->convertToDollar($this->amount);
             } else {

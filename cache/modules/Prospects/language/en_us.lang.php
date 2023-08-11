@@ -1,5 +1,5 @@
 <?php
-// created: 2021-07-06 14:06:10
+// created: 2023-08-11 02:17:09
 $mod_strings = array (
   'LBL_ID' => 'ID',
   'LBL_DATE_ENTERED' => 'Date Created',
@@ -28,7 +28,7 @@ $mod_strings = array (
   'LBL_SALUTATION' => 'Salutation',
   'LBL_FIRST_NAME' => 'First Name:',
   'LBL_LAST_NAME' => 'Last Name:',
-  'LBL_TITLE' => 'Title:',
+  'LBL_TITLE' => 'Job Title:',
   'LBL_DEPARTMENT' => 'Department:',
   'LBL_DO_NOT_CALL' => 'Do Not Call:',
   'LBL_HOME_PHONE' => 'Home:',
@@ -57,7 +57,7 @@ $mod_strings = array (
   'LBL_ALT_STREET' => 'Other Address',
   'LBL_STREET' => 'Other Address',
   'LBL_CITY' => 'City:',
-  'LBL_STATE' => 'State:',
+  'LBL_STATE' => 'State/Region:',
   'LBL_POSTAL_CODE' => 'Postal Code:',
   'LBL_COUNTRY' => 'Country:',
   'LBL_CONTACT_INFORMATION' => 'Contact Information',
@@ -81,9 +81,8 @@ $mod_strings = array (
   'LBL_SEARCH_FORM_TITLE' => 'Target Search',
   'LBL_LIST_FORM_TITLE' => 'Target List',
   'LBL_NEW_FORM_TITLE' => 'New Target',
-  'LBL_BUSINESSCARD' => 'Business Card',
   'LBL_LIST_LAST_NAME' => 'Last Name',
-  'LBL_LIST_TITLE' => 'Title',
+  'LBL_LIST_TITLE' => 'Job Title',
   'LBL_LIST_EMAIL_ADDRESS' => 'Email',
   'LBL_LIST_PHONE' => 'Phone',
   'LBL_LIST_FIRST_NAME' => 'First Name',
@@ -92,8 +91,6 @@ $mod_strings = array (
   'LBL_CREATED_ACCOUNT' => 'Created a new account',
   'LBL_CREATED_CALL' => 'Created a new call',
   'LBL_CREATED_MEETING' => 'Created a new meeting',
-  'LBL_ADDMORE_BUSINESSCARD' => 'Add another business card',
-  'LBL_ADD_BUSINESSCARD' => 'Enter Business Card',
   'LBL_PROSPECT_INFORMATION' => 'OVERVIEW',
   'LBL_MORE_INFORMATION' => 'More Information',
   'LBL_ANY_PHONE' => 'Any Phone:',

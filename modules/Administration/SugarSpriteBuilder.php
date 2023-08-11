@@ -166,9 +166,11 @@ class SugarSpriteBuilder
                                     $list[$file] = $info;
                                 }
                             }
-                        } elseif (preg_match('/\.(jpg|jpeg|gif|png|bmp|ico)$/i', $file)) {
-                            $GLOBALS['log']->error('Unable to process image file ' . $file);
-                            //$this->logMessage('Unable to process image file ' . $file);
+                        } else {
+                            if (preg_match('/\.(jpg|jpeg|gif|png|bmp|ico)$/i', $file)) {
+                                $GLOBALS['log']->error('Unable to process image file ' . $file);
+                                //$this->logMessage('Unable to process image file ' . $file);
+                            }
                         }
                     }
                 }
@@ -344,7 +346,7 @@ class SugarSpriteBuilder
                     $spriteFileName = "{$this->fileName}.png";
                     $cssFileName = "{$this->fileName}.css";
                     $metaFileName = "{$this->fileName}.meta.php";
-                    $nameSpace = "{$name}";
+                    $nameSpace = (string)($name);
                 }
 
                 // directory structure
@@ -401,19 +403,21 @@ background-position: -{$offset_x}px -{$offset_y}px;
                 if ($this->cssMinify) {
                     $css_content = cssmin::minify($css_content);
                 }
-                $fh = fopen("$outputDir/$cssFileName", $fileMode);
-                fwrite($fh, $css_content);
-                fclose($fh);
+                sugar_file_put_contents(
+                    "$outputDir/$cssFileName",
+                    $css_content,
+                    $fileMode == 'a' ? FILE_APPEND : 0
+                );
 
                 /* save metadata */
                 $add_php_tag = (file_exists("$outputDir/$metaFileName") && $isRepeat) ? false : true;
-                $fh = fopen("$outputDir/$metaFileName", $fileMode);
+                $fh = sugar_fopen("$outputDir/$metaFileName", $fileMode);
                 if ($add_php_tag) {
                     fwrite($fh, '<?php');
                 }
                 fwrite($fh, "\n/* sprites metadata - $name */\n");
                 fwrite($fh, $metadata."\n");
-                fclose($fh);
+                sugar_fclose($fh);
 
             // if width & height
             } else {
@@ -482,10 +486,14 @@ background-position: -{$offset_x}px -{$offset_y}px;
     {
         if (!$this->silentRun && !$this->fromSilentUpgrade) {
             echo $msg . '<br />';
-        } elseif ($this->fromSilentUpgrade && $this->writeToUpgradeLog) {
-            logThis($msg, $GLOBALS['path']);
-        } elseif (!$this->silentRun) {
-            echo $msg . "\n";
+        } else {
+            if ($this->fromSilentUpgrade && $this->writeToUpgradeLog) {
+                logThis($msg, $GLOBALS['path']);
+            } else {
+                if (!$this->silentRun) {
+                    echo $msg . "\n";
+                }
+            }
         }
     }
 }

@@ -318,7 +318,7 @@
       ),
     ),
   ),
-  'optimistic_lock' => true,
+  'optimistic_locking' => false,
   'templates' => 
   array (
     'assignable' => 'assignable',

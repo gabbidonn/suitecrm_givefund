@@ -49,19 +49,7 @@ class FP_events extends FP_events_sugar
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function FP_events()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     //assign email templates to drop_down in module
@@ -69,6 +57,6 @@ class FP_events extends FP_events_sugar
     {
         global $app_list_strings;
 
-        $app_list_strings['email_templet_list'] = get_bean_select_array(true, 'EmailTemplate', 'name');
+        $app_list_strings['emailTemplates_type_list'] = get_bean_select_array(true, 'EmailTemplate', 'name', "type='event'");
     }
 }

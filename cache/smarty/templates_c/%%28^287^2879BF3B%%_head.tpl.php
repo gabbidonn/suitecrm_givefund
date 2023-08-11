@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2021-07-06 14:06:22
+<?php /* Smarty version 2.6.33, created on 2023-08-11 02:17:53
          compiled from themes/SuiteP/tpls/_head.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'sugar_getimagepath', 'themes/SuiteP/tpls/_head.tpl', 68, false),array('function', 'sugar_getjspath', 'themes/SuiteP/tpls/_head.tpl', 79, false),)), $this); ?>
@@ -18,8 +18,9 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'sugar_getim
     <link href='themes/SuiteP/css/fonts.css' rel='stylesheet' type='text/css'>
     <link href="themes/SuiteP/css/grid.css" rel="stylesheet" type="text/css"/>
     <link href="themes/SuiteP/css/footable.core.css" rel="stylesheet" type="text/css"/>
-    <title><?php echo $this->_tpl_vars['APP']['LBL_BROWSER_TITLE']; ?>
-</title>
+    <title><?php if ($this->_tpl_vars['BROWSER_TITLE']): ?><?php echo $this->_tpl_vars['BROWSER_TITLE']; ?>
+<?php else: ?><?php echo $this->_tpl_vars['APP']['LBL_BROWSER_TITLE']; ?>
+<?php endif; ?></title>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -60,5 +61,7 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'sugar_getim
     <script type="text/javascript" src='<?php echo smarty_function_sugar_getjspath(array('file' => "themes/SuiteP/js/jscolor.js"), $this);?>
 '></script>
     <script type="text/javascript" src='<?php echo smarty_function_sugar_getjspath(array('file' => "cache/include/javascript/sugar_field_grp.js"), $this);?>
+'></script>
+    <script type="text/javascript" src='<?php echo smarty_function_sugar_getjspath(array('file' => "vendor/tinymce/tinymce/tinymce.min.js"), $this);?>
 '></script>
 </head>

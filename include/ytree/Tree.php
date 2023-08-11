@@ -77,22 +77,6 @@ class Tree
     }
 
     /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8,
-     * please update your code, use __construct instead
-     */
-    public function Tree($name)
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8,'.
-            ' please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($name);
-    }
-
-    /**
      * optionally add json.js, required for making AJAX Calls.
      * @param null $reference
      */
@@ -161,8 +145,9 @@ class Tree
         $tree_data .= "treeinit(mytree,TREE_DATA,'{$this->_name}',param);\n";
         if ($scriptTags) {
             return '<script>' . $tree_data . '</script>';
+        } else {
+            return $tree_data;
         }
-        return $tree_data;
     }
 
     /**
@@ -219,3 +204,4 @@ class Tree
         return $return;
     }
 }
+

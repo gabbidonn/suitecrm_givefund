@@ -38,13 +38,6 @@
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
-/*********************************************************************************
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
@@ -145,27 +138,11 @@ class aCase extends Basic
     }
 
     /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8,
-     *     please update your code, use __construct instead
-     */
-    public function aCase()
-    {
-        $deprecatedMessage =
-            'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
-
-    /**
      * @return string
      */
     public function get_summary_text()
     {
-        return "$this->name";
+        return (string)$this->name;
     }
 
     /**
@@ -269,7 +246,7 @@ class aCase extends Basic
         }
         $temp = array('id', 'first_name', 'last_name', 'title', 'email1', 'phone_work', 'case_role', 'case_rel_id');
 
-        return $this->build_related_list2($query, new Contact(), $temp);
+        return $this->build_related_list2($query, BeanFactory::newBean('Contacts'), $temp);
     }
 
     /**
@@ -360,7 +337,7 @@ class aCase extends Basic
             (isset($case->priority) ? $app_list_strings['case_priority_dom'][$case->priority] : '')
         );
         $xtpl->assign('CASE_STATUS', (isset($case->status) ? $app_list_strings['case_status_dom'][$case->status] : ''));
-        $xtpl->assign('CASE_DESCRIPTION', $case->description);
+        $xtpl->assign('CASE_DESCRIPTION', nl2br($case->description));
 
         return $xtpl;
     }
@@ -414,7 +391,7 @@ class aCase extends Basic
         // Get the id and the name.
         $row = $this->db->fetchByAssoc($result);
 
-        if ($row !== null) {
+        if ($row !== null && $row !== false) {
             $ret_array['account_name'] = stripslashes($row['name']);
             $ret_array['account_id'] = $row['id'];
         } else {

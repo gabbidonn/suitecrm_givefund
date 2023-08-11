@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2021-07-19 06:46:30
+<?php /* Smarty version 2.6.33, created on 2023-08-11 02:18:11
          compiled from themes/SuiteP/include/MySugar/tpls/MySugar.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'sugar_getscript', 'themes/SuiteP/include/MySugar/tpls/MySugar.tpl', 59, false),array('function', 'counter', 'themes/SuiteP/include/MySugar/tpls/MySugar.tpl', 80, false),array('function', 'sugar_getjspath', 'themes/SuiteP/include/MySugar/tpls/MySugar.tpl', 247, false),)), $this); ?>
@@ -33,7 +33,7 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'sugar_getsc
 <div class="dashboard">
         <ul class="nav nav-tabs nav-dashboard">
 
-        <?php $_from = $this->_tpl_vars['dashboardPages']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+        <?php $_from = $this->_tpl_vars['dashboardPages']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['tabNum'] => $this->_tpl_vars['tab']):
 ?>
             <?php if ($this->_tpl_vars['tabNum'] == 0): ?>
@@ -56,7 +56,7 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'sugar_getsc
                     <ul id="first-tab-menu-xs" class="dropdown-menu">
                         <?php echo smarty_function_counter(array('name' => 'tabCountXS','start' => -1,'print' => false,'assign' => 'tabCountXS'), $this);?>
 
-                        <?php $_from = $this->_tpl_vars['dashboardPages']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+                        <?php $_from = $this->_tpl_vars['dashboardPages']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['ta'] => $this->_tpl_vars['xstab']):
 ?>
                             <?php echo smarty_function_counter(array('name' => 'tabCountXS','print' => false), $this);?>
@@ -101,7 +101,7 @@ unset($_smarty_tpl_vars);
     </ul>
     <div class="clearfix"></div>
     <div class="tab-content">
-        <?php $_from = $this->_tpl_vars['dashboardPages']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+        <?php $_from = $this->_tpl_vars['dashboardPages']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['tabNum'] => $this->_tpl_vars['tab']):
 ?>
             <?php if ($this->_tpl_vars['tabNum'] == 0): ?>

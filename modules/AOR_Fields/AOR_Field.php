@@ -78,26 +78,19 @@ class AOR_Field extends Basic
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function AOR_Field()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     public function save_lines($post_data, $parent, $key = '')
     {
         require_once('modules/AOW_WorkFlow/aow_utils.php');
 
-        $line_count = count($post_data[$key . 'field']);
+        if (!isset($post_data[$key . 'field'])) {
+            $line_count = 0;
+            LoggerManager::getLogger()->warn('AOR Field trying to save lines but post data key not found: ' . $key . 'field');
+        } else {
+            $line_count = count($post_data[$key . 'field']);
+        }
         for ($i = 0; $i < $line_count; ++$i) {
             if (!isset($post_data[$key . 'deleted'][$i])) {
                 LoggerManager::getLogger()->warn('AOR field save line error: Post data deleted key not found at index. Key and index were: [' . $key . '], [' . $i . ']');
@@ -109,7 +102,7 @@ class AOR_Field extends Basic
             if ($postDataKeyDeleted == 1) {
                 $this->mark_deleted($post_data[$key . 'id'][$i]);
             } else {
-                $field = new AOR_Field();
+                $field = BeanFactory::newBean('AOR_Fields');
                 $field->group_display = false;
 
                 if ($key == 'aor_fields_') {
@@ -128,18 +121,22 @@ class AOR_Field extends Basic
                         if ($field_name != 'group_display' && isset($postField[$i])) {
                             if (is_array($postField[$i])) {
                                 $postField[$i] = base64_encode(serialize($postField[$i]));
-                            } elseif ($field_name == 'value') {
-                                $postField[$i] = fixUpFormatting($_REQUEST['report_module'], $field->field, $postField[$i]);
+                            } else {
+                                if ($field_name == 'value') {
+                                    $postField[$i] = fixUpFormatting($_REQUEST['report_module'], $field->field, $postField[$i]);
+                                }
                             }
                             if ($field_name == 'module_path') {
                                 $postField[$i] = base64_encode(serialize(explode(":", $postField[$i])));
                             }
                             $field->$field_name = $postField[$i];
                         }
-                    } elseif (is_null($postField)) {
-                        // do nothing
                     } else {
-                        throw new Exception('illegal type in post data at key ' . $key . $field_name . ' ' . gettype($postField));
+                        if (is_null($postField)) {
+                            // do nothing
+                        } else {
+                            throw new Exception('illegal type in post data at key ' . $key . $field_name . ' ' . gettype($postField));
+                        }
                     }
                 }
                 if (trim($field->field) != '') {

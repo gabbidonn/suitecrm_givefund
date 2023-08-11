@@ -41,12 +41,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
-/*********************************************************************************
 
- * Description:
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc. All Rights
- * Reserved. Contributor(s): ______________________________________..
- *********************************************************************************/
 
 class SugarDependentDropdown
 {
@@ -111,20 +106,6 @@ class SugarDependentDropdown
         if (!empty($metadata)) {
             $this->init($metadata);
         }
-    }
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function SugarDependentDropdown($metadata='')
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($metadata);
     }
 
     /**
@@ -256,10 +237,11 @@ class SugarDependentDropdown
             }
 
             return $mergedElement;
-        }
-        if ($this->debugMode) {
-            $this->debugOutput("SugarRouting is trying to initialize a non-element:");
-            $this->debugOutput($element);
+        } else {
+            if ($this->debugMode) {
+                $this->debugOutput("SugarRouting is trying to initialize a non-element:");
+                $this->debugOutput($element);
+            }
         }
     }
 
@@ -343,12 +325,12 @@ class SugarDependentDropdown
                 $this->debugOutput((count($metadata) > 1) ? "SugarRouting: all checks passed, valid metadata confirmed" : "SugarRouting: 'handlers' checks passed, valid metadata confirmed.");
             }
             return true;
+        } else {
+            if ($this->debugMode) {
+                $this->debugOutput("SugarRouting: Your metadata does not contain a valid 'elements' array:");
+                $this->debugOutput($metadata);
+            }
         }
-        if ($this->debugMode) {
-            $this->debugOutput("SugarRouting: Your metadata does not contain a valid 'elements' array:");
-            $this->debugOutput($metadata);
-        }
-        
         return false;
     }
 

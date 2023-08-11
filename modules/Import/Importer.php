@@ -108,7 +108,7 @@ class Importer
         $this->ifs = $this->getFieldSanitizer();
 
         //Get the default user currency
-        $this->defaultUserCurrency = new Currency();
+        $this->defaultUserCurrency = BeanFactory::newBean('Currencies');
         $this->defaultUserCurrency->retrieve('-99');
 
         //Get our import column definitions
@@ -167,7 +167,8 @@ class Importer
                 $locale = new Localization();
             }
             if (isset($row[$fieldNum])) {
-                $rowValue = $locale->translateCharset(strip_tags(trim($row[$fieldNum])), $this->importSource->importlocale_charset, $sugar_config['default_charset']);
+                // issue #6442 - translateCharset was already executed in an earlier step
+                $rowValue = strip_tags(trim($row[$fieldNum]));
             } elseif (isset($this->sugarToExternalSourceFieldMap[$field]) && isset($row[$this->sugarToExternalSourceFieldMap[$field]])) {
                 $rowValue = $locale->translateCharset(strip_tags(trim($row[$this->sugarToExternalSourceFieldMap[$field]])), $this->importSource->importlocale_charset, $sugar_config['default_charset']);
             } else {
@@ -362,7 +363,7 @@ class Importer
 
             if (isset($dbrow['id']) && $dbrow['id'] != -1) {
                 // if it exists but was deleted, just remove it
-                if (isset($dbrow['deleted']) && $dbrow['deleted'] == 1 && $this->isUpdateOnly ==false) {
+                if (isset($dbrow['deleted']) && $dbrow['deleted'] == 1) {
                     $this->removeDeletedBean($focus);
                     $focus->new_with_id = true;
                 } else {
@@ -500,7 +501,7 @@ class Importer
         * Bug 34854: Added all conditions besides the empty check on date modified.
         */
         if ((!empty($focus->new_with_id) && !empty($focus->date_modified)) ||
-             (empty($focus->new_with_id) && $timedate->to_db($focus->date_modified) != $timedate->to_db($timedate->to_display_date_time($focus->fetched_row['date_modified'])))
+             (is_array($focus->fetched_row) && empty($focus->new_with_id) && $timedate->to_db($focus->date_modified) != $timedate->to_db($timedate->to_display_date_time($focus->fetched_row['date_modified'])))
         ) {
             $focus->update_date_modified = false;
         }
@@ -579,7 +580,7 @@ class Importer
 
         $firstrow    = json_decode(html_entity_decode($_REQUEST['firstrow']), true);
         $mappingValsArr = $this->importColumns;
-        $mapping_file = new ImportMap();
+        $mapping_file = BeanFactory::newBean('Import_1');
         if (isset($_REQUEST['has_header']) && $_REQUEST['has_header'] == 'on') {
             $header_to_field = array();
             foreach ($this->importColumns as $pos => $field_name) {
@@ -722,7 +723,7 @@ class Importer
             $ifs->$field = $this->importSource->$fieldKey;
         }
 
-        $currency = new Currency();
+        $currency = BeanFactory::newBean('Currencies');
         $currency->retrieve($this->importSource->importlocale_currency);
         $ifs->currency_symbol = $currency->symbol;
 
@@ -748,7 +749,7 @@ class Importer
      */
     protected function _undoCreatedBeans(array $ids)
     {
-        $focus = new UsersLastImport();
+        $focus = BeanFactory::newBean('Import_2');
         foreach ($ids as $id) {
             $focus->undoById($id);
         }

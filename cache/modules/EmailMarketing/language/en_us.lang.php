@@ -1,6 +1,8 @@
 <?php
-// created: 2023-06-26 10:52:02
+// created: 2023-08-11 02:17:09
 $mod_strings = array (
+  'LBL_SECURITYGROUPS' => 'Security Groups',
+  'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Security Groups',
   'LBL_REPLY_ADDR' => '"Reply-to" Address: ',
   'LBL_REPLY_NAME' => '"Reply-to" Name: ',
   'LBL_MODULE_NAME' => 'Email Marketing',

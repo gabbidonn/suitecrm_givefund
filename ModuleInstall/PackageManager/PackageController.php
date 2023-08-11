@@ -45,28 +45,13 @@
      public $_pm;
 
      /**
-      * Constructor: this class is called from the the ajax call and handles invoking the correct
+      * Constructor: this class is called from the ajax call and handles invoking the correct
       * functionality on the server.
       */
      public function __construct()
      {
          $this->_pm = new PackageManager();
      }
-
-     /**
-      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-      */
-     public function PackageController()
-     {
-         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-         if (isset($GLOBALS['log'])) {
-             $GLOBALS['log']->deprecated($deprecatedMessage);
-         } else {
-             trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-         }
-         self::__construct();
-     }
-
 
      public function performBasicSearch()
      {

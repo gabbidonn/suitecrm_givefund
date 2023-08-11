@@ -53,7 +53,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('include/json_config.php');
 
-require_once('include/MVC/View/views/view.detail.php');
 
 class CampaignsViewDetail extends ViewDetail
 {
@@ -64,19 +63,7 @@ class CampaignsViewDetail extends ViewDetail
         $this->options['show_subpanels'] = false;
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function CampaignsViewDetail()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
 
@@ -117,7 +104,7 @@ class CampaignsViewDetail extends ViewDetail
             $this->ss->assign("TARGET_BUTTON_STATE", "submit");
         }
 
-        $currency = new Currency();
+        $currency = BeanFactory::newBean('Currencies');
         if (isset($this->bean->currency_id) && !empty($this->bean->currency_id)) {
             $currency->retrieve($this->bean->currency_id);
             if ($currency->deleted != 1) {
@@ -141,7 +128,7 @@ class CampaignsViewDetail extends ViewDetail
         if (!empty($alltabs)) {
             //iterate through list, and filter out all but 3 subpanels
             foreach ($alltabs as $key=>$name) {
-                if ($name != 'prospectlists' && $name!='emailmarketing' && $name != 'tracked_urls'
+                if ($name != 'prospectlists' && $name!='emailmarketing' && $name != 'tracked_urls' && $name != 'history'
                 /* BEGIN - SECURITY GROUPS */
                     && $name != 'securitygroups'
                 /* END - SECURITY GROUPS */

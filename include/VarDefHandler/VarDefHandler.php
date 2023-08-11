@@ -71,20 +71,6 @@ class VarDefHandler
         //end function setup
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function VarDefHandler($module, $meta_array_name=null)
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($module, $meta_array_name);
-    }
-
     public function get_vardef_array($use_singular=false, $remove_dups = false, $use_field_name = false, $use_field_label = false)
     {
         global $dictionary;
@@ -127,10 +113,12 @@ class VarDefHandler
                     } else {
                         $label_name = $this->module_object->$relName->getRelatedModuleName();
                     }
-                } elseif (!empty($value_array['vname'])) {
-                    $label_name = $value_array['vname'];
                 } else {
-                    $label_name = $value_array['name'];
+                    if (!empty($value_array['vname'])) {
+                        $label_name = $value_array['vname'];
+                    } else {
+                        $label_name = $value_array['name'];
+                    }
                 }
 
 
@@ -170,9 +158,9 @@ class VarDefHandler
         }
         if ($use_singular == true) {
             return convert_module_to_singular($this->options_array);
+        } else {
+            return $this->options_array;
         }
-        return $this->options_array;
-        
 
         //end get_vardef_array
     }

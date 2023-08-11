@@ -24,13 +24,13 @@
      public $MOD43;
 
      /* Class creator */
-     public function pBarcode39($BasePath="", $EnableMOD43=false)
+     public function __construct($BasePath = "", $EnableMOD43 = false)
      {
-         $this->MOD43  = $EnableMOD43;
-         $this->Codes   = "";
-         $this->Reverse = "";
+     $this->MOD43  = $EnableMOD43;
+     $this->Codes   = "";
+     $this->Reverse = "";
 
-         $FileHandle = @fopen($BasePath."data/39.db", "r");
+         $FileHandle = @fopen($BasePath."data/39.db", 'rb');
 
          if (!$FileHandle) {
              die("Cannot find barcode database (".$BasePath."data/39.db).");
@@ -191,7 +191,7 @@
          for ($i=0; $i < $length; ++$i) {
              $checksum += strpos($charset, $string[$i]);
          }
- 
+
          return substr($charset, ($checksum % 43), 1);
      }
 

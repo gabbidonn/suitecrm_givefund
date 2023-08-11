@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2021-07-19 06:46:29
+<?php /* Smarty version 2.6.33, created on 2023-08-11 02:18:10
          compiled from themes/SuiteP/include/Dashlets/DashletHeader.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'lower', 'themes/SuiteP/include/Dashlets/DashletHeader.tpl', 8, false),array('modifier', 'replace', 'themes/SuiteP/include/Dashlets/DashletHeader.tpl', 8, false),)), $this); ?>
@@ -26,7 +26,8 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'lower', 'th
                         </a>
     <a href="javascript:void(0)" title="<?php echo $this->_tpl_vars['DASHLET_BUTTON_ARIA_REFRESH']; ?>
 " aria-label="<?php echo $this->_tpl_vars['DASHLET_BUTTON_ARIA_REFRESH']; ?>
-" onclick="SUGAR.mySugar.retrieveCurrentPage(); return false;">
+" onclick="SUGAR.mySugar.retrieveDashlet('<?php echo $this->_tpl_vars['DASHLET_ID']; ?>
+'); return false;">
         <span class="suitepicon suitepicon-action-reload"></span>
     </a>
 <a href="javascript:void(0)" title="<?php echo $this->_tpl_vars['DASHLET_BUTTON_ARIA_DELETE']; ?>

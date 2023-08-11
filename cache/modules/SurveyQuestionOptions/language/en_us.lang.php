@@ -1,5 +1,5 @@
 <?php
-// created: 2021-07-06 14:06:13
+// created: 2023-08-11 02:17:28
 $mod_strings = array (
   'LBL_ID' => 'ID',
   'LBL_DATE_ENTERED' => 'Date Created',
@@ -27,6 +27,7 @@ $mod_strings = array (
   'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Security Groups',
   'LBL_MODIFIED_ID' => 'Modified By Id',
   'LBL_CREATED_ID' => 'Created By Id',
+  'LBL_SORT_ORDER' => 'Order',
   'LBL_LIST_FORM_TITLE' => 'Survey Question Options List',
   'LBL_MODULE_NAME' => 'Survey Question Options',
   'LBL_MODULE_TITLE' => 'Survey Question Options',

@@ -1,5 +1,5 @@
 <?php
-// created: 2021-07-06 14:06:12
+// created: 2023-08-11 02:17:21
 $mod_strings = array (
   'LBL_ID' => 'ID',
   'LBL_DATE_ENTERED' => 'Date Created',
@@ -40,7 +40,7 @@ $mod_strings = array (
   'LBL_TYPE' => 'Type',
   'LBL_ACTIVE' => 'Active',
   'LBL_BUTTON_INSERT' => 'Insert',
-  'LBL_WARNING_OVERWRITE' => 'Warning this will overwrite you current Work',
+  'LBL_WARNING_OVERWRITE' => 'Warning, this will overwrite your current work',
   'LBL_INSERT_FIELDS' => 'Insert Fields',
   'LBL_SAMPLE' => 'Load Sample',
   'LBL_PAGE' => 'Page',

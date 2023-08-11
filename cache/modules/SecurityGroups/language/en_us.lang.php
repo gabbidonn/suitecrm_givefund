@@ -1,5 +1,5 @@
 <?php
-// created: 2021-07-06 14:06:13
+// created: 2023-08-11 02:17:25
 $mod_strings = array (
   'LBL_ID' => 'ID',
   'LBL_DATE_ENTERED' => 'Date Created',
@@ -79,6 +79,7 @@ $mod_strings = array (
   'LBL_SELECT_GROUP_ERROR' => 'Please select a group and try again.',
   'LBL_GROUP_SELECT' => 'Select which groups should have access to this record',
   'LBL_ERROR_DUPLICATE' => 'Due to a possible duplicate detected by SuiteCRM you will have to manually add Security Groups to your newly created record.',
+  'LBL_ERROR_EXPORT_WHERE_CHANGED' => 'Update failed because the search filter was modified. Please try again.',
   'LBL_INBOUND_EMAIL' => 'Inbound email account',
   'LBL_INBOUND_EMAIL_DESC' => 'Only allow access to an email account if user belongs to a group that is assigned to the mail account.',
   'LBL_PRIMARY_GROUP' => 'Primary Group',

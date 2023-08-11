@@ -1075,7 +1075,7 @@
       'relationship_type' => 'one-to-many',
     ),
   ),
-  'optimistic_lock' => true,
+  'optimistic_locking' => true,
   'indices' => 
   array (
     'id' => 

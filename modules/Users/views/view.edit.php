@@ -53,19 +53,7 @@ class UsersViewEdit extends ViewEdit
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function UsersViewEdit()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     public function preDisplay()
@@ -227,6 +215,22 @@ class UsersViewEdit extends ViewEdit
 EOD
         ;
         $action_button_header[] = <<<EOD
+                    <script>
+                       $('#EditView').submit(function(){
+                                            var theForm =$('#EditView');
+                                           if (!set_password(theForm[0],newrules('{$minpwdlength}','{$maxpwdlength}','{$REGEX}'))){
+                                             return false;
+                                           }
+                                           if (!Admin_check()){
+                                                return false;
+                                            }
+                                             $('#EditView input[name=action]').val('save');
+                                            return true;
+                        });
+                     </script>
+EOD
+        ;
+        $action_button_header[] = <<<EOD
                     <input	title="{$APP['LBL_CANCEL_BUTTON_TITLE']}" id="CANCEL_HEADER" accessKey="{$APP['LBL_CANCEL_BUTTON_KEY']}"
                               class="button" onclick="var _form = $('#EditView')[0]; _form.action.value='{$RETURN_ACTION}'; _form.module.value='{$RETURN_MODULE}'; _form.record.value='{$RETURN_ID}'; _form.submit()"
                               type="button" name="button" value="{$APP['LBL_CANCEL_BUTTON_LABEL']}">
@@ -263,7 +267,7 @@ EOD
 
 
         require_once('modules/Emails/EmailUI.php');
-        $efocus = new Email();
+        $efocus = BeanFactory::newBean('Emails');
         $efocus->email2init();
         //$efocus->et->preflightUser($current_user);
         $out = $efocus->et->displayEmailFrame('modules/Users/_baseEmail.tpl');

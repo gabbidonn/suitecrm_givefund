@@ -1,7 +1,4 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
@@ -41,6 +38,10 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
+
 /*********************************************************************************
 
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
@@ -70,14 +71,14 @@ class ConfiguratorViewEdit extends ViewEdit
             sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']);
         }
     }
-    
+
     /**
      * @see SugarView::_getModuleTitleParams()
      */
     protected function _getModuleTitleParams($browserTitle = false)
     {
         global $mod_strings;
-        
+
         return array(
            "<a href='index.php?module=Administration&action=index'>".translate('LBL_MODULE_NAME', 'Administration')."</a>",
            $mod_strings['LBL_SYSTEM_SETTINGS']
@@ -98,25 +99,25 @@ class ConfiguratorViewEdit extends ViewEdit
 
         return parent::process();
     }
-    
+
     /**
      * @see SugarView::display()
      */
     public function display()
     {
         global $current_user, $mod_strings, $app_strings, $app_list_strings, $sugar_config, $locale;
-        
+
         $configurator = $this->configurator;
         $sugarConfig = SugarConfig::getInstance();
-        $focus = new Administration();
+        $focus = BeanFactory::newBean('Administration');
         $configurator->parseLoggerSettings();
-        
+
         $focus->retrieveSettings();
         if (!empty($_POST['restore'])) {
             $configurator->restoreConfig();
         }
 
-        
+
         $mailSendType = null;
         if (isset($focus->settings['mail_sendtype'])) {
             $mailSendType = $focus->settings['mail_sendtype'];
@@ -165,11 +166,19 @@ class ConfiguratorViewEdit extends ViewEdit
         } else {
             $this->ss->assign('logger_visible', true);
         }
+        if (isset($configurator->config['stackTrace'])) {
+            $this->ss->assign('stackTrace', $configurator->config['stackTrace']);
+        } else {
+            $this->ss->assign('stackTrace', false);
+        }
+
+        // Check for Google Sync JSON
+        $this->checkGoogleSyncJSON($configurator->config['google_auth_json']);
 
         echo $this->getModuleTitle(false);
-        
+
         $this->ss->display('modules/Configurator/tpls/EditView.tpl');
-        
+
         $javascript = new javascript();
         $javascript->setFormName("ConfigureSettings");
         $javascript->addFieldGeneric("notify_fromaddress", "email", $mod_strings['LBL_NOTIFY_FROMADDRESS'], true, "");
@@ -179,5 +188,22 @@ class ConfiguratorViewEdit extends ViewEdit
         $javascript->addFieldGeneric("proxy_password", "varchar", $mod_strings['LBL_PROXY_PASSWORD'], true, "");
         $javascript->addFieldGeneric("proxy_username", "varchar", $mod_strings['LBL_PROXY_USERNAME'], true, "");
         echo $javascript->getScript();
+    }
+
+    /**
+     *
+     * @param string $googleAuthJSON
+     */
+    protected function checkGoogleSyncJSON($googleAuthJSON)
+    {
+        $json = base64_decode($googleAuthJSON);
+        $config = json_decode($json, true);
+        if ($config) {
+            $this->ss->assign("GOOGLE_JSON_CONF", 'CONFIGURED');
+            $this->ss->assign("GOOGLE_JSON_CONF_COLOR", 'green');
+        } else {
+            $this->ss->assign("GOOGLE_JSON_CONF", 'UNCONFIGURED');
+            $this->ss->assign("GOOGLE_JSON_CONF_COLOR", 'black');
+        }
     }
 }

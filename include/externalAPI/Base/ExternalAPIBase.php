@@ -211,8 +211,8 @@ abstract class ExternalAPIBase implements ExternalAPIPlugin
      * that are being checked deal with handling the behavior of closing/hiding windows/tabs that
      * are displayed when prompting for OAUTH validation
      *
-     * @param $callback_url String value of callback URL
-     * @return String value of URL with applicable formatting
+     * @param string $callback_url value of callback URL
+     * @return string value of URL with applicable formatting
      */
     protected function formatCallbackURL($callback_url)
     {
@@ -249,8 +249,9 @@ abstract class ExternalAPIBase implements ExternalAPIPlugin
         $language_key = $this->_appStringErrorPrefix . $error_numb;
         if (isset($GLOBALS['app_strings'][$language_key])) {
             return $GLOBALS['app_strings'][$language_key];
+        } else {
+            return $GLOBALS['app_strings']['ERR_EXTERNAL_API_SAVE_FAIL'];
         }
-        return $GLOBALS['app_strings']['ERR_EXTERNAL_API_SAVE_FAIL'];
     }
 
     /**

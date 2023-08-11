@@ -41,13 +41,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
-/*********************************************************************************
 
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 
 
@@ -55,17 +49,17 @@ if (!defined('sugarEntry') || !sugarEntry) {
 global $mod_strings;
 
 
-$focus = new ProspectList();
+$focus = BeanFactory::newBean('ProspectLists');
 
 $focus->retrieve($_POST['record']);
 if (isset($_POST['isDuplicate']) && $_POST['isDuplicate'] == true) {
     $focus->id='';
     $focus->name=$mod_strings['LBL_COPY_PREFIX'].' '.$focus->name;
-    
+
     $focus->save();
     $return_id=$focus->id;
     //duplicate the linked items.
-    $query  = "select * from prospect_lists_prospects where prospect_list_id = '".$_POST['record']."'";
+    $query  = "select * from prospect_lists_prospects where prospect_list_id = '". $focus->db->quote($_POST['record']) ."'";
     $result = $focus->db->query($query);
     if ($result != null) {
         while (($row = $focus->db->fetchByAssoc($result)) != null) {

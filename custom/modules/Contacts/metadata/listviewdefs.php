@@ -1,6 +1,6 @@
 <?php
-$listViewDefs ['Contacts'] = 
-array (
+// created: 2023-08-10 16:22:39
+$listViewDefs['Contacts'] = array (
   'NAME' => 
   array (
     'width' => '20%',
@@ -189,8 +189,9 @@ array (
   ),
   'PRIMARY_ADDRESS_COUNTRY' => 
   array (
-    'width' => '10%',
+    'type' => 'varchar',
     'label' => 'LBL_PRIMARY_ADDRESS_COUNTRY',
+    'width' => '10%',
     'default' => false,
   ),
   'ALT_ADDRESS_STREET' => 
@@ -244,5 +245,3 @@ array (
     'sortable' => false,
   ),
 );
-;
-?>

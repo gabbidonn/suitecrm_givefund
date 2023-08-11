@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2021-07-06 14:06:15
+<?php /* Smarty version 2.6.33, created on 2023-08-11 02:17:33
          compiled from themes/SuiteP/tpls/footer.tpl */ ?>
 </div>
 </div>
@@ -7,9 +7,9 @@
 <?php if ($this->_tpl_vars['AUTHENTICATED']): ?>
     <!-- Start generic footer -->
     <footer>
-        <div id="copyright_data">
+        <div id="copyright_data" class="footer_left">
             <div id="dialog2" title="<?php echo $this->_tpl_vars['APP']['LBL_SUITE_SUPERCHARGED']; ?>
-">
+" style="display: none">
                 <p><?php echo $this->_tpl_vars['APP']['LBL_SUITE_DESC1']; ?>
 </p>
                 <br>
@@ -21,17 +21,23 @@
                 <br>
             </div>
             <div id="dialog" title="&copy; <?php echo $this->_tpl_vars['APP']['LBL_SUITE_POWERED_BY']; ?>
-">
+" style="display: none">
                 <p><?php echo $this->_tpl_vars['COPYRIGHT']; ?>
 </p>
             </div>
-            <div id="copyrightbuttons" class="footer_left">
+            <div id="copyrightbuttons">
                 <a id="admin_options">&copy; <?php echo $this->_tpl_vars['APP']['LBL_SUITE_SUPERCHARGED']; ?>
 </a>
                 <a id="powered_by">&copy; <?php echo $this->_tpl_vars['APP']['LBL_SUITE_POWERED_BY']; ?>
 </a>
             </div>
         </div>
+        <?php if ($this->_tpl_vars['STATISTICS']): ?>
+        <div class="serverstats">
+            <span class="glyphicon glyphicon-globe"></span> <?php echo $this->_tpl_vars['STATISTICS']; ?>
+
+        </div>
+        <?php endif; ?>
     	<div class="footer_right">
     		
     		<a onclick="SUGAR.util.top();" href="javascript:void(0)"><?php echo $this->_tpl_vars['APP']['LBL_SUITE_TOP']; ?>
@@ -43,57 +49,10 @@
 <!-- END Footer Section -->
 <?php echo '
     <script>
-
-        //qe_init function sets listeners to click event on elements of \'quickEdit\' class
-        if (typeof(DCMenu) != \'undefined\') {
-            DCMenu.qe_refresh = false;
-            DCMenu.qe_handle;
-        }
-        function qe_init() {
-
-            //do not process if YUI is undefined
-            if (typeof(YUI) == \'undefined\' || typeof(DCMenu) == \'undefined\') {
-                return;
-            }
-
-
-            //remove all existing listeners.  This will prevent adding multiple listeners per element and firing multiple events per click
-            if (typeof(DCMenu.qe_handle) != \'undefined\') {
-                DCMenu.qe_handle.detach();
-            }
-
-            //set listeners on click event, and define function to call
-            YUI().use(\'node\', function (Y) {
-                var qe = Y.all(\'.quickEdit\');
-                var refreshDashletID;
-                var refreshListID;
-
-                //store event listener handle for future use, and define function to call on click event
-                DCMenu.qe_handle = qe.on(\'click\', function (e) {
-                    //function will flash message, and retrieve data from element to pass on to DC.miniEditView function
-                    ajaxStatus.flashStatus(SUGAR.language.get(\'app_strings\', \'LBL_LOADING\'), 800);
-                    e.preventDefault();
-                    if (typeof(e.currentTarget.getAttribute(\'data-dashlet-id\')) != \'undefined\') {
-                        refreshDashletID = e.currentTarget.getAttribute(\'data-dashlet-id\');
-                    }
-                    if (typeof(e.currentTarget.getAttribute(\'data-list\')) != \'undefined\') {
-                        refreshListID = e.currentTarget.getAttribute(\'data-list\');
-                    }
-                    DCMenu.miniEditView(e.currentTarget.getAttribute(\'data-module\'), e.currentTarget.getAttribute(\'data-record\'), refreshListID, refreshDashletID);
-                });
-
-            });
-        }
-
-        qe_init();
-
         SUGAR_callsInProgress++;
         SUGAR._ajax_hist_loaded = true;
         if (SUGAR.ajaxUI)
             YAHOO.util.Event.onContentReady(\'ajaxUI-history-field\', SUGAR.ajaxUI.firstLoad);
-
-
-
 
         $(function(){
 
@@ -111,12 +70,6 @@
                 height += 50;
                 $(\'#content\').css({
                     \'min-height\': height + \'px\'
-                });
-
-                // uploader fix
-                $(\'#step1_uploader\').css({
-                    position: \'relative\',
-                    top: ($(\'#wizard\').height() - 90) + \'px\'
                 });
             }
         });

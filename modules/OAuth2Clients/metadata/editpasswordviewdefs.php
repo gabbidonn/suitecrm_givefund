@@ -50,13 +50,18 @@ $viewdefs[$module_name]['EditView'] = [
         'widths' => [
             ['label' => '30', 'field' => '70'],
         ],
+        'includes' => [
+            [
+                'file' => 'modules/OAuth2Clients/js/PasswordCredentialsValidation.js'
+            ]
+        ],
     ],
     'panels' => [
         'default' =>
             [
                 0 =>
                     [
-                        'name' => 'name',
+                        0 => 'name',
                     ],
                 1 =>
                     [
@@ -71,7 +76,7 @@ $viewdefs[$module_name]['EditView'] = [
                     ],
                 2 =>
                     [
-                        'name' => 'is_confidential',
+                        0 => 'is_confidential',
                     ],
             ],
     ],

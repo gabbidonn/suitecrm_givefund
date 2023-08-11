@@ -46,25 +46,6 @@ require_once('include/SugarFields/Parsers/Rules/BaseRule.php');
 
 class ActivitiesParseRule extends BaseRule
 {
-    public function __construct()
-    {
-    }
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function ActivitiesParseRule()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
-
-
     public function preParse($panels, $view)
     {
         if ($view == 'DetailView') {
@@ -73,8 +54,10 @@ class ActivitiesParseRule extends BaseRule
                     foreach ($row as $key=>$column) {
                         if ($this->matches($column, '/^duration_minutes$/')) {
                             $panels[$name][$rowCount][$key] = 'duration_hours';
-                        } elseif ($this->matches($column, '/^time_start$/')) {
-                            $panels[$name][$rowCount][$key] = 'date_start';
+                        } else {
+                            if ($this->matches($column, '/^time_start$/')) {
+                                $panels[$name][$rowCount][$key] = 'date_start';
+                            }
                         }
                     } //foreach
                 } //foreach

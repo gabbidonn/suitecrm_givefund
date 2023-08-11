@@ -196,11 +196,14 @@ class LanguageManager
     {
         // Some of the vardefs do not correctly define dictionary as global.  Declare it first.
         $lang_paths = array(
-                    'modules/'.$module.'/language/'.$lang.'.lang.php',
-                    'modules/'.$module.'/language/'.$lang.'.lang.override.php',
-                    'custom/modules/'.$module.'/language/'.$lang.'.lang.php',
-                    'custom/modules/'.$module.'/Ext/Language/'.$lang.'.lang.ext.php',
-                 );
+            'modules/' . $module . '/language/' . $lang . '.lang.php',
+            'modules/' . $module . '/language/' . $lang . '.lang.override.php',
+            'custom/modules/' . $module . '/language/' . $lang . '.lang.php',
+            'custom/modules/' . $module . '/Ext/Language/' . $lang . '.lang.ext.php',
+        );
+
+        require_once 'ModuleInstall/ExtensionManager.php';
+        SuiteCRM\ModuleInstall\ExtensionManager::compileExtensionFiles('Language', '.lang.ext.php', $lang);
 
         #27023, if this module template language file was not attached , get the template from this module vardef cache file if exsits and load the template language files.
         static $createdModules;
@@ -211,8 +214,8 @@ class LanguageManager
                 $object = 'Case';
             }
 
-            if (!empty($GLOBALS["dictionary"]["$object"]["templates"])) {
-                $templates = $GLOBALS["dictionary"]["$object"]["templates"];
+            if (!empty($GLOBALS["dictionary"][(string)$object]["templates"])) {
+                $templates = $GLOBALS["dictionary"][(string)$object]["templates"];
                 $loaded_mod_strings = LanguageManager::loadTemplateLanguage($module, $templates, $lang, $loaded_mod_strings);
                 $createdModules[$module] = true;
             }

@@ -3,6 +3,16 @@
   'table' => 'email_marketing',
   'fields' => 
   array (
+    'SecurityGroups' => 
+    array (
+      'name' => 'SecurityGroups',
+      'type' => 'link',
+      'relationship' => 'securitygroups_emailmarketing',
+      'module' => 'SecurityGroups',
+      'bean_name' => 'SecurityGroup',
+      'source' => 'non-db',
+      'vname' => 'LBL_SECURITYGROUPS',
+    ),
     'id' => 
     array (
       'name' => 'id',
@@ -223,6 +233,21 @@
   ),
   'relationships' => 
   array (
+    'securitygroups_emailmarketing' => 
+    array (
+      'lhs_module' => 'SecurityGroups',
+      'lhs_table' => 'securitygroups',
+      'lhs_key' => 'id',
+      'rhs_module' => 'EmailMarketing',
+      'rhs_table' => 'email_marketing',
+      'rhs_key' => 'id',
+      'relationship_type' => 'many-to-many',
+      'join_table' => 'securitygroups_records',
+      'join_key_lhs' => 'securitygroup_id',
+      'join_key_rhs' => 'record_id',
+      'relationship_role_column' => 'module',
+      'relationship_role_column_value' => 'EmailMarketing',
+    ),
     'email_template_email_marketings' => 
     array (
       'lhs_module' => 'EmailTemplates',
@@ -233,6 +258,10 @@
       'rhs_key' => 'template_id',
       'relationship_type' => 'one-to-many',
     ),
+  ),
+  'templates' => 
+  array (
+    'security_groups' => 'security_groups',
   ),
   'custom_fields' => false,
 );

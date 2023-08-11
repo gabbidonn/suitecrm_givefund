@@ -45,6 +45,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once __DIR__ . '/../../soap/SoapHelperFunctions.php';
 require_once __DIR__ . '/../../include/json_config.php';
+require_once __DIR__ . '/../../include/utils.php';
 require_once __DIR__ . '/JsonRPCServerUtils.php';
 require_once __DIR__ . '/JsonRPCServerCalls.php';
 
@@ -96,14 +97,12 @@ class JsonRPCServer
             $log->debug('JSON_SERVER:session_save_path:' . $sugar_config['session_dir']);
         }
 
-        session_start();
-        $log->debug('JSON_SERVER:session started');
-
-        if (isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] !== '') {
-            $current_language = $_SESSION['authenticated_user_language'];
-        } else {
-            $current_language = $sugar_config['default_language'];
+        if(session_status() === PHP_SESSION_NONE){
+            session_start();
+            $log->debug('JSON_SERVER:session started');
         }
+
+        $current_language = get_current_language();
 
         $log->debug('JSON_SERVER: current_language:' . $current_language);
 
@@ -158,11 +157,8 @@ class JsonRPCServer
         $response['id'] = $request['id'];
 
         if (method_exists($this->jsonServerCalls, $request['method'])) {
-            $response = call_user_func(
-                array($this->jsonServerCalls, $request['method']),
-                $request['id'],
-                $request['params']
-            );
+            $response = call_user_func(array($this->jsonServerCalls, $request['method']), $request['id'],
+                $request['params']);
             if (!empty($response)) {
                 return $response;
             }
@@ -171,5 +167,6 @@ class JsonRPCServer
         $response['error'] = array('error_msg' => 'method:' . $request['method'] . ' not supported');
 
         return $response;
+
     }
 }

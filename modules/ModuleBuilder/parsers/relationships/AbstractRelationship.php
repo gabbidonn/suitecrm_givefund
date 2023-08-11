@@ -600,7 +600,7 @@ class AbstractRelationship
     /*
      * Return a version of $proposed that can be used as a column name in any of our supported databases
      * Practically this means no longer than 25 characters as the smallest identifier length for our supported DBs is 30 chars for Oracle plus we add on at least four characters in some places (for indicies for example)
-     * TODO: Ideally this should reside in DBHelper as it is such a common db function...
+     * TODO: Ideally this should reside in DBManager as it is such a common db function...
      * @param string $name Proposed name for the column
      * @param string $ensureUnique
      * @return string Valid column name trimmed to right length and with invalid characters removed
@@ -681,10 +681,12 @@ class AbstractRelationship
             if (isset($layout_defs[$this->rhs_module]['subpanel_setup'][strtolower($this->lhs_module)]['title_key'])) {
                 return $layout_defs[$this->rhs_module]['subpanel_setup'][strtolower($this->lhs_module)]['title_key'];
             }
-        } elseif (!$this->is_custom &&  file_exists("modules/{$this->lhs_module}/metadata/subpaneldefs.php")) {
-            include("modules/{$this->lhs_module}/metadata/subpaneldefs.php");
-            if (isset($layout_defs[$this->lhs_module]['subpanel_setup'][strtolower($this->rhs_module)]['title_key'])) {
-                return $layout_defs[$this->lhs_module]['subpanel_setup'][strtolower($this->rhs_module)]['title_key'];
+        } else {
+            if (!$this->is_custom &&  file_exists("modules/{$this->lhs_module}/metadata/subpaneldefs.php")) {
+                include("modules/{$this->lhs_module}/metadata/subpaneldefs.php");
+                if (isset($layout_defs[$this->lhs_module]['subpanel_setup'][strtolower($this->rhs_module)]['title_key'])) {
+                    return $layout_defs[$this->lhs_module]['subpanel_setup'][strtolower($this->rhs_module)]['title_key'];
+                }
             }
         }
         

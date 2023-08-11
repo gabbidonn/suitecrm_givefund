@@ -3,7 +3,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-require_once('include/MVC/View/views/view.edit.php');
 
 class AOS_PDF_TemplatesViewEdit extends ViewEdit
 {
@@ -11,21 +10,6 @@ class AOS_PDF_TemplatesViewEdit extends ViewEdit
     {
         parent::__construct();
     }
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function AOS_PDF_TemplatesViewEdit()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
-
 
     public function display()
     {
@@ -129,7 +113,7 @@ class AOS_PDF_TemplatesViewEdit extends ViewEdit
 
                 //add group fields
                 $options_array = array(''=>'');
-                $group_quote = new AOS_Line_Item_Groups();
+                $group_quote = BeanFactory::newBean('AOS_Line_Item_Groups');
                 foreach ($group_quote->field_defs as $line_name => $line_arr) {
                     if (!((isset($line_arr['dbType']) && strtolower($line_arr['dbType']) == 'id') || $line_arr['type'] == 'id' || $line_arr['type'] == 'link')) {
                         if ((!isset($line_arr['reportable']) || $line_arr['reportable'])) {//&& $line_arr['vname']  != 'LBL_NAME'
@@ -147,7 +131,7 @@ class AOS_PDF_TemplatesViewEdit extends ViewEdit
                 //PRODUCTS
                 $options_array = array(''=>'');
 
-                $product_quote = new AOS_Products_Quotes();
+                $product_quote = BeanFactory::newBean('AOS_Products_Quotes');
                 foreach ($product_quote->field_defs as $line_name => $line_arr) {
                     if (!((isset($line_arr['dbType']) && strtolower($line_arr['dbType']) == 'id') || $line_arr['type'] == 'id' || $line_arr['type'] == 'link')) {
                         if (!isset($line_arr['reportable']) || $line_arr['reportable']) {
@@ -156,7 +140,7 @@ class AOS_PDF_TemplatesViewEdit extends ViewEdit
                     }
                 }
 
-                $product_quote = new AOS_Products();
+                $product_quote = BeanFactory::newBean('AOS_Products');
                 foreach ($product_quote->field_defs as $line_name => $line_arr) {
                     if (!((isset($line_arr['dbType']) && strtolower($line_arr['dbType']) == 'id') || $line_arr['type'] == 'id' || $line_arr['type'] == 'link')) {
                         if ((!isset($line_arr['reportable']) || $line_arr['reportable']) && $line_arr['vname']  != 'LBL_NAME') {
@@ -279,7 +263,7 @@ HTML;
 			strict_loading_mode : true,
 			convert_urls : false,
 			plugin_insertdate_dateFormat : '{DATE '+df+'}',
-			pagebreak_separator : "<pagebreak />",
+			pagebreak_separator : "<div style=\"page-break-before: always;\">&nbsp;</div>",
 			extended_valid_elements : "textblock,barcode[*]",
 			custom_elements: "textblock",
 		});

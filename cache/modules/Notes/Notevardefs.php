@@ -88,6 +88,7 @@
       'type' => 'datetime',
       'comment' => 'Date record last modified',
       'enable_range_search' => true,
+      'options' => 'date_range_search_dom',
     ),
     'modified_user_id' => 
     array (
@@ -260,6 +261,13 @@
       'reportable' => false,
       'comment' => 'Record deletion indicator',
     ),
+    'filecontents' => 
+    array (
+      'name' => 'filecontents',
+      'vname' => 'LBL_FILE_CONTENTS',
+      'type' => 'varchar',
+      'source' => 'non-db',
+    ),
     'parent_name' => 
     array (
       'name' => 'parent_name',
@@ -270,6 +278,13 @@
       'type' => 'parent',
       'source' => 'non-db',
       'options' => 'record_type_display_notes',
+    ),
+    'show_preview' => 
+    array (
+      'name' => 'show_preview',
+      'type' => 'bool',
+      'source' => 'non-db',
+      'reportable' => false,
     ),
     'contact_name' => 
     array (
@@ -317,6 +332,14 @@
     array (
       'name' => 'opportunity_id',
       'vname' => 'LBL_OPPORTUNITY_ID',
+      'type' => 'id',
+      'reportable' => false,
+      'source' => 'non-db',
+    ),
+    'campaign_id' => 
+    array (
+      'name' => 'campaign_id',
+      'vname' => 'LBL_CAMPAIGN_ID',
       'type' => 'id',
       'reportable' => false,
       'source' => 'non-db',
@@ -406,6 +429,14 @@
       'relationship' => 'bug_notes',
       'source' => 'non-db',
       'vname' => 'LBL_BUGS',
+    ),
+    'campaigns' => 
+    array (
+      'name' => 'campaigns',
+      'type' => 'link',
+      'relationship' => 'campaign_notes',
+      'source' => 'non-db',
+      'vname' => 'LBL_CAMPAIGNS',
     ),
     'aos_contracts' => 
     array (

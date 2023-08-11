@@ -156,7 +156,7 @@ class HTTP_WebDAV_Server
                 $this->http_status("412 Precondition failed");
             } else {
                 $this->http_status("405 Method not allowed");
-                header("Allow: ".join(", ", $this->_allow()));  // tell client what's allowed
+                header("Allow: ".implode(", ", $this->_allow()));  // tell client what's allowed
             }
         }
     }
@@ -439,8 +439,8 @@ class HTTP_WebDAV_Server
 
         // tell clients what we found
         $this->http_status("200 OK");
-        header("DAV: "  .join(",", $dav));
-        header("Allow: ".join(", ", $allow));
+        header("DAV: "  .implode(",", $dav));
+        header("Allow: ".implode(", ", $allow));
     }
 
     // }}}
@@ -574,8 +574,8 @@ class HTTP_WebDAV_Server
                             $files["files"][$filekey]["props"][]
                                 = $this->mkprop(
                                     "DAV:",
-                                                "lockdiscovery",
-                                                $this->lockdiscovery($files["files"][$filekey]['path'])
+                                    "lockdiscovery",
+                                    $this->lockdiscovery($files["files"][$filekey]['path'])
                                 );
                         } else {
                             // add empty value for this property
@@ -916,7 +916,7 @@ class HTTP_WebDAV_Server
             $this->http_status("404 not found");
         }
 
-        $this->http_status("$status");
+        $this->http_status((string)$status);
     }
 
 
@@ -1117,7 +1117,7 @@ class HTTP_WebDAV_Server
                 }
             }
 
-            $options["stream"] = fopen("php://input", "r");
+            $options["stream"] = fopen("php://input", 'rb');
 
             $stat = $this->PUT($options);
 
@@ -1284,7 +1284,7 @@ class HTTP_WebDAV_Server
 
         $this->http_status($http_stat);
 
-        if ($http_stat{0} == 2) { // 2xx states are ok
+        if ($http_stat[0] == 2) { // 2xx states are ok
             if ($options["timeout"]) {
                 // more than a million is considered an absolute timestamp
                 // less is more likely a relative value
@@ -1378,7 +1378,7 @@ class HTTP_WebDAV_Server
             !strncmp(
                 $_SERVER["SCRIPT_NAME"],
                 $path,
-                     strlen($_SERVER["SCRIPT_NAME"])
+                strlen($_SERVER["SCRIPT_NAME"])
             )) {
             $options["dest"] = substr($path, strlen($_SERVER["SCRIPT_NAME"]));
             if (!$this->_check_lock_status($options["dest"])) {
@@ -1478,15 +1478,15 @@ class HTTP_WebDAV_Server
             // PEAR style method name
             return $this->checkAuth(
                 @$_SERVER["AUTH_TYPE"],
-                                     @$_SERVER["PHP_AUTH_USER"],
-                                     @$_SERVER["PHP_AUTH_PW"]
+                @$_SERVER["PHP_AUTH_USER"],
+                @$_SERVER["PHP_AUTH_PW"]
             );
         } elseif (method_exists($this, "check_auth")) {
             // old (pre 1.0) method name
             return $this->check_auth(
                 @$_SERVER["AUTH_TYPE"],
-                                     @$_SERVER["PHP_AUTH_USER"],
-                                     @$_SERVER["PHP_AUTH_PW"]
+                @$_SERVER["PHP_AUTH_USER"],
+                @$_SERVER["PHP_AUTH_PW"]
             );
         }
         // no method found -> no authentication required
@@ -1514,10 +1514,10 @@ class HTTP_WebDAV_Server
         $uuid = md5(microtime().getmypid());    // this should be random enough for now
 
         // set variant and version fields for 'true' random uuid
-        $uuid{12} = "4";
-        $n = 8 + (ord($uuid{16}) & 3);
+        $uuid[12] = "4";
+        $n = 8 + (ord($uuid[16]) & 3);
         $hex = "0123456789abcdef";
-        $uuid{16} = $hex{$n};
+        $uuid[16] = $hex[$n];
 
         // return formated uuid
         return substr($uuid, 0, 8)."-"
@@ -1552,7 +1552,7 @@ class HTTP_WebDAV_Server
     public function _if_header_lexer($string, &$pos)
     {
         // skip whitespace
-        while (ctype_space($string{$pos})) {
+        while (ctype_space($string[$pos])) {
             ++$pos;
         }
 
@@ -1562,7 +1562,7 @@ class HTTP_WebDAV_Server
         }
 
         // get next character
-        $c = $string{$pos++};
+        $c = $string[$pos++];
 
         // now it depends on what we found
         switch ($c) {
@@ -1575,7 +1575,7 @@ class HTTP_WebDAV_Server
 
             case "[":
                 //Etags are enclosed in [...]
-                if ($string{$pos} == "W") {
+                if ($string[$pos] == "W") {
                     $type = "ETAG_WEAK";
                     $pos += 2;
                 } else {

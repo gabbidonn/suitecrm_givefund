@@ -220,11 +220,11 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
                     $options_ret['type'] = $this->get_name_value('type', $var['dbType']);
                 }
 
-	            $entry = array();
-	            $entry['name'] = $var['name'];
-	            $entry['type'] = $var['type'];
-	            $entry['group'] = isset($var['group']) ? $var['group'] : '';
-	            $entry['id_name'] = isset($var['id_name']) ? $var['id_name'] : '';
+                $entry = array();
+                $entry['name'] = $var['name'];
+                $entry['type'] = $var['type'];
+                $entry['group'] = isset($var['group']) ? $var['group'] : '';
+                $entry['id_name'] = isset($var['id_name']) ? $var['id_name'] : '';
                 if (isset($var['parentenum'])) {
                     $entry['parentenum'] = $var['parentenum'];
                 }
@@ -272,7 +272,7 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
 
         if ($value->module_dir == 'Bugs') {
             require_once('modules/Releases/Release.php');
-            $seedRelease = new Release();
+            $seedRelease = BeanFactory::newBean('Releases');
             $options = $seedRelease->get_releases(true, "Active");
             $options_ret = array();
             foreach ($options as $name=>$value) {
@@ -329,7 +329,7 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
         require_once($beanFiles[$class_name]);
         $ids = array();
         $count = 1;
-        $total = sizeof($name_value_lists);
+        $total = count($name_value_lists);
         foreach ($name_value_lists as $name_value_list) {
             $seed = new $class_name();
 
@@ -498,7 +498,7 @@ class SugarWebServiceUtilv4 extends SugarWebServiceUtilv3_1
             return false;
         }
 
-        $user = new User();
+        $user = BeanFactory::newBean('Users');
         $user->retrieve($token->assigned_user_id);
         if (empty($user->id)) {
             return false;

@@ -108,20 +108,6 @@ class Monitor implements Trackable
     }
 
     /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function Monitor($name='', $monitorId='', $metadata='', $store='')
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($name, $monitorId, $metadata, $store);
-    }
-
-    /**
      * setValue
      * Sets the value defined in the monitor's metrics for the given name
      * @param $name String value of metric name
@@ -133,9 +119,11 @@ class Monitor implements Trackable
         if (!isset($this->metrics[$name])) {
             $GLOBALS['log']->error($GLOBALS['app_strings']['ERR_UNDEFINED_METRIC'] . "($name)");
             throw new Exception($GLOBALS['app_strings']['ERR_UNDEFINED_METRIC'] . "($name)");
-        } elseif ($this->metrics[$name]->isMutable()) {
-            $this->$name = is_object($value) ? get_class($value) : $value;
-            $this->dirty = true;
+        } else {
+            if ($this->metrics[$name]->isMutable()) {
+                $this->$name = is_object($value) ? get_class($value) : $value;
+                $this->dirty = true;
+            }
         }
     }
 

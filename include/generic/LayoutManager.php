@@ -56,29 +56,14 @@ class LayoutManager
     public $defs = array();
     public $widget_prefix = 'SugarWidget';
     public $default_widget_name = 'Field';
-    public $DBHelper;
+    public $DBManager;
 
     public function __construct()
     {
         // set a sane default for context
         $this->defs['context'] = 'Detail';
-        $this->DBHelper = DBManagerFactory::getInstance();
+        $this->DBManager = DBManagerFactory::getInstance();
     }
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function LayoutManager()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
-
 
     public function setAttribute($key, $value)
     {
@@ -94,8 +79,9 @@ class LayoutManager
     {
         if (isset($this->defs[$key])) {
             return $this->defs[$key];
+        } else {
+            return null;
         }
-        return null;
     }
 
     // Take the class name from the widget definition and use the class to look it up
@@ -270,7 +256,7 @@ class LayoutManager
                     if (isset($widget_def['type'])) {
                         $widget_def['widget_class'] = 'Field' . $widget_def['type'];
                     } else {
-                        $widget_def['widget_class'] = 'Field' . $this->DBHelper->getFieldType($widget_def);
+                        $widget_def['widget_class'] = 'Field' . $this->DBManager->getFieldType($widget_def);
                     }
             }
         }
@@ -308,8 +294,10 @@ class LayoutManager
             // The class does not exist.  Try including it.
             if (file_exists('custom/include/generic/SugarWidgets/'.$class_name.'.php')) {
                 require_once('custom/include/generic/SugarWidgets/'.$class_name.'.php');
-            } elseif (file_exists('include/generic/SugarWidgets/'.$class_name.'.php')) {
-                require_once('include/generic/SugarWidgets/'.$class_name.'.php');
+            } else {
+                if (file_exists('include/generic/SugarWidgets/'.$class_name.'.php')) {
+                    require_once('include/generic/SugarWidgets/'.$class_name.'.php');
+                }
             }
 
             if (!class_exists($class_name)) {
@@ -378,7 +366,6 @@ class LayoutManager
     public function widgetQuery($widget_def, $use_default = false)
     {
         $theclass = $this->getClassFromWidgetDef($widget_def, $use_default);
-        //				_pp($theclass);
         return $theclass->query($widget_def);
     }
 

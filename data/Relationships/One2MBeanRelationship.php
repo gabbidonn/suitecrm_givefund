@@ -59,9 +59,9 @@ class One2MBeanRelationship extends One2MRelationship
     }
 
     /**
-     * @param  $lhs SugarBean left side bean to add to the relationship.
-     * @param  $rhs SugarBean right side bean to add to the relationship.
-     * @param  $additionalFields key=>value pairs of fields to save on the relationship
+     * @param SugarBean $lhs left side bean to add to the relationship.
+     * @param SugarBean $rhs right side bean to add to the relationship.
+     * @param mixed $additionalFields key=>value pairs of fields to save on the relationship
      * @return boolean true if successful
      */
     public function add($lhs, $rhs, $additionalFields = array())
@@ -176,7 +176,7 @@ class One2MBeanRelationship extends One2MRelationship
     }
 
     /**
-     * @param  $link Link2 loads the relationship for this link.
+     * @param Link2 $link loads the relationship for this link.
      * @return void
      */
     public function load($link, $params = array())
@@ -261,7 +261,13 @@ class One2MBeanRelationship extends One2MRelationship
             $order_by = $relatedSeed->process_order_by($params['order_by']);
         }
 
-        $from = $this->def['rhs_table'];
+        $from = $rhsTable;
+        if (!empty($params['where']) || !empty($params['order_by'])) {
+            if (isset($relatedSeed->custom_fields)) {
+                $customJoin = $relatedSeed->getCustomJoin();
+                $from .= $customJoin['join'];
+            }
+        }
 
         if (empty($params['return_as_array'])) {
             //Limit is not compatible with return_as_array
@@ -276,8 +282,8 @@ class One2MBeanRelationship extends One2MRelationship
             return $query;
         }
         return array(
-                    'select' => "SELECT {$this->def['rhs_table']}.id",
-                    'from' => "FROM {$this->def['rhs_table']}",
+                    'select' => "SELECT {$rhsTable}.id",
+                    'from' => "FROM $from",
                     'where' => $where,
                     'order_by' => $order_by
                 );

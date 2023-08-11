@@ -100,26 +100,14 @@ class ProspectList extends SugarBean
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function ProspectList()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     public $new_schema = true;
 
     public function get_summary_text()
     {
-        return "$this->name";
+        return (string)$this->name;
     }
 
     public function create_list_query($order_by, $where, $show_deleted = 0)
@@ -141,8 +129,10 @@ class ProspectList extends SugarBean
         $where_auto = '1=1';
         if ($show_deleted == 0) {
             $where_auto = "$this->table_name.deleted=0";
-        } elseif ($show_deleted == 1) {
-            $where_auto = "$this->table_name.deleted=1";
+        } else {
+            if ($show_deleted == 1) {
+                $where_auto = "$this->table_name.deleted=1";
+            }
         }
 
         if ($where != "") {
@@ -228,8 +218,10 @@ class ProspectList extends SugarBean
                     }
                 }
                 // else, only if for this module no entry exists for this field, query an empty string
-                elseif (!isset($memberarr['fields'][$val['name']])) {
-                    $memberarr['fields'][$fieldname] = "null AS " . $fieldname;
+                else {
+                    if (!isset($memberarr['fields'][$val['name']])) {
+                        $memberarr['fields'][$fieldname] = "null AS " . $fieldname;
+                    }
                 }
             }
         }
@@ -385,8 +377,9 @@ FROM prospect_lists_prospects plp
 
         if ($row) {
             return $row['num'];
+        } else {
+            return 0;
         }
-        return 0;
     }
 
 
@@ -414,6 +407,14 @@ FROM prospect_lists_prospects plp
             $the_where .= $clause;
         }
 
+        $the_where = "";
+        foreach ($where_clauses as $clause) {
+            if ($the_where != "") {
+                $the_where .= " or ";
+            }
+            $the_where .= $clause;
+        }
+
 
         return $the_where;
     }
@@ -425,7 +426,7 @@ FROM prospect_lists_prospects plp
 
     public function mark_deleted($id)
     {
-        $query = "UPDATE prospect_lists_prospects SET deleted = 1 WHERE prospect_list_id = '{$id}' ";
+        $query = "UPDATE prospect_lists_prospects SET deleted = 1, date_modified = NOW() WHERE prospect_list_id = '{$id}' AND deleted = 0";
         $this->db->query($query);
         return parent::mark_deleted($id);
     }

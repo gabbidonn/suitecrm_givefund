@@ -23,17 +23,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-require_once('include/MVC/View/views/view.detail.php');
 class ProjectViewGanttChart extends ViewDetail
 {
-
-    //Constructor
-    public function __construct()
-    {
-        parent::SugarView();
-    }
-
-
     public function display()
     {
         global $mod_strings, $app_list_strings;
@@ -46,7 +37,7 @@ class ProjectViewGanttChart extends ViewDetail
         echo '<script type="text/javascript" src="modules/Project/js/jquery.blockUI.js"></script>';
         echo '<script type="text/javascript" src="modules/Project/js/jquery.validate.min.js"></script>';
 
-        $project = new Project();
+        $project = BeanFactory::newBean('Project');
 
         if (!isset($_REQUEST["project_id"]) || trim($_REQUEST["project_id"]) == "") {
             $_REQUEST["project_id"] = $_REQUEST["record"];

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2021-07-19 06:46:32
+<?php /* Smarty version 2.6.33, created on 2023-08-11 02:18:13
          compiled from themes/SuiteP/include/MySugar/tpls/MySugar2.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'sugar_getscript', 'themes/SuiteP/include/MySugar/tpls/MySugar2.tpl', 63, false),array('function', 'counter', 'themes/SuiteP/include/MySugar/tpls/MySugar2.tpl', 73, false),array('function', 'sugar_getjspath', 'themes/SuiteP/include/MySugar/tpls/MySugar2.tpl', 164, false),)), $this); ?>
@@ -35,7 +35,7 @@ _div">
             <tr>
                 <?php echo smarty_function_counter(array('assign' => 'hiddenCounter','start' => 0,'print' => false), $this);?>
 
-                <?php $_from = $this->_tpl_vars['columns']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+                <?php $_from = $this->_tpl_vars['columns']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['colNum'] => $this->_tpl_vars['data']):
 ?>
                     <td class="dashletcontainer" valign='top'>
@@ -48,7 +48,7 @@ b'
                                 style='height: 5px; margin-top:12px;' class='noBullet'>
                                 &nbsp;&nbsp;&nbsp;
                             </li>
-                            <?php $_from = $this->_tpl_vars['data']['dashlets']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+                            <?php $_from = $this->_tpl_vars['data']['dashlets']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['id'] => $this->_tpl_vars['dashlet']):
 ?>
                                 <li class='noBullet' id='dashlet_<?php echo $this->_tpl_vars['id']; ?>

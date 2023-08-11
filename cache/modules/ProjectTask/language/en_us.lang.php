@@ -1,5 +1,5 @@
 <?php
-// created: 2021-07-06 14:06:09
+// created: 2023-08-11 02:17:08
 $mod_strings = array (
   'LBL_SECURITYGROUPS' => 'Security Groups',
   'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Security Groups',
@@ -38,6 +38,7 @@ $mod_strings = array (
   'LBL_ACTUAL_EFFORT' => 'Actual Effort (hrs):',
   'LBL_UTILIZATION' => 'Utilization (%):',
   'LBL_DELETED' => 'Deleted:',
+  'LBL_IMPORT_PROJECT_TASKS' => 'Import Project Tasks',
   'LBL_LIST_NAME' => 'Name',
   'LBL_LIST_PARENT_NAME' => 'Project',
   'LBL_LIST_PERCENT_COMPLETE' => '% Complete',

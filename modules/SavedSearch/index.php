@@ -41,17 +41,11 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
-/*********************************************************************************
 
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
     
 if (!empty($_REQUEST['saved_search_action'])) {
-    $ss = new SavedSearch();
+    $ss = BeanFactory::newBean('SavedSearch');
     
     switch ($_REQUEST['saved_search_action']) {
         case 'update': // save here
@@ -80,7 +74,7 @@ if (!empty($_REQUEST['saved_search_action'])) {
         header("Location: index.php?action=index&module={$_REQUEST['search_module']}&searchFormTab={$searchFormTab}&query=true&clear_query=true$ajaxLoad");
         die();
     }
-    $ss = new SavedSearch();
+    $ss = BeanFactory::newBean('SavedSearch');
     $show='no';
     if (isset($_REQUEST['showSSDIV'])) {
         $show = $_REQUEST['showSSDIV'];

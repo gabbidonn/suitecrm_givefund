@@ -62,21 +62,15 @@ class DetailView extends ListView
         $this->local_app_strings =$app_strings;
     }
 
+
+
+
     /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
+     * @param string $html_varName
+     * @param SugarBean $seed
+     * @param int $offset
+     * @return SugarBean
      */
-    public function DetailView()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
-
-
     public function processSugarBean($html_varName, $seed, $offset)
     {
         global $row_count, $sugar_config;
@@ -164,27 +158,11 @@ class DetailView extends ListView
         $db_offset=$offset-1;
 
         $this->populateQueryWhere($isFirstView, $html_varName);
-        if (ACLController::requireOwner($seed->module_dir, 'view')) {
-            global $current_user;
-            $seed->getOwnerWhere($current_user->id);
-            if (!empty($this->query_where)) {
-                $this->query_where .= ' AND ';
-            }
-            $this->query_where .= $seed->getOwnerWhere($current_user->id);
+
+        $accessWhere = $seed->buildAccessWhere('view');
+        if (!empty($accessWhere)) {
+            $this->query_where .= empty($this->query_where) ? $accessWhere : ' AND ' . $accessWhere;
         }
-        /* BEGIN - SECURITY GROUPS */
-        if (ACLController::requireSecurityGroup($seed->module_dir, 'view')) {
-            require_once('modules/SecurityGroups/SecurityGroup.php');
-            global $current_user;
-            $owner_where = $seed->getOwnerWhere($current_user->id);
-            $group_where = SecurityGroup::getGroupWhere($seed->table_name, $seed->module_dir, $current_user->id);
-            if (empty($this->query_where)) {
-                $this->query_where = " (".$owner_where." or ".$group_where.")";
-            } else {
-                $this->query_where .= " AND (".$owner_where." or ".$group_where.")";
-            }
-        }
-        /* END - SECURITY GROUPS */
 
         $order = $this->getLocalSessionVariable($seed->module_dir.'2_'.$html_varName, "ORDER_BY");
         $orderBy = '';
@@ -287,8 +265,10 @@ class DetailView extends ListView
             if ($current_offset != 0 && $this->isRequestFromListView($html_varName)) {
                 if ($current_offset < 0) {
                     $current_offset = 1;
-                } elseif ($current_offset > $row_count) {
-                    $current_offset = $row_count;
+                } else {
+                    if ($current_offset > $row_count) {
+                        $current_offset = $row_count;
+                    }
                 }
 
                 $this->set_base_URL($html_varName);
@@ -314,8 +294,10 @@ class DetailView extends ListView
             if ($current_offset != 0 && $this->isRequestFromListView($html_varName)) {
                 if ($current_offset < 0) {
                     $current_offset = 1;
-                } elseif ($current_offset > $row_count) {
-                    $current_offset = $row_count;
+                } else {
+                    if ($current_offset > $row_count) {
+                        $current_offset = $row_count;
+                    }
                 }
 
                 $next_offset = $current_offset + 1;
@@ -441,8 +423,9 @@ class DetailView extends ListView
         $varList = $this->getLocalSessionVariable($html_varName, "FROM_LIST_VIEW");
         if (isset($_GET['stamp']) && isset($varList) && $varList == $_GET['stamp']) {
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     /**
@@ -455,7 +438,8 @@ class DetailView extends ListView
     {
         if (isset($_SESSION[$name."2_".$value])) {
             return $_SESSION[$name."2_".$value];
+        } else {
+            return "";
         }
-        return "";
     }
 }

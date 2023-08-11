@@ -50,19 +50,7 @@ class QuotesParseRule extends BaseRule
     {
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function QuotesParseRule()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     public function preParse($panels, $view)
@@ -76,14 +64,20 @@ class QuotesParseRule extends BaseRule
                                 $column['label'] = 'LBL_BILL_TO';
                                 $column['name'] = 'billing_address_street';
                                 $panels[$name][$rowCount][$key] = $column;
-                            } elseif ($this->matches($column, '/shipping_address_country/')) {
-                                $column['label'] = 'LBL_SHIP_TO';
-                                $column['name'] = 'shipping_address_street';
-                                $panels[$name][$rowCount][$key] = $column;
-                            } elseif ($this->matches($column, '/^date_quote_closed$/')) {
-                                $panels[$name][$rowCount][$key] = 'date_quote_expected_closed';
-                            } elseif ($this->matches($column, '/^tag\.opportunity$/')) {
-                                $panels[$name][$rowCount][$key] = 'opportunity_name';
+                            } else {
+                                if ($this->matches($column, '/shipping_address_country/')) {
+                                    $column['label'] = 'LBL_SHIP_TO';
+                                    $column['name'] = 'shipping_address_street';
+                                    $panels[$name][$rowCount][$key] = $column;
+                                } else {
+                                    if ($this->matches($column, '/^date_quote_closed$/')) {
+                                        $panels[$name][$rowCount][$key] = 'date_quote_expected_closed';
+                                    } else {
+                                        if ($this->matches($column, '/^tag\.opportunity$/')) {
+                                            $panels[$name][$rowCount][$key] = 'opportunity_name';
+                                        }
+                                    }
+                                }
                             }
                         } //foreach
                     } //foreach
@@ -115,8 +109,10 @@ class QuotesParseRule extends BaseRule
                                     if ($this->matches($column, '/^(billing|shipping)_(account|contact)_name$/')) {
                                         $match = $this->getMatch($column, '/^(billing|shipping)_(account|contact)_name$/');
                                         $col[$match[0]] = $match[0];
-                                    } elseif (!$this->matches($column, '/^(shipping|billing)_address_(street|city|state|country|postalcode)$/si')) {
-                                        $col[] = $column;
+                                    } else {
+                                        if (!$this->matches($column, '/^(shipping|billing)_address_(street|city|state|country|postalcode)$/si')) {
+                                            $col[] = $column;
+                                        }
                                     }
                                 } //foreach
                             }

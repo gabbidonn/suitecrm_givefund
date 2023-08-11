@@ -72,16 +72,18 @@ class One2MRelationship extends M2MRelationship
             } else {
                 if (!is_array($links)) { //Only one link for a self referencing relationship, this is very bad.
                     $this->lhsLinkDef = $this->rhsLinkDef = $links;
-                } elseif (!empty($links[0]) && !empty($links[1])) {
-                    if ((!empty($links[0]['side']) && $links[0]['side'] == "right")
+                } else {
+                    if (!empty($links[0]) && !empty($links[1])) {
+                        if ((!empty($links[0]['side']) && $links[0]['side'] == "right")
                         || (!empty($links[0]['link_type']) && $links[0]['link_type'] == "one")) {
-                        //$links[0] is the RHS
-                        $this->lhsLinkDef = $links[1];
-                        $this->rhsLinkDef = $links[0];
-                    } else {
-                        //$links[0] is the LHS
-                        $this->lhsLinkDef = $links[0];
-                        $this->rhsLinkDef = $links[1];
+                            //$links[0] is the RHS
+                            $this->lhsLinkDef = $links[1];
+                            $this->rhsLinkDef = $links[0];
+                        } else {
+                            //$links[0] is the LHS
+                            $this->lhsLinkDef = $links[0];
+                            $this->rhsLinkDef = $links[1];
+                        }
                     }
                 }
             }
@@ -103,8 +105,12 @@ class One2MRelationship extends M2MRelationship
                 $this->rhsLinkDef = $this->rhsLinkDef[0];
             }
         }
-        $this->lhsLink = $this->lhsLinkDef['name'];
-        $this->rhsLink = $this->rhsLinkDef['name'];
+        if (!is_bool($this->lhsLinkDef)) {
+            $this->lhsLink = $this->lhsLinkDef['name'];
+        }
+        if (!is_bool($this->rhsLinkDef)) {
+            $this->rhsLink = $this->rhsLinkDef['name'];
+        }
     }
 
     protected function linkIsLHS($link)
@@ -114,9 +120,9 @@ class One2MRelationship extends M2MRelationship
     }
 
     /**
-     * @param  $lhs SugarBean left side bean to add to the relationship.
-     * @param  $rhs SugarBean right side bean to add to the relationship.
-     * @param  $additionalFields key=>value pairs of fields to save on the relationship
+     * @param SugarBean $lhs left side bean to add to the relationship.
+     * @param SugarBean $rhs right side bean to add to the relationship.
+     * @param mixed $additionalFields key=>value pairs of fields to save on the relationship
      * @return boolean true if successful
      */
     public function add($lhs, $rhs, $additionalFields = array())

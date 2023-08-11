@@ -53,7 +53,7 @@ function get_currency()
 {
     global $current_user,$global_currency_obj;
     if (empty($global_currency_obj)) {
-        $global_currency_obj = new Currency();
+        $global_currency_obj = BeanFactory::newBean('Currencies');
         //  $global_currency_symbol = '$';
 
         if ($current_user->getPreference('currency')) {
@@ -73,22 +73,6 @@ class SugarWidgetFieldCurrency extends SugarWidgetFieldInt
         parent::__construct($layout_manager);
         $this->reporter = $this->layout_manager->getAttribute('reporter');
     }
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function SugarWidgetFieldCurrency(&$layout_manager)
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($layout_manager);
-    }
-
-
 
     public function & displayList(&$layout_def)
     {
@@ -110,14 +94,18 @@ class SugarWidgetFieldCurrency extends SugarWidgetFieldInt
 
         if (!empty($layout_def['column_key'])) {
             $field_def = $this->reporter->all_fields[$layout_def['column_key']];
-        } elseif (!empty($layout_def['fields'])) {
-            $field_def = $layout_def['fields'];
+        } else {
+            if (!empty($layout_def['fields'])) {
+                $field_def = $layout_def['fields'];
+            }
         }
         $record = '';
         if ($layout_def['table_key'] == 'self' && isset($layout_def['fields']['PRIMARYID'])) {
             $record = $layout_def['fields']['PRIMARYID'];
-        } elseif (isset($layout_def['fields'][strtoupper($layout_def['table_alias']."_id")])) {
-            $record = $layout_def['fields'][strtoupper($layout_def['table_alias']."_id")];
+        } else {
+            if (isset($layout_def['fields'][strtoupper($layout_def['table_alias']."_id")])) {
+                $record = $layout_def['fields'][strtoupper($layout_def['table_alias']."_id")];
+            }
         }
         if (!empty($record)) {
             $field_name = $layout_def['name'];
@@ -132,8 +120,9 @@ class SugarWidgetFieldCurrency extends SugarWidgetFieldInt
             }
             $str .= "</div>";
             return $str;
+        } else {
+            return $display;
         }
-        return $display;
     }
 
     public function displayListPlain($layout_def)
@@ -178,8 +167,9 @@ class SugarWidgetFieldCurrency extends SugarWidgetFieldInt
     {
         if (strpos($layout_def['name'], '_usdoll') === false) {
             return false;
+        } else {
+            return true;
         }
-        return true;
     }
 
     public function querySelect(&$layout_def)
@@ -237,7 +227,7 @@ class SugarWidgetFieldCurrency extends SugarWidgetFieldInt
 
     /**
      * Return currency for layout_def
-     * @param $layout_def mixed
+     * @param mixed $layout_def
      * @return array Array with currency symbol and currency ID
      */
     protected function getCurrency($layout_def)

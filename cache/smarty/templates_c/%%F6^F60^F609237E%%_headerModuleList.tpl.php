@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.31, created on 2021-07-06 14:06:22
+<?php /* Smarty version 2.6.33, created on 2023-08-11 02:17:53
          compiled from themes/SuiteP/tpls/_headerModuleList.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'sugar_link', 'themes/SuiteP/tpls/_headerModuleList.tpl', 58, false),array('function', 'counter', 'themes/SuiteP/tpls/_headerModuleList.tpl', 207, false),array('function', 'sugar_translate', 'themes/SuiteP/tpls/_headerModuleList.tpl', 482, false),array('modifier', 'lower', 'themes/SuiteP/tpls/_headerModuleList.tpl', 117, false),array('modifier', 'replace', 'themes/SuiteP/tpls/_headerModuleList.tpl', 117, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'sugar_link', 'themes/SuiteP/tpls/_headerModuleList.tpl', 58, false),array('function', 'sugar_translate', 'themes/SuiteP/tpls/_headerModuleList.tpl', 114, false),array('function', 'suite_check_access', 'themes/SuiteP/tpls/_headerModuleList.tpl', 120, false),array('function', 'counter', 'themes/SuiteP/tpls/_headerModuleList.tpl', 213, false),array('function', 'search_controller', 'themes/SuiteP/tpls/_headerModuleList.tpl', 514, false),array('modifier', 'lower', 'themes/SuiteP/tpls/_headerModuleList.tpl', 117, false),array('modifier', 'replace', 'themes/SuiteP/tpls/_headerModuleList.tpl', 117, false),array('modifier', 'default', 'themes/SuiteP/tpls/_headerModuleList.tpl', 770, false),)), $this); ?>
 <!--Start Responsive Top Navigation Menu -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
@@ -13,7 +13,7 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'sugar_link'
                 <span class="icon-bar"></span>
             </button>
             <ul class="dropdown-menu mobile_menu" role="menu" id="mobile_menu">
-                <?php $_from = $this->_tpl_vars['groupTabs']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['groupList'] = array('total' => count($_from), 'iteration' => 0);
+                <?php $_from = $this->_tpl_vars['groupTabs']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['groupList'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['groupList']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['group'] => $this->_tpl_vars['modules']):
         $this->_foreach['groupList']['iteration']++;
@@ -21,7 +21,7 @@ if ($this->_foreach['groupList']['total'] > 0):
                     <?php if (($this->_foreach['groupList']['iteration'] == $this->_foreach['groupList']['total'])): ?>
                         <?php ob_start(); ?>parentTab=<?php echo $this->_tpl_vars['group']; ?>
 <?php $this->_smarty_vars['capture']['extraparams'] = ob_get_contents();  $this->assign('extraparams', ob_get_contents());ob_end_clean(); ?>
-                        <?php $_from = $this->_tpl_vars['modules']['modules']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+                        <?php $_from = $this->_tpl_vars['modules']['modules']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['modulekey'] => $this->_tpl_vars['module']):
 ?>
                             <li role="presentation" data-test="1">
@@ -39,7 +39,7 @@ _<?php echo $this->_tpl_vars['module']; ?>
                                 </a>
                             </li>
                         <?php endforeach; endif; unset($_from); ?>
-                        <?php $_from = $this->_tpl_vars['modules']['extra']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+                        <?php $_from = $this->_tpl_vars['modules']['extra']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['submodule'] => $this->_tpl_vars['submodulename']):
 ?>
                             <li role="presentation" data-test="2">
@@ -57,7 +57,7 @@ _<?php echo $this->_tpl_vars['module']; ?>
             </ul>
             <div id="mobileheader" class="mobileheader">
                 <div id="modulelinks" class="modulelinks">
-                    <?php $_from = $this->_tpl_vars['moduleTopMenu']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['moduleList'] = array('total' => count($_from), 'iteration' => 0);
+                    <?php $_from = $this->_tpl_vars['moduleTopMenu']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['moduleList'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['moduleList']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['name'] => $this->_tpl_vars['module']):
         $this->_foreach['moduleList']['iteration']++;
@@ -72,7 +72,7 @@ if ($this->_foreach['moduleList']['total'] > 0):
                                     <?php if (is_array ( $this->_tpl_vars['shortcutTopMenu'][$this->_tpl_vars['name']] ) && count ( $this->_tpl_vars['shortcutTopMenu'][$this->_tpl_vars['name']] ) > 0): ?>
                                         <li class="mobile-current-actions" role="presentation">
                                            <ul class="mobileCurrentTab">
-                                               <?php $_from = $this->_tpl_vars['shortcutTopMenu'][$this->_tpl_vars['name']]; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+                                               <?php $_from = $this->_tpl_vars['shortcutTopMenu'][$this->_tpl_vars['name']]; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['item']):
 ?>
                                                    <?php if ($this->_tpl_vars['item']['URL'] == "-"): ?>
@@ -98,13 +98,13 @@ if ($this->_foreach['moduleList']['total'] > 0):
                                         </li>
                                         <li role="presentation">
                                             <ul class="recent-list">
-                                                <?php $_from = $this->_tpl_vars['recentRecords']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
+                                                <?php $_from = $this->_tpl_vars['recentRecords']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['lastViewed']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['item']):
         $this->_foreach['lastViewed']['iteration']++;
 ?>
                                                     <?php if ($this->_foreach['lastViewed']['iteration'] < 4): ?>                                                         <li class="recentlinks" role="presentation">
-                                                            <a title="<?php echo $this->_tpl_vars['item']['module_name']; ?>
+                                                            <a title="<?php echo smarty_function_sugar_translate(array('module' => $this->_tpl_vars['item']['module_name'],'label' => 'LBL_MODULE_NAME'), $this);?>
 "
                                                                accessKey="<?php echo $this->_foreach['lastViewed']['iteration']; ?>
 "
@@ -115,8 +115,12 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                                                                 <span aria-hidden="true"><?php echo $this->_tpl_vars['item']['item_summary_short']; ?>
 </span>
                                                             </a>
-                                                            <a href="<?php echo smarty_function_sugar_link(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'EditView','record' => $this->_tpl_vars['item']['item_id'],'link_only' => 1), $this);?>
+                                                            <?php ob_start(); ?><?php echo smarty_function_suite_check_access(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'edit','record' => $this->_tpl_vars['item']['item_id']), $this);?>
+<?php $this->_smarty_vars['capture']['default'] = ob_get_contents();  $this->assign('access', ob_get_contents());ob_end_clean(); ?>
+                                                            <?php if ($this->_tpl_vars['access']): ?>
+                                                                 <a href="<?php echo smarty_function_sugar_link(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'EditView','record' => $this->_tpl_vars['item']['item_id'],'link_only' => 1), $this);?>
 " class="recent-links-edit"><span class=" glyphicon glyphicon-pencil"></a>
+                                                            <?php endif; ?>
                                                         </li>
                                                     <?php endif; ?>
                                                 <?php endforeach; endif; unset($_from); ?>
@@ -131,7 +135,7 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                                         </li>
                                         <li>
                                             <ul class="favorite-list">
-                                                <?php $_from = $this->_tpl_vars['favoriteRecords']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
+                                                <?php $_from = $this->_tpl_vars['favoriteRecords']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['lastViewed']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['item']):
         $this->_foreach['lastViewed']['iteration']++;
@@ -148,8 +152,12 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                                                                 <span aria-hidden="true"><?php echo $this->_tpl_vars['item']['item_summary_short']; ?>
 </span>
                                                             </a>
-                                                            <a href="<?php echo smarty_function_sugar_link(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'EditView','record' => $this->_tpl_vars['item']['id'],'link_only' => 1), $this);?>
+                                                            <?php ob_start(); ?><?php echo smarty_function_suite_check_access(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'edit','record' => $this->_tpl_vars['item']['item_id']), $this);?>
+<?php $this->_smarty_vars['capture']['default'] = ob_get_contents();  $this->assign('access', ob_get_contents());ob_end_clean(); ?>
+                                                            <?php if ($this->_tpl_vars['access']): ?>
+                                                                <a href="<?php echo smarty_function_sugar_link(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'EditView','record' => $this->_tpl_vars['item']['id'],'link_only' => 1), $this);?>
 " class="favorite-links-edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></a>
+                                                            <?php endif; ?>
                                                         </li>
                                                     <?php endif; ?>
                                                 <?php endforeach; endif; unset($_from); ?>
@@ -170,7 +178,7 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                             <a class="navbar-brand with-home-icon suitepicon suitepicon-action-home" href="index.php?module=Home&action=index"></a>
                     </li>
                     <?php $this->assign('groupSelected', false); ?>
-                    <?php $_from = $this->_tpl_vars['moduleTopMenu']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['moduleList'] = array('total' => count($_from), 'iteration' => 0);
+                    <?php $_from = $this->_tpl_vars['moduleTopMenu']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['moduleList'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['moduleList']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['name'] => $this->_tpl_vars['module']):
         $this->_foreach['moduleList']['iteration']++;
@@ -183,7 +191,7 @@ if ($this->_foreach['moduleList']['total'] > 0):
 </span>
                                     <span>&nbsp;</span>
                                                                         <?php $this->assign('foundRecents', false); ?>
-                                    <?php $_from = $this->_tpl_vars['recentRecords']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
+                                    <?php $_from = $this->_tpl_vars['recentRecords']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['lastViewed']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['item']):
         $this->_foreach['lastViewed']['iteration']++;
@@ -195,7 +203,7 @@ if ($this->_foreach['lastViewed']['total'] > 0):
 
 
                                                                         <?php $this->assign('foundFavorits', false); ?>
-                                    <?php $_from = $this->_tpl_vars['favoriteRecords']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
+                                    <?php $_from = $this->_tpl_vars['favoriteRecords']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['lastViewed']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['item']):
         $this->_foreach['lastViewed']['iteration']++;
@@ -210,7 +218,7 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                                             <li class="current-module-action-links">
                                                 <ul>
                                                     <?php if (is_array ( $this->_tpl_vars['shortcutTopMenu'][$this->_tpl_vars['name']] ) && count ( $this->_tpl_vars['shortcutTopMenu'][$this->_tpl_vars['name']] ) > 0): ?>
-                                                        <?php $_from = $this->_tpl_vars['shortcutTopMenu'][$this->_tpl_vars['name']]; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+                                                        <?php $_from = $this->_tpl_vars['shortcutTopMenu'][$this->_tpl_vars['name']]; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['item']):
 ?>
                                                             <?php if ($this->_tpl_vars['item']['URL'] == "-"): ?>
@@ -226,7 +234,7 @@ if ($this->_foreach['lastViewed']['total'] > 0):
 
                                                                                         <?php echo smarty_function_counter(array('start' => 0,'name' => 'submoduleRecentRecordsTotal','assign' => 'submoduleRecentRecordsTotal','print' => false), $this);?>
 
-                                            <?php $_from = $this->_tpl_vars['recentRecords']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
+                                            <?php $_from = $this->_tpl_vars['recentRecords']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['lastViewed']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['item']):
         $this->_foreach['lastViewed']['iteration']++;
@@ -242,14 +250,14 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                                                     <ul>
                                                                                                                 <?php echo smarty_function_counter(array('start' => 0,'name' => 'submoduleRecentRecords','assign' => 'submoduleRecentRecords','print' => false), $this);?>
 
-                                                        <?php $_from = $this->_tpl_vars['recentRecords']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
+                                                        <?php $_from = $this->_tpl_vars['recentRecords']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['lastViewed']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['item']):
         $this->_foreach['lastViewed']['iteration']++;
 ?>
                                                             <?php if ($this->_tpl_vars['item']['module_name'] == $this->_tpl_vars['name'] && $this->_tpl_vars['submoduleRecentRecords'] < 3): ?>
                                                                 <li class="recentlinks" role="presentation">
-                                                                    <a title="<?php echo $this->_tpl_vars['item']['module_name']; ?>
+                                                                    <a title="<?php echo smarty_function_sugar_translate(array('module' => $this->_tpl_vars['item']['module_name'],'label' => 'LBL_MODULE_NAME'), $this);?>
 "
                                                                        accessKey="<?php echo $this->_foreach['lastViewed']['iteration']; ?>
 "
@@ -259,8 +267,12 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                                                                         <span aria-hidden="true"><?php echo $this->_tpl_vars['item']['item_summary_short']; ?>
 </span>
                                                                     </a>
-                                                                    <a href="<?php echo smarty_function_sugar_link(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'EditView','record' => $this->_tpl_vars['item']['item_id'],'link_only' => 1), $this);?>
+                                                                    <?php ob_start(); ?><?php echo smarty_function_suite_check_access(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'edit','record' => $this->_tpl_vars['item']['item_id']), $this);?>
+<?php $this->_smarty_vars['capture']['default'] = ob_get_contents();  $this->assign('access', ob_get_contents());ob_end_clean(); ?>
+                                                                    <?php if ($this->_tpl_vars['access']): ?>
+                                                                        <a href="<?php echo smarty_function_sugar_link(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'EditView','record' => $this->_tpl_vars['item']['item_id'],'link_only' => 1), $this);?>
 " class="recent-links-edit"><span class=" glyphicon glyphicon-pencil"></a>
+                                                                    <?php endif; ?>
                                                                 </li>
                                                                 <?php echo smarty_function_counter(array('name' => 'submoduleRecentRecords','print' => false), $this);?>
 
@@ -275,7 +287,7 @@ if ($this->_foreach['lastViewed']['total'] > 0):
 
                                             <?php echo smarty_function_counter(array('start' => 0,'name' => 'submoduleFavoriteRecordsTotal','assign' => 'submoduleFavoriteRecordsTotal','print' => false), $this);?>
 
-                                            <?php $_from = $this->_tpl_vars['favoriteRecords']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
+                                            <?php $_from = $this->_tpl_vars['favoriteRecords']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['lastViewed']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['item']):
         $this->_foreach['lastViewed']['iteration']++;
@@ -291,7 +303,7 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                                                 <ul>
                                                                                                         <?php echo smarty_function_counter(array('start' => 0,'name' => 'submoduleFavoriteRecords','assign' => 'submoduleFavoriteRecords','print' => false), $this);?>
 
-                                                    <?php $_from = $this->_tpl_vars['favoriteRecords']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
+                                                    <?php $_from = $this->_tpl_vars['favoriteRecords']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['lastViewed']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['item']):
         $this->_foreach['lastViewed']['iteration']++;
@@ -309,8 +321,12 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                                                                     <span aria-hidden="true"><?php echo $this->_tpl_vars['item']['item_summary_short']; ?>
 </span>
                                                                 </a>
-                                                                <a href="<?php echo smarty_function_sugar_link(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'EditView','record' => $this->_tpl_vars['item']['id'],'link_only' => 1), $this);?>
+                                                                <?php ob_start(); ?><?php echo smarty_function_suite_check_access(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'edit','record' => $this->_tpl_vars['item']['item_id']), $this);?>
+<?php $this->_smarty_vars['capture']['default'] = ob_get_contents();  $this->assign('access', ob_get_contents());ob_end_clean(); ?>
+                                                                <?php if ($this->_tpl_vars['access']): ?>
+                                                                    <a href="<?php echo smarty_function_sugar_link(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'EditView','record' => $this->_tpl_vars['item']['id'],'link_only' => 1), $this);?>
 " class="favorite-links-edit"><span class=" glyphicon glyphicon-pencil" aria-hidden="true"></a>
+                                                                <?php endif; ?>
                                                             </li>
                                                             <?php echo smarty_function_counter(array('name' => 'submoduleFavoriteRecords','print' => false), $this);?>
 
@@ -326,7 +342,7 @@ if ($this->_foreach['lastViewed']['total'] > 0):
 
                         <?php endif; ?>
                     <?php endforeach; endif; unset($_from); ?>
-                    <?php $_from = $this->_tpl_vars['groupTabs']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['groupList'] = array('total' => count($_from), 'iteration' => 0);
+                    <?php $_from = $this->_tpl_vars['groupTabs']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['groupList'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['groupList']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['group'] => $this->_tpl_vars['modules']):
         $this->_foreach['groupList']['iteration']++;
@@ -336,12 +352,11 @@ if ($this->_foreach['groupList']['total'] > 0):
                         <li class="topnav <?php if (($this->_foreach['groupList']['iteration'] == $this->_foreach['groupList']['total'])): ?>all<?php endif; ?>">
                             <span class="notCurrentTabLeft">&nbsp;</span><span class="notCurrentTab">
                             <a href="#" id="grouptab_<?php echo ($this->_foreach['groupList']['iteration']-1); ?>
-" class="dropdown-toggle grouptab"
-                               data-toggle="dropdown"><?php echo $this->_tpl_vars['group']; ?>
+" class="dropdown-toggle grouptab"><?php echo $this->_tpl_vars['group']; ?>
 </a>
                             <span class="notCurrentTabRight">&nbsp;</span>
                             <ul class="dropdown-menu" role="menu" <?php if (($this->_foreach['groupList']['iteration'] == $this->_foreach['groupList']['total'])): ?> class="All"<?php endif; ?>>
-                                <?php $_from = $this->_tpl_vars['modules']['modules']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+                                <?php $_from = $this->_tpl_vars['modules']['modules']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['modulekey'] => $this->_tpl_vars['module']):
 ?>
                                     <li>
@@ -352,7 +367,7 @@ _<?php echo $this->_tpl_vars['module']; ?>
 
                                     </li>
                                 <?php endforeach; endif; unset($_from); ?>
-                                <?php $_from = $this->_tpl_vars['modules']['extra']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+                                <?php $_from = $this->_tpl_vars['modules']['extra']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['submodule'] => $this->_tpl_vars['submodulename']):
 ?>
                                     <li>
@@ -396,7 +411,7 @@ _<?php echo $this->_tpl_vars['module']; ?>
                             <span class="suitepicon suitepicon-action-home"></span>
                         </a>
                     </li>
-                    <?php $_from = $this->_tpl_vars['groupTabs']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['groupList'] = array('total' => count($_from), 'iteration' => 0);
+                    <?php $_from = $this->_tpl_vars['groupTabs']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['groupList'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['groupList']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['group'] => $this->_tpl_vars['modules']):
         $this->_foreach['groupList']['iteration']++;
@@ -406,7 +421,7 @@ if ($this->_foreach['groupList']['total'] > 0):
                     <?php endforeach; endif; unset($_from); ?>
 
                     <!--nav items with actions -->
-                    <?php $_from = $this->_tpl_vars['modules']['modules']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+                    <?php $_from = $this->_tpl_vars['modules']['modules']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['submodule'] => $this->_tpl_vars['submodulename']):
 ?>
                         <?php if ($this->_tpl_vars['submodule'] != 'Home'): ?>
@@ -420,7 +435,7 @@ if ($this->_foreach['groupList']['total'] > 0):
                                     <li>
                                         <ul>
                                             <?php if (is_array ( $this->_tpl_vars['shortcutTopMenu'] ) && count ( $this->_tpl_vars['shortcutTopMenu'] ) > 0): ?>
-                                                <?php $_from = $this->_tpl_vars['shortcutTopMenu'][$this->_tpl_vars['submodule']]; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+                                                <?php $_from = $this->_tpl_vars['shortcutTopMenu'][$this->_tpl_vars['submodule']]; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['item']):
 ?>
                                                     <?php if ($this->_tpl_vars['item']['URL'] == "-"): ?>
@@ -435,7 +450,7 @@ if ($this->_foreach['groupList']['total'] > 0):
                                     </li>
                                                                         <?php echo smarty_function_counter(array('start' => 0,'name' => 'submoduleRecentRecordsTotal','assign' => 'submoduleRecentRecordsTotal','print' => false), $this);?>
 
-                                    <?php $_from = $this->_tpl_vars['recentRecords']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
+                                    <?php $_from = $this->_tpl_vars['recentRecords']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['lastViewed']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['item']):
         $this->_foreach['lastViewed']['iteration']++;
@@ -451,14 +466,14 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                                         <ul>
                                                                                         <?php echo smarty_function_counter(array('start' => 0,'name' => 'submoduleRecentRecords','assign' => 'submoduleRecentRecords','print' => false), $this);?>
 
-                                            <?php $_from = $this->_tpl_vars['recentRecords']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
+                                            <?php $_from = $this->_tpl_vars['recentRecords']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['lastViewed']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['item']):
         $this->_foreach['lastViewed']['iteration']++;
 ?>
                                                 <?php if ($this->_tpl_vars['item']['module_name'] == $this->_tpl_vars['submodule'] && $this->_tpl_vars['submoduleRecentRecords'] < 3): ?>
                                                     <li class="recentlinks" role="presentation">
-                                                        <a title="<?php echo $this->_tpl_vars['item']['module_name']; ?>
+                                                        <a title="<?php echo smarty_function_sugar_translate(array('module' => $this->_tpl_vars['item']['module_name'],'label' => 'LBL_MODULE_NAME'), $this);?>
 "
                                                            accessKey="<?php echo $this->_foreach['lastViewed']['iteration']; ?>
 "
@@ -467,8 +482,12 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                                                             <span aria-hidden="true"><?php echo $this->_tpl_vars['item']['item_summary_short']; ?>
 </span>
                                                         </a>
-                                                        <a href="<?php echo smarty_function_sugar_link(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'EditView','record' => $this->_tpl_vars['item']['item_id'],'link_only' => 1), $this);?>
+                                                        <?php ob_start(); ?><?php echo smarty_function_suite_check_access(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'edit','record' => $this->_tpl_vars['item']['item_id']), $this);?>
+<?php $this->_smarty_vars['capture']['default'] = ob_get_contents();  $this->assign('access', ob_get_contents());ob_end_clean(); ?>
+                                                        <?php if ($this->_tpl_vars['access']): ?>
+                                                            <a href="<?php echo smarty_function_sugar_link(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'EditView','record' => $this->_tpl_vars['item']['item_id'],'link_only' => 1), $this);?>
 " class="recent-links-edit"><span class=" glyphicon glyphicon-pencil"></a>
+                                                        <?php endif; ?>
                                                     </li>
                                                     <?php echo smarty_function_counter(array('name' => 'submoduleRecentRecords','print' => false), $this);?>
 
@@ -478,7 +497,7 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                                     </li>
                                                                         <?php echo smarty_function_counter(array('start' => 0,'name' => 'submoduleFavoriteRecordsTotal','assign' => 'submoduleFavoriteRecordsTotal','print' => false), $this);?>
 
-                                    <?php $_from = $this->_tpl_vars['favoriteRecords']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
+                                    <?php $_from = $this->_tpl_vars['favoriteRecords']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['lastViewed']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['item']):
         $this->_foreach['lastViewed']['iteration']++;
@@ -494,7 +513,7 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                                         <ul>
                                                                                 <?php echo smarty_function_counter(array('start' => 0,'name' => 'submoduleFavoriteRecords','assign' => 'submoduleFavoriteRecords','print' => false), $this);?>
 
-                                        <?php $_from = $this->_tpl_vars['favoriteRecords']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
+                                        <?php $_from = $this->_tpl_vars['favoriteRecords']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['lastViewed']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['item']):
         $this->_foreach['lastViewed']['iteration']++;
@@ -510,8 +529,12 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                                                         <span aria-hidden="true"><?php echo $this->_tpl_vars['item']['item_summary_short']; ?>
 </span>
                                                     </a>
-                                                    <a href="<?php echo smarty_function_sugar_link(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'EditView','record' => $this->_tpl_vars['item']['id'],'link_only' => 1), $this);?>
+                                                    <?php ob_start(); ?><?php echo smarty_function_suite_check_access(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'edit','record' => $this->_tpl_vars['item']['item_id']), $this);?>
+<?php $this->_smarty_vars['capture']['default'] = ob_get_contents();  $this->assign('access', ob_get_contents());ob_end_clean(); ?>
+                                                    <?php if ($this->_tpl_vars['access']): ?>
+                                                        <a href="<?php echo smarty_function_sugar_link(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'EditView','record' => $this->_tpl_vars['item']['id'],'link_only' => 1), $this);?>
 " class="favorite-links-edit"><span class=" glyphicon glyphicon-pencil" aria-hidden="true"></a>
+                                                    <?php endif; ?>
                                                 </li>
                                                 <?php echo smarty_function_counter(array('name' => 'submoduleFavoriteRecords','print' => false), $this);?>
 
@@ -531,7 +554,7 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                             <span class="notCurrentTabRight">&nbsp;</span>
                             <ul id="overflow-menu" class="dropdown-menu" role="menu">
                                 <!--nav items without actions -->
-                                <?php $_from = $this->_tpl_vars['modules']['extra']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+                                <?php $_from = $this->_tpl_vars['modules']['extra']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['submodule'] => $this->_tpl_vars['submodulename']):
 ?>
                                     <li class="topnav without-actions">
@@ -629,7 +652,8 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                     <div class="dropdown-menu" role="menu" aria-labelledby="searchbutton">
                         <form id="searchformdropdown" class="searchformdropdown" name='UnifiedSearch' action='index.php'
                               onsubmit='return SUGAR.unifiedSearchAdvanced.checkUsaAdvanced()'>
-                            <input type="hidden" class="form-control" name="action" value="UnifiedSearch">
+                            <?php echo smarty_function_search_controller(array(), $this);?>
+
                             <input type="hidden" class="form-control" name="module" value="Home">
                             <input type="hidden" class="form-control" name="search_form" value="false">
                             <input type="hidden" class="form-control" name="advanced" value="false">
@@ -656,7 +680,8 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                 <li>
                     <form id="searchform" class="navbar-form searchform" name='UnifiedSearch' action='index.php'
                           onsubmit='return SUGAR.unifiedSearchAdvanced.checkUsaAdvanced()'>
-                        <input type="hidden" class="form-control" name="action" value="UnifiedSearch">
+                        <?php echo smarty_function_search_controller(array(), $this);?>
+
                         <input type="hidden" class="form-control" name="module" value="Home">
                         <input type="hidden" class="form-control" name="search_form" value="false">
                         <input type="hidden" class="form-control" name="advanced" value="false">
@@ -684,7 +709,7 @@ if ($this->_foreach['lastViewed']['total'] > 0):
 
                             </a>
                         </li>
-                        <?php $_from = $this->_tpl_vars['GCLS']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['gcl'] = array('total' => count($_from), 'iteration' => 0);
+                        <?php $_from = $this->_tpl_vars['GCLS']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['gcl'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['gcl']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['gcl_key'] => $this->_tpl_vars['GCL']):
         $this->_foreach['gcl']['iteration']++;
@@ -693,8 +718,16 @@ if ($this->_foreach['gcl']['total'] > 0):
                                 <a id="<?php echo $this->_tpl_vars['gcl_key']; ?>
 _link"
                                    href="<?php echo $this->_tpl_vars['GCL']['URL']; ?>
-"<?php if (! empty ( $this->_tpl_vars['GCL']['ONCLICK'] )): ?> onclick="<?php echo $this->_tpl_vars['GCL']['ONCLICK']; ?>
-"<?php endif; ?>><?php echo $this->_tpl_vars['GCL']['LABEL']; ?>
+"
+                                   <?php if (! empty ( $this->_tpl_vars['GCL']['ONCLICK'] )): ?> 
+                                   onclick="<?php echo $this->_tpl_vars['GCL']['ONCLICK']; ?>
+"
+                                   <?php endif; ?>
+                                   <?php if (! empty ( $this->_tpl_vars['GCL']['TARGET'] )): ?> 
+                                   target="<?php echo $this->_tpl_vars['GCL']['TARGET']; ?>
+"
+                                   <?php endif; ?>
+                                   ><?php echo $this->_tpl_vars['GCL']['LABEL']; ?>
 </a>
                             </li>
                         <?php endforeach; endif; unset($_from); ?>
@@ -743,7 +776,8 @@ _link"
                     <div class="dropdown-menu" role="menu" aria-labelledby="searchbutton">
                         <form id="searchformdropdown" class="searchformdropdown" name='UnifiedSearch' action='index.php'
                               onsubmit='return SUGAR.unifiedSearchAdvanced.checkUsaAdvanced()'>
-                            <input type="hidden" class="form-control" name="action" value="UnifiedSearch">
+                            <?php echo smarty_function_search_controller(array(), $this);?>
+
                             <input type="hidden" class="form-control" name="module" value="Home">
                             <input type="hidden" class="form-control" name="search_form" value="false">
                             <input type="hidden" class="form-control" name="advanced" value="false">
@@ -762,7 +796,8 @@ _link"
                 <li>
                     <form id="searchform" class="navbar-form searchform" name='UnifiedSearch' action='index.php'
                           onsubmit='return SUGAR.unifiedSearchAdvanced.checkUsaAdvanced()'>
-                        <input type="hidden" class="form-control" name="action" value="UnifiedSearch">
+                        <?php echo smarty_function_search_controller(array(), $this);?>
+
                         <input type="hidden" class="form-control" name="module" value="Home">
                         <input type="hidden" class="form-control" name="search_form" value="false">
                         <input type="hidden" class="form-control" name="advanced" value="false">
@@ -799,7 +834,7 @@ _link"
 
                             </a>
                         </li>
-                        <?php $_from = $this->_tpl_vars['GCLS']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['gcl'] = array('total' => count($_from), 'iteration' => 0);
+                        <?php $_from = $this->_tpl_vars['GCLS']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['gcl'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['gcl']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['gcl_key'] => $this->_tpl_vars['GCL']):
         $this->_foreach['gcl']['iteration']++;
@@ -808,8 +843,16 @@ if ($this->_foreach['gcl']['total'] > 0):
                                 <a id="<?php echo $this->_tpl_vars['gcl_key']; ?>
 _link"
                                    href="<?php echo $this->_tpl_vars['GCL']['URL']; ?>
-"<?php if (! empty ( $this->_tpl_vars['GCL']['ONCLICK'] )): ?> onclick="<?php echo $this->_tpl_vars['GCL']['ONCLICK']; ?>
-"<?php endif; ?>><?php echo $this->_tpl_vars['GCL']['LABEL']; ?>
+"
+                                   <?php if (! empty ( $this->_tpl_vars['GCL']['ONCLICK'] )): ?> 
+                                   onclick="<?php echo $this->_tpl_vars['GCL']['ONCLICK']; ?>
+"
+                                   <?php endif; ?>
+                                   <?php if (! empty ( $this->_tpl_vars['GCL']['TARGET'] )): ?> 
+                                   target="<?php echo $this->_tpl_vars['GCL']['TARGET']; ?>
+"
+                                   <?php endif; ?>
+                                   ><?php echo $this->_tpl_vars['GCL']['LABEL']; ?>
 </a>
                             </li>
                         <?php endforeach; endif; unset($_from); ?>
@@ -858,7 +901,8 @@ _link"
                     <div class="dropdown-menu" role="menu" aria-labelledby="searchbutton">
                         <form id="searchformdropdown" class="searchformdropdown" name='UnifiedSearch' action='index.php'
                               onsubmit='return SUGAR.unifiedSearchAdvanced.checkUsaAdvanced()'>
-                            <input type="hidden" class="form-control" name="action" value="UnifiedSearch">
+                            <?php echo smarty_function_search_controller(array(), $this);?>
+
                             <input type="hidden" class="form-control" name="module" value="Home">
                             <input type="hidden" class="form-control" name="search_form" value="false">
                             <input type="hidden" class="form-control" name="advanced" value="false">
@@ -877,7 +921,8 @@ _link"
                 <li>
                     <form id="searchform" class="navbar-form searchform" name='UnifiedSearch' action='index.php'
                           onsubmit='return SUGAR.unifiedSearchAdvanced.checkUsaAdvanced()'>
-                        <input type="hidden" class="form-control" name="action" value="UnifiedSearch">
+                        <?php echo smarty_function_search_controller(array(), $this);?>
+
                         <input type="hidden" class="form-control" name="module" value="Home">
                         <input type="hidden" class="form-control" name="search_form" value="false">
                         <input type="hidden" class="form-control" name="advanced" value="false">
@@ -904,7 +949,7 @@ _link"
                     <button id="with-label" class="dropdown-toggle user-menu-button" title="<?php echo $this->_tpl_vars['CURRENT_USER']; ?>
 "data-toggle="dropdown" aria-expanded="true">
                         <span class="suitepicon suitepicon-action-current-user"></span>
-                        <span><?php echo $this->_tpl_vars['CURRENT_USER']; ?>
+                        <span class="globallabel-user"><?php echo $this->_tpl_vars['CURRENT_USER']; ?>
 </span>
                         <span class="suitepicon suitepicon-action-caret"></span>
                     </button>
@@ -916,7 +961,7 @@ _link"
 
                             </a>
                         </li>
-                        <?php $_from = $this->_tpl_vars['GCLS']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['gcl'] = array('total' => count($_from), 'iteration' => 0);
+                        <?php $_from = $this->_tpl_vars['GCLS']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['gcl'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['gcl']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['gcl_key'] => $this->_tpl_vars['GCL']):
         $this->_foreach['gcl']['iteration']++;
@@ -925,8 +970,16 @@ if ($this->_foreach['gcl']['total'] > 0):
                                 <a id="<?php echo $this->_tpl_vars['gcl_key']; ?>
 _link"
                                    href="<?php echo $this->_tpl_vars['GCL']['URL']; ?>
-"<?php if (! empty ( $this->_tpl_vars['GCL']['ONCLICK'] )): ?> onclick="<?php echo $this->_tpl_vars['GCL']['ONCLICK']; ?>
-"<?php endif; ?>><?php echo $this->_tpl_vars['GCL']['LABEL']; ?>
+"
+                                   <?php if (! empty ( $this->_tpl_vars['GCL']['ONCLICK'] )): ?> 
+                                   onclick="<?php echo $this->_tpl_vars['GCL']['ONCLICK']; ?>
+"
+                                   <?php endif; ?>
+                                   <?php if (! empty ( $this->_tpl_vars['GCL']['TARGET'] )): ?>
+                                   target="<?php echo $this->_tpl_vars['GCL']['TARGET']; ?>
+"
+                                   <?php endif; ?>
+                                   ><?php echo $this->_tpl_vars['GCL']['LABEL']; ?>
 </a>
                             </li>
                         <?php endforeach; endif; unset($_from); ?>
@@ -947,11 +1000,11 @@ _link"
 
         <a id="buttontoggle" class="buttontoggle"><span></span></a>
 
-             <div <?php if ($_COOKIE['sidebartoggle'] == 'collapsed'): ?>style="display:none"<?php endif; ?>
+        <div <?php if (((is_array($_tmp=@$_COOKIE['sidebartoggle'])) ? $this->_run_mod_handler('default', true, $_tmp, '') : smarty_modifier_default($_tmp, '')) == 'collapsed'): ?>style="display:none"<?php endif; ?>
              class="sidebar">
 
                 <div id="actionMenuSidebar" class="actionMenuSidebar">
-                    <?php $_from = $this->_tpl_vars['moduleTopMenu']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['moduleList'] = array('total' => count($_from), 'iteration' => 0);
+                    <?php $_from = $this->_tpl_vars['moduleTopMenu']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['moduleList'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['moduleList']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['name'] => $this->_tpl_vars['module']):
         $this->_foreach['moduleList']['iteration']++;
@@ -961,7 +1014,7 @@ if ($this->_foreach['moduleList']['total'] > 0):
                                 <?php if (isset ( $this->_tpl_vars['shortcutTopMenu'][$this->_tpl_vars['name']] ) && is_array ( $this->_tpl_vars['shortcutTopMenu'] ) && count ( $this->_tpl_vars['shortcutTopMenu'][$this->_tpl_vars['name']] ) > 0): ?>
                                     <h2 class="recent_h3"><?php echo $this->_tpl_vars['APP']['LBL_LINK_ACTIONS']; ?>
 </h2>
-                                    <?php $_from = $this->_tpl_vars['shortcutTopMenu'][$this->_tpl_vars['name']]; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+                                    <?php $_from = $this->_tpl_vars['shortcutTopMenu'][$this->_tpl_vars['name']]; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['item']):
 ?>
                                         <?php if ($this->_tpl_vars['item']['URL'] == "-"): ?>
@@ -993,7 +1046,7 @@ if ($this->_foreach['moduleList']['total'] > 0):
 </h2>
                     <?php endif; ?>
                     <ul class="nav nav-pills nav-stacked">
-                        <?php $_from = $this->_tpl_vars['recentRecords']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
+                        <?php $_from = $this->_tpl_vars['recentRecords']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['lastViewed']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['item']):
         $this->_foreach['lastViewed']['iteration']++;
@@ -1002,7 +1055,7 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                                 <?php if (($this->_foreach['lastViewed']['iteration']-1) < 5): ?>
                                     <div class="recently_viewed_link_container_sidebar">
                                         <li class="recentlinks" role="presentation">
-                                            <a title="<?php echo $this->_tpl_vars['item']['module_name']; ?>
+                                            <a title="<?php echo smarty_function_sugar_translate(array('module' => $this->_tpl_vars['item']['module_name'],'label' => 'LBL_MODULE_NAME'), $this);?>
 "
                                                accessKey="<?php echo $this->_foreach['lastViewed']['iteration']; ?>
 "
@@ -1014,8 +1067,12 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                                                 <span><?php echo $this->_tpl_vars['item']['item_summary_short']; ?>
 </span>
                                             </a>
-                                            <a href="<?php echo smarty_function_sugar_link(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'EditView','record' => $this->_tpl_vars['item']['item_id'],'link_only' => 1), $this);?>
+                                            <?php ob_start(); ?><?php echo smarty_function_suite_check_access(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'edit','record' => $this->_tpl_vars['item']['item_id']), $this);?>
+<?php $this->_smarty_vars['capture']['default'] = ob_get_contents();  $this->assign('access', ob_get_contents());ob_end_clean(); ?>
+                                            <?php if ($this->_tpl_vars['access']): ?>
+                                                <a href="<?php echo smarty_function_sugar_link(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'EditView','record' => $this->_tpl_vars['item']['item_id'],'link_only' => 1), $this);?>
 " class="recent-links-edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                            <?php endif; ?>
                                         </li>
                                     </div>
                                 <?php endif; ?>
@@ -1029,7 +1086,7 @@ if ($this->_foreach['lastViewed']['total'] > 0):
 </h2>
                 <?php endif; ?>
                     <ul class="nav nav-pills nav-stacked">
-                        <?php $_from = $this->_tpl_vars['favoriteRecords']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
+                        <?php $_from = $this->_tpl_vars['favoriteRecords']; if (($_from instanceof StdClass) || (!is_array($_from) && !is_object($_from))) { settype($_from, 'array'); }$this->_foreach['lastViewed'] = array('total' => count($_from), 'iteration' => 0);
 if ($this->_foreach['lastViewed']['total'] > 0):
     foreach ($_from as $this->_tpl_vars['item']):
         $this->_foreach['lastViewed']['iteration']++;
@@ -1046,8 +1103,12 @@ if ($this->_foreach['lastViewed']['total'] > 0):
                                         <span aria-hidden="true"><?php echo $this->_tpl_vars['item']['item_summary_short']; ?>
 </span>
                                     </a>
-                                    <a href="<?php echo smarty_function_sugar_link(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'EditView','record' => $this->_tpl_vars['item']['id'],'link_only' => 1), $this);?>
+                                    <?php ob_start(); ?><?php echo smarty_function_suite_check_access(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'edit','record' => $this->_tpl_vars['item']['item_id']), $this);?>
+<?php $this->_smarty_vars['capture']['default'] = ob_get_contents();  $this->assign('access', ob_get_contents());ob_end_clean(); ?>
+                                    <?php if ($this->_tpl_vars['access']): ?>
+                                        <a href="<?php echo smarty_function_sugar_link(array('module' => $this->_tpl_vars['item']['module_name'],'action' => 'EditView','record' => $this->_tpl_vars['item']['id'],'link_only' => 1), $this);?>
 " class="favorite-links-edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                    <?php endif; ?>
                                 </li>
                             </div>
                             <?php endif; ?>

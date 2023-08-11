@@ -97,10 +97,10 @@ function login($user_auth, $application)
     global $sugar_config, $system_config;
 
     $error = new SoapError();
-    $user = new User();
+    $user = BeanFactory::newBean('Users');
     $success = false;
     //rrs
-    $system_config = new Administration();
+    $system_config = BeanFactory::newBean('Administration');
     $system_config->retrieveSettings('system');
     $authController = new AuthenticationController();
     //rrs
@@ -141,8 +141,8 @@ function login($user_auth, $application)
             $password = decrypt_string($user_auth['password']);
             $authController = new AuthenticationController();
             if ($authController->login(
-                    $user_auth['user_name'],
-                        $password
+                $user_auth['user_name'],
+                $password
                 ) && isset($_SESSION['authenticated_user_id'])
                 ) {
                 $success = true;
@@ -216,7 +216,7 @@ function validate_authenticated($session_id)
         if (!empty($_SESSION['is_valid_session']) && is_valid_ip_address('ip_address') && $_SESSION['type'] == 'user') {
             global $current_user;
 
-            $current_user = new User();
+            $current_user = BeanFactory::newBean('Users');
             $current_user->retrieve($_SESSION['user_id']);
             login_success();
 
@@ -320,27 +320,30 @@ $server->register(
 /**
  * Retrieve a list of beans.  This is the primary method for getting list of SugarBeans from Sugar using the SOAP API.
  *
- * @param String $session -- Session ID returned by a previous call to login.
- * @param String $module_name -- The name of the module to return records from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method)..
- * @param String $query -- SQL where clause without the word 'where'
- * @param String $order_by -- SQL order by clause without the phrase 'order by'
- * @param String $offset -- The record offset to start from.
- * @param Array $select_fields -- A list of the fields to be included in the results. This optional parameter allows for only needed fields to be retrieved.
- * @param String $max_results -- The maximum number of records to return.  The default is the sugar configuration value for 'list_max_entries_per_page'
- * @param Number $deleted -- false if deleted records should not be include, true if deleted records should be included.
- * @return Array 'result_count' -- The number of records returned
- *               'next_offset' -- The start of the next page (This will always be the previous offset plus the number of rows returned.  It does not indicate if there is additional data unless you calculate that the next_offset happens to be closer than it should be.
- *               'field_list' -- The vardef information on the selected fields.
- *                      Array -- 'field'=>  'name' -- the name of the field
- *                                          'type' -- the data type of the field
- *                                          'label' -- the translation key for the label of the field
- *                                          'required' -- Is the field required?
- *                                          'options' -- Possible values for a drop down field
- *               'entry_list' -- The records that were retrieved
- *               'error' -- The SOAP error, if any
+ * @param string $session -- Session ID returned by a previous call to login.
+ * @param string $module_name -- The name of the module to return records from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method)..
+ * @param string $query -- SQL where clause without the word 'where'
+ * @param string $order_by -- SQL order by clause without the phrase 'order by'
+ * @param integer $offset -- The record offset to start from.
+ * @param array $select_fields -- A list of the fields to be included in the results. This optional parameter allows for only needed fields to be retrieved.
+ * @param integer $max_results -- The maximum number of records to return.  The default is the sugar configuration value for 'list_max_entries_per_page'
+ * @param bool $deleted -- false if deleted records should not be include, true if deleted records should be included.
+ * @return array 'result_count' -- integer - The number of records returned
+ *               'next_offset' -- integer - The start of the next page (This will always be the previous offset plus the number of rows returned.  It does not indicate if there is additional data unless you calculate that the next_offset happens to be closer than it should be.
+ *               'entry_list' -- Array - The records that were retrieved
+ *                 'relationship_list' -- Array - The records link field data. The example is if asked about accounts email address then return data would look like Array ( [0] => Array ( [name] => email_addresses [records] => Array ( [0] => Array ( [0] => Array ( [name] => id [value] => 3fb16797-8d90-0a94-ac12-490b63a6be67 ) [1] => Array ( [name] => email_address [value] => hr.kid.qa@example.com ) [2] => Array ( [name] => opt_out [value] => 0 ) [3] => Array ( [name] => primary_address [value] => 1 ) ) [1] => Array ( [0] => Array ( [name] => id [value] => 403f8da1-214b-6a88-9cef-490b63d43566 ) [1] => Array ( [name] => email_address [value] => kid.hr@example.name ) [2] => Array ( [name] => opt_out [value] => 0 ) [3] => Array ( [name] => primary_address [value] => 0 ) ) ) ) )
+ * @exception 'SoapFault' -- The SOAP error, if any
  */
-function get_entry_list($session, $module_name, $query, $order_by, $offset, $select_fields, $max_results, $deleted)
-{
+function get_entry_list(
+    $session = null,
+    $module_name = null,
+    $query = null,
+    $order_by = null,
+    $offset = null,
+    $select_fields = null,
+    $max_results = null,
+    $deleted = false
+) {
     global $beanList, $beanFiles, $current_user;
     $error = new SoapError();
     if (!validate_authenticated($session)) {
@@ -469,10 +472,10 @@ function get_entry_list($session, $module_name, $query, $order_by, $offset, $sel
     $field_list = filter_return_list($field_list, $select_fields, $module_name);
 
     // Calculate the offset for the start of the next page
-    $next_offset = $offset + sizeof($output_list);
+    $next_offset = $offset + count($output_list);
 
     return array(
-        'result_count' => sizeof($output_list),
+        'result_count' => count($output_list),
         'next_offset' => $next_offset,
         'field_list' => $field_list,
         'entry_list' => $output_list,
@@ -773,7 +776,7 @@ function get_note_attachment($session, $id)
         return array('result_count' => -1, 'entry_list' => array(), 'error' => $error->get_soap_array());
     }
 
-    $note = new Note();
+    $note = BeanFactory::newBean('Notes');
 
     $note->retrieve($id);
     if (!$note->ACLAccess('DetailView')) {
@@ -931,7 +934,7 @@ function get_related_notes($session, $module_name, $module_id, $select_fields)
     $field_list = filter_field_list($field_list, $select_fields, $module_name);
 
     return array(
-        'result_count' => sizeof($output_list),
+        'result_count' => count($output_list),
         'next_offset' => 0,
         'field_list' => $field_list,
         'entry_list' => $output_list,
@@ -1019,7 +1022,7 @@ function get_module_fields($session, $module_name)
     $seed = new $class_name();
     if ($seed->ACLAccess('ListView', true) || $seed->ACLAccess('DetailView', true) || $seed->ACLAccess(
         'EditView',
-            true
+        true
     )
     ) {
         return get_return_module_fields($seed, $module_name, $error);
@@ -1082,7 +1085,7 @@ function update_portal_user($session, $portal_name, $name_value_list)
 
         return $error->get_soap_array();
     }
-    $contact = new Contact();
+    $contact = BeanFactory::newBean('Contacts');
 
     $searchBy = array('deleted' => 0);
     foreach ($name_value_list as $name_value) {
@@ -1250,7 +1253,7 @@ $server->register(
  */
 function get_server_version()
 {
-    $admin = new Administration();
+    $admin = BeanFactory::newBean('Administration');
     $admin->retrieveSettings('info');
     if (isset($admin->settings['info_sugar_version'])) {
         return $admin->settings['info_sugar_version'];
@@ -1355,6 +1358,11 @@ function get_relationships($session, $module_name, $module_id, $related_module, 
         $sql .= " AND ( {$related_module_query} )";
     }
 
+    $accessWhere = $mod->buildAccessWhere('list');
+    if (!empty($accessWhere)) {
+        $sql .= ' AND ' . $accessWhere;
+    }
+    
     $result = $related_mod->db->query($sql);
     while ($row = $related_mod->db->fetchByAssoc($result)) {
         $list[] = $row['id'];
@@ -1871,10 +1879,10 @@ function search_by_module($user_name, $password, $search_string, $modules, $offs
         }//end foreach
     }
 
-    $next_offset = $offset + sizeof($output_list);
+    $next_offset = $offset + count($output_list);
 
     return array(
-        'result_count' => sizeof($output_list),
+        'result_count' => count($output_list),
         'next_offset' => $next_offset,
         'field_list' => $field_list,
         'entry_list' => $output_list,
@@ -2196,7 +2204,7 @@ function get_document_revision($session, $id)
     }
 
 
-    $dr = new DocumentRevision();
+    $dr = BeanFactory::newBean('DocumentRevisions');
     $dr->retrieve($id);
     if (!empty($dr->filename)) {
         $filename = "upload://{$dr->id}";
@@ -2225,7 +2233,7 @@ $server->register(
     $NAMESPACE
 );
 /**
- *   Once we have successfuly done a mail merge on a campaign, we need to notify Sugar of the targets
+ *   Once we have successfully done a mail merge on a campaign, we need to notify Sugar of the targets
  *   and the campaign_id for tracking purposes
  *
  * @param session        the session id of the authenticated user
@@ -2417,7 +2425,7 @@ function handle_set_entries($module_name, $name_value_lists, $select_fields = fa
     require_once($beanFiles[$class_name]);
     $ids = array();
     $count = 1;
-    $total = sizeof($name_value_lists);
+    $total = count($name_value_lists);
 
     foreach ($name_value_lists as $name_value_list) {
         $seed = new $class_name();

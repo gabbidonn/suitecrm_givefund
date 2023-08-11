@@ -79,6 +79,7 @@ class Campaign extends SugarBean
 
     // These are related
     public $assigned_user_name;
+    public $note_id;
 
     // module name definitions and table relations
     public $table_name = "campaigns";
@@ -88,20 +89,22 @@ class Campaign extends SugarBean
     public $importable = true;
 
     // This is used to retrieve related fields from form posts.
-    public $additional_column_fields = array(
-                'assigned_user_name', 'assigned_user_id',
-    );
+    public $additional_column_fields = [
+        'assigned_user_name',
+        'assigned_user_id',
+        'note_id',
+    ];
 
-    public $relationship_fields = array('prospect_list_id'=>'prospect_lists');
+    public $relationship_fields = array('prospect_list_id' => 'prospect_lists', 'note_id' => 'notes',);
 
     public $new_schema = true;
-        
+
     /**
      *
      * @var string
      */
     public $survey_id;
-        
+
     /**
      *
      * @var string
@@ -119,7 +122,6 @@ class Campaign extends SugarBean
         $result = $this->db->query($query);
         $user = $this->db->fetchByAssoc($result);
 
-        //_ppd($user);
         if (!empty($user)) {
             if (is_array($user)) {
                 $fullName = $locale->getLocaleFormattedName($user['first_name'], $user['last_name']);
@@ -251,7 +253,7 @@ class Campaign extends SugarBean
 
             //US DOLLAR
         if (isset($this->amount) && !empty($this->amount)) {
-            $currency = new Currency();
+            $currency = BeanFactory::newBean('Currencies');
             $currency->retrieve($this->currency_id);
             $this->amount_usdollar = $currency->convertToDollar($this->amount);
         }
@@ -261,9 +263,10 @@ class Campaign extends SugarBean
         if ($this->campaign_type != 'NewsLetter') {
             $this->frequency = '';
         }
-        
-        return parent::save($check_notify);
-    }
+
+		return parent::save($check_notify);
+
+	}
 
 
     public function mark_deleted($id)
@@ -284,7 +287,7 @@ class Campaign extends SugarBean
         $xtpl->assign("CAMPAIGN_AMOUNT", $camp->budget);
         $xtpl->assign("CAMPAIGN_CLOSEDATE", $camp->end_date);
         $xtpl->assign("CAMPAIGN_STATUS", $camp->status);
-        $xtpl->assign("CAMPAIGN_DESCRIPTION", $camp->content);
+        $xtpl->assign("CAMPAIGN_DESCRIPTION", nl2br($camp->content));
 
         return $xtpl;
     }
@@ -344,9 +347,11 @@ class Campaign extends SugarBean
 					on campaign_log.id = secondary.id	";
             }
             unset($query_array['group_by']);
-        } elseif (isset($query_array['group_by'])) {
-            $query_array['where'] = $query_array['where'] . ' GROUP BY ' . $query_array['group_by'];
-            unset($query_array['group_by']);
+        } else {
+            if (isset($query_array['group_by'])) {
+                $query_array['where'] = $query_array['where'] . ' GROUP BY ' . $query_array['group_by'];
+                unset($query_array['group_by']);
+            }
         }
 
         $query = (implode(" ", $query_array));
@@ -380,7 +385,7 @@ class Campaign extends SugarBean
         }
 
         //get select query from email man
-        $man = new EmailMan();
+        $man = BeanFactory::newBean('EmailMan');
         $listquery= $man->create_queue_items_query('', str_replace(array("WHERE","where"), "", $query_array['where']), null, $query_array);
         return $listquery;
     }

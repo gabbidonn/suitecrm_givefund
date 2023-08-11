@@ -324,8 +324,6 @@
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
-      'len' => '255',
-      'size' => '20',
     ),
     'relationship_type' => 
     array (

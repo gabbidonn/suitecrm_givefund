@@ -1,0 +1,2 @@
+* * * * * root su daemon -s /bin/sh -c "cd /opt/bitnami/suitecrm; /opt/bitnami/php/bin/php -f cron.php > /dev/null 2>&1"
+

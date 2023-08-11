@@ -1,5 +1,5 @@
 <?php
-// created: 2021-07-06 14:06:10
+// created: 2023-08-11 02:17:09
 $mod_strings = array (
   'LBL_ID' => 'ID:',
   'LBL_DATE_ENTERED' => 'Date Created',
@@ -28,7 +28,7 @@ $mod_strings = array (
   'LBL_SALUTATION' => 'Salutation:',
   'LBL_FIRST_NAME' => 'First Name:',
   'LBL_LAST_NAME' => 'Last Name:',
-  'LBL_TITLE' => 'Title:',
+  'LBL_TITLE' => 'Job Title:',
   'LBL_DEPARTMENT' => 'Department:',
   'LBL_DO_NOT_CALL' => 'Do Not Call:',
   'LBL_HOME_PHONE' => 'Home:',
@@ -57,7 +57,7 @@ $mod_strings = array (
   'LBL_ALT_STREET' => 'Other Address',
   'LBL_STREET' => 'Street',
   'LBL_CITY' => 'City:',
-  'LBL_STATE' => 'State:',
+  'LBL_STATE' => 'State/Region:',
   'LBL_POSTAL_CODE' => 'Postal Code:',
   'LBL_COUNTRY' => 'Country:',
   'LBL_CONTACT_INFORMATION' => 'OVERVIEW',
@@ -79,13 +79,10 @@ $mod_strings = array (
   'LBL_ACCOUNT_NAME' => 'Account Name:',
   'LBL_CAMPAIGN' => 'Campaign:',
   'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
-  'LBL_ADD_BUSINESSCARD' => 'Enter Business Card',
-  'LBL_ADDMORE_BUSINESSCARD' => 'Add another business card',
   'LBL_ALTERNATE_ADDRESS' => 'Other Address:',
   'LBL_ANY_ADDRESS' => 'Any Address:',
   'LBL_ANY_PHONE' => 'Any Phone:',
   'LBL_BIRTHDATE' => 'Birthdate:',
-  'LBL_BUSINESSCARD' => 'Business Card',
   'LBL_CAMPAIGN_ID' => 'Campaign ID',
   'LBL_CONTACT_NAME' => 'Contact Name:',
   'LBL_CONTACT_OPP_FORM_TITLE' => 'Contact-Opportunity:',
@@ -119,7 +116,7 @@ $mod_strings = array (
   'LBL_LIST_FORM_TITLE' => 'Contact List',
   'LBL_LIST_LAST_NAME' => 'Last Name',
   'LBL_LIST_PHONE' => 'Office Phone',
-  'LBL_LIST_TITLE' => 'Title',
+  'LBL_LIST_TITLE' => 'Job Title',
   'LBL_MODULE_NAME' => 'Contacts',
   'LBL_MODULE_TITLE' => 'Contacts: Home',
   'LBL_NEW_FORM_TITLE' => 'New Contact',

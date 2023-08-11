@@ -53,12 +53,13 @@ class TabController
 
     public function is_system_tabs_in_db()
     {
-        $administration = new Administration();
+        $administration = BeanFactory::newBean('Administration');
         $administration->retrieveSettings('MySettings');
         if (isset($administration->settings) && isset($administration->settings['MySettings_tab'])) {
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     public function get_system_tabs()
@@ -69,7 +70,7 @@ class TabController
     
         // if the value is not already cached, then retrieve it.
         if (empty($system_tabs_result) || !self::$isCacheValid) {
-            $administration = new Administration();
+            $administration = BeanFactory::newBean('Administration');
             $administration->retrieveSettings('MySettings');
             if (isset($administration->settings) && isset($administration->settings['MySettings_tab'])) {
                 $tabs= $administration->settings['MySettings_tab'];
@@ -84,14 +85,14 @@ class TabController
                             unset($tabs[$id]);
                         }
                     }
-                    ACLController :: filterModuleList($tabs);
-                    $tabs = $this->get_key_array($tabs);
+                    ACLController::filterModuleList($tabs);
+                    $tabs = self::get_key_array($tabs);
                     $system_tabs_result = $tabs;
                 } else {
-                    $system_tabs_result = $this->get_key_array($moduleList);
+                    $system_tabs_result = self::get_key_array($moduleList);
                 }
             } else {
-                $system_tabs_result = $this->get_key_array($moduleList);
+                $system_tabs_result = self::get_key_array($moduleList);
             }
             self::$isCacheValid = true;
         }
@@ -103,7 +104,7 @@ class TabController
     {
         global $moduleList;
         $tabs = $this->get_system_tabs();
-        $unsetTabs = $this->get_key_array($moduleList);
+        $unsetTabs = self::get_key_array($moduleList);
         foreach ($tabs as $tab) {
             unset($unsetTabs[$tab]);
         }
@@ -112,8 +113,10 @@ class TabController
         if ($should_hide_iframes) {
             if (isset($unsetTabs['iFrames'])) {
                 unset($unsetTabs['iFrames']);
-            } elseif (isset($tabs['iFrames'])) {
-                unset($tabs['iFrames']);
+            } else {
+                if (isset($tabs['iFrames'])) {
+                    unset($tabs['iFrames']);
+                }
             }
         }
 
@@ -125,7 +128,7 @@ class TabController
 
     public function set_system_tabs($tabs)
     {
-        $administration = new Administration();
+        $administration = BeanFactory::newBean('Administration');
         $serialized = base64_encode(serialize($tabs));
         $administration->saveSetting('MySettings', 'tab', $serialized);
         self::$isCacheValid = false;
@@ -133,7 +136,7 @@ class TabController
 
     public function get_users_can_edit()
     {
-        $administration = new Administration();
+        $administration = BeanFactory::newBean('Administration');
         $administration->retrieveSettings('MySettings');
         if (isset($administration->settings) && isset($administration->settings['MySettings_disable_useredit'])) {
             if ($administration->settings['MySettings_disable_useredit'] == 'yes') {
@@ -147,7 +150,7 @@ class TabController
     {
         global $current_user;
         if (is_admin($current_user)) {
-            $administration = new Administration();
+            $administration = BeanFactory::newBean('Administration');
             if ($boolean) {
                 $administration->saveSetting('MySettings', 'disable_useredit', 'no');
             } else {
@@ -157,7 +160,7 @@ class TabController
     }
 
 
-    public function get_key_array($arr)
+    public static function get_key_array($arr)
     {
         $new = array();
         if (!empty($arr)) {
@@ -183,23 +186,25 @@ class TabController
         $system_tabs = $this->get_system_tabs();
         $tabs = $user->getPreference($type .'_tabs');
         if (!empty($tabs)) {
-            $tabs = $this->get_key_array($tabs);
+            $tabs = self::get_key_array($tabs);
             if ($type == 'display') {
                 $tabs['Home'] =  'Home';
             }
             return $tabs;
+        } else {
+            if ($type == 'display') {
+                return $system_tabs;
+            } else {
+                return array();
+            }
         }
-        if ($type == 'display') {
-            return $system_tabs;
-        }
-        return array();
     }
 
     public function get_unset_tabs($user)
     {
         global $moduleList;
         $tabs = $this->get_user_tabs($user);
-        $unsetTabs = $this->get_key_array($moduleList);
+        $unsetTabs = self::get_key_array($moduleList);
         foreach ($tabs as $tab) {
             unset($unsetTabs[$tab]);
         }
@@ -213,7 +218,7 @@ class TabController
         $tabs = $user->getPreference('tabs');
     
         if (!empty($tabs)) {
-            $tabs = $this->get_key_array($tabs);
+            $tabs = self::get_key_array($tabs);
             $tabs['Home'] =  'Home';
             foreach ($tabs as $tab) {
                 if (!isset($system_tabs[$tab])) {
@@ -221,8 +226,9 @@ class TabController
                 }
             }
             return $tabs;
+        } else {
+            return $system_tabs;
         }
-        return $system_tabs;
     }
 
     public function get_old_tabs($user)

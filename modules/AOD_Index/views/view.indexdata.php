@@ -27,13 +27,17 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 require_once('include/MVC/View/SugarView.php');
-require_once('include/MVC/View/views/view.list.php');
 
+/**
+ * @deprecated since v7.12.0
+ * Class AOD_IndexViewIndexData
+ */
 class AOD_IndexViewIndexData extends SugarView
 {
 
     /**
      * display the form
+     * @deprecated since v7.12.0
      */
     public function display()
     {

@@ -79,19 +79,7 @@ class jjwg_MapsController extends SugarController
         $this->configuration();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function jjwg_MapsController()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     /**
@@ -103,7 +91,7 @@ class jjwg_MapsController extends SugarController
      */
     public function configuration()
     {
-        $this->bean = new jjwg_Maps();
+        $this->bean = BeanFactory::newBean('jjwg_Maps');
         $this->jjwg_Maps = &$this->bean; // Set deprecated reference
         $this->settings = $GLOBALS['jjwg_config'];
     }
@@ -500,11 +488,11 @@ class jjwg_MapsController extends SugarController
         $output = array();
         foreach ($fields as $field) {
             $output[] = preg_match("/(?:${delimiter_esc}|${enclosure_esc}|\s)/", $field) ? (
-                    $enclosure . str_replace($enclosure, $enclosure . $enclosure, $field) . $enclosure
+                $enclosure . str_replace($enclosure, $enclosure . $enclosure, $field) . $enclosure
                     ) : $field;
         }
 
-        return (join($delimiter, $output) . "\n");
+        return (implode($delimiter, $output) . "\n");
     }
 
     /**
@@ -685,22 +673,26 @@ class jjwg_MapsController extends SugarController
                 $map_distance = $map->distance;
             }
             // Else if a 'relate_id' use it as the Relate Center Point (Lng/Lat)
-            elseif (@(is_guid($_REQUEST['relate_id']) && !empty($_REQUEST['relate_module']))) {
-                // Define map variables
-                $map_parent_type = $_REQUEST['relate_module'];
-                $map_parent_id = $_REQUEST['relate_id'];
-                $map_module_type = (!empty($_REQUEST['display_module'])) ? $_REQUEST['display_module'] : $_REQUEST['relate_module'];
-                $map_distance = (!empty($_REQUEST['distance'])) ? $_REQUEST['distance'] : $this->settings['map_default_distance'];
-                $map_unit_type = (!empty($_REQUEST['unit_type'])) ? $_REQUEST['unit_type'] : $this->settings['map_default_unit_type'];
-            }
-            // Else if a 'quick_address' use it as the Center Point (Lng/Lat)
-            elseif (!empty($_REQUEST['quick_address']) && !empty($_REQUEST['display_module'])) {
-                // Define map variables / No Parent
-                $map_parent_type = null;
-                $map_parent_id = null;
-                $map_module_type = (!empty($_REQUEST['display_module'])) ? $_REQUEST['display_module'] : $_REQUEST['relate_module'];
-                $map_distance = (!empty($_REQUEST['distance'])) ? $_REQUEST['distance'] : $this->settings['map_default_distance'];
-                $map_unit_type = (!empty($_REQUEST['unit_type'])) ? $_REQUEST['unit_type'] : $this->settings['map_default_unit_type'];
+            else {
+                if (@(is_guid($_REQUEST['relate_id']) && !empty($_REQUEST['relate_module']))) {
+                    // Define map variables
+                    $map_parent_type = $_REQUEST['relate_module'];
+                    $map_parent_id = $_REQUEST['relate_id'];
+                    $map_module_type = (!empty($_REQUEST['display_module'])) ? $_REQUEST['display_module'] : $_REQUEST['relate_module'];
+                    $map_distance = (!empty($_REQUEST['distance'])) ? $_REQUEST['distance'] : $this->settings['map_default_distance'];
+                    $map_unit_type = (!empty($_REQUEST['unit_type'])) ? $_REQUEST['unit_type'] : $this->settings['map_default_unit_type'];
+                }
+                // Else if a 'quick_address' use it as the Center Point (Lng/Lat)
+                else {
+                    if (!empty($_REQUEST['quick_address']) && !empty($_REQUEST['display_module'])) {
+                        // Define map variables / No Parent
+                        $map_parent_type = null;
+                        $map_parent_id = null;
+                        $map_module_type = (!empty($_REQUEST['display_module'])) ? $_REQUEST['display_module'] : $_REQUEST['relate_module'];
+                        $map_distance = (!empty($_REQUEST['distance'])) ? $_REQUEST['distance'] : $this->settings['map_default_distance'];
+                        $map_unit_type = (!empty($_REQUEST['unit_type'])) ? $_REQUEST['unit_type'] : $this->settings['map_default_unit_type'];
+                    }
+                }
             }
 
             // Define display object, note - 'Accounts_Members' is a special display type
@@ -865,7 +857,7 @@ class jjwg_MapsController extends SugarController
                         ' FROM '.$this->display_object->table_name.' '.
                             'LEFT JOIN prospect_lists_prospects ON prospect_lists_prospects.related_id = '.$this->display_object->table_name.'.id AND prospect_lists_prospects.deleted=0 '.
                             'LEFT JOIN prospect_lists ON prospect_lists_prospects.prospect_list_id = prospect_lists.id AND prospect_lists.deleted=0 ',
-                            $query
+                        $query
                     );
                     // Restrict WHERE to related type and $list_id
                     $query .= ' AND prospect_lists_prospects.related_type = \''.$this->display_object->module_name.'\' AND '.
@@ -1114,8 +1106,9 @@ class jjwg_MapsController extends SugarController
             $marker['html'] = preg_replace('/\n\r/', ' ', $marker['html']);
             //var_dump($marker['html']);
             return $marker;
+        } else {
+            return false;
         }
-        return false;
     }
 
     /**
@@ -1161,8 +1154,9 @@ class jjwg_MapsController extends SugarController
             $marker['html'] = preg_replace('/\n\r/', ' ', $marker['html']);
             //var_dump($marker['html']);
             return $marker;
+        } else {
+            return false;
         }
-        return false;
     }
 
     /**
@@ -1198,8 +1192,9 @@ class jjwg_MapsController extends SugarController
             $area['html'] = preg_replace('/\n\r/', ' ', $area['html']);
             //var_dump($marker['html']);
             return $area;
+        } else {
+            return false;
         }
-        return false;
     }
 
     /**

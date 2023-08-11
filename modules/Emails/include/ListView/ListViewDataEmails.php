@@ -160,38 +160,6 @@ class ListViewDataEmails extends ListViewData
          */
         $inboundEmail = BeanFactory::getBean('InboundEmail', $inboundEmailID);
 
-        if (!$inboundEmail || !isset($inboundEmail->id) || !$inboundEmail->id) {
-
-            // something went wrong when SugarBean trying to retrieve the inbound email account
-            // maybe there is no IE bean in database or wrong ID stored in user preferences?
-            // look at the active group emails and load from the first one possibility
-
-            $query = "
-              SELECT inbound_email.id FROM inbound_email
-                JOIN folders ON
-                  folders.id = inbound_email.id AND
-                  folders.folder_type = 'inbound' AND
-                  folders.deleted = 0
-
-                WHERE
-                  inbound_email.status = 'Active' AND
-                  inbound_email.mailbox_type not like 'bounce' AND
-                  inbound_email.is_personal = 0 AND
-                  inbound_email.deleted = 0";
-
-            $results = $this->db->query($query);
-
-            $rows = array();
-            while ($row = $this->db->fetchByAssoc($results)) {
-                $rows[] = $row;
-            }
-
-            if ($rows) {
-                $inboundEmailID = $rows[0]['id'];
-                $inboundEmail = BeanFactory::getBean('InboundEmail', $inboundEmailID);
-            }
-        }
-
         if (!$inboundEmail) {
             throw new SuiteException("Error: InboundEmail not loaded (id:{$inboundEmailID})");
         }
@@ -238,7 +206,9 @@ class ListViewDataEmails extends ListViewData
     {
         switch ($folder->getType()) {
             case "inbound":
-                $inboundEmail->mailbox = $inboundEmail->get_stored_options('mailbox');
+                // Use the mailbox associated with $folder rather than the option string
+                // Used in the IMAP connection string later
+                $inboundEmail->mailbox = $folder->getMailbox();
                 break;
 
             case "draft":
@@ -254,7 +224,7 @@ class ListViewDataEmails extends ListViewData
                 break;
 
             default:
-                $inboundEmail->mailbox = empty($folder->id) ? '' : $folder->mailbox;
+                $inboundEmail->mailbox = empty($folder->id) ? '' : $folder->getMailbox();
                 break;
         }
     }
@@ -294,7 +264,7 @@ class ListViewDataEmails extends ListViewData
                     continue;
                 }
 
-                // strip out the suffix to the the field names
+                // strip out the suffix to the field names
                 if ((stristr($filteredField, 'advanced') !== false) || (stristr($filteredField, 'basic') !== false)) {
                     $f = str_ireplace('_advanced', '', $filteredField);
                     $f = str_ireplace('_basic', '', $f);
@@ -322,12 +292,14 @@ class ListViewDataEmails extends ListViewData
                     } else {
                         if (!empty($request[$filteredField.'_advanced'])) {
                             $filter[self::$mapServerFields[$filteredField]] = $request[$filteredField.'_advanced'];
-                        } elseif (!empty($request[$filteredField.'_basic'])) {
-                            $filter[self::$mapServerFields[$filteredField]] = $request[$filteredField.'_basic'];
                         } else {
-                            $f = str_ireplace('_advanced', '', $filteredField);
-                            $f = str_ireplace('_basic', '', $f);
-                            $filter[self::$mapServerFields[$filteredField]] = $f;
+                            if (!empty($request[$filteredField.'_basic'])) {
+                                $filter[self::$mapServerFields[$filteredField]] = $request[$filteredField.'_basic'];
+                            } else {
+                                $f = str_ireplace('_advanced', '', $filteredField);
+                                $f = str_ireplace('_basic', '', $f);
+                                $filter[self::$mapServerFields[$filteredField]] = $f;
+                            }
                         }
                     }
                 }
@@ -353,20 +325,24 @@ class ListViewDataEmails extends ListViewData
             if (array_search($EmailSearchField, self::$alwaysIncludeSearchFields) !== false) {
                 $filterFields[$EmailSearchField] = true;
                 continue;
-            } elseif (
+            } else {
+                if (
                 array_key_exists($EmailSearchField . '_advanced', $request) &&
                 empty($request[$EmailSearchField . '_advanced'])
             ) {
-                $pos = array_search($EmailSearchField, $filterFields);
-                unset($filterFields[$pos]);
-                continue;
-            } elseif (
+                    $pos = array_search($EmailSearchField, $filterFields);
+                    unset($filterFields[$pos]);
+                    continue;
+                } else {
+                    if (
                 array_key_exists($EmailSearchField . '_basic', $request) &&
                 empty($request[$EmailSearchField . '_basic'])
             ) {
-                $pos = array_search($EmailSearchField, $filterFields);
-                unset($filterFields[$pos]);
-                continue;
+                        $pos = array_search($EmailSearchField, $filterFields);
+                        unset($filterFields[$pos]);
+                        continue;
+                    }
+                }
             }
 
             if (!array_key_exists($EmailSearchField, $filterFields)) {
@@ -594,7 +570,7 @@ class ListViewDataEmails extends ListViewData
                     $is_imported = [];
                 }
 
-                if ($is_imported instanceof Countable) {
+                if (is_array($is_imported) || $is_imported instanceof Countable) {
                     $count = count($is_imported);
                 } else {
                     LoggerManager::getLogger()->warn('ListViewDataEmails::getEmailRecordFieldValue: email list should be a Countable');
@@ -734,7 +710,13 @@ class ListViewDataEmails extends ListViewData
 
         try {
             $folderObj = new Folder();
-            $folderObj->retrieveFromRequest($request);
+
+            $folderObj->loadMailboxFolder($request ?? []);
+
+            if (empty($folderObj->getId())) {
+                LoggerManager::getLogger()->warn('Unable get Inbound Email for List View. Please check your settings and try again.');
+                return false;
+            }
 
             $inboundEmail = $this->getInboundEmail($current_user, $folderObj);
             if (!$inboundEmail || $inboundEmail && !$inboundEmail->id) {
@@ -816,7 +798,7 @@ class ListViewDataEmails extends ListViewData
                         $pageData,
                         $filter_fields
                     );
-                    
+
                     break;
 
                 default:

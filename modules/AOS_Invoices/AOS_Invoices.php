@@ -35,19 +35,7 @@ class AOS_Invoices extends AOS_Invoices_sugar
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function AOS_Invoices()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     public function save($check_notify = false)
@@ -84,7 +72,7 @@ class AOS_Invoices extends AOS_Invoices_sugar
         $return_id = parent::save($check_notify);
 
         require_once('modules/AOS_Line_Item_Groups/AOS_Line_Item_Groups.php');
-        $productQuoteGroup = new AOS_Line_Item_Groups();
+        $productQuoteGroup = BeanFactory::newBean('AOS_Line_Item_Groups');
         $productQuoteGroup->save_groups($_POST, $this, 'group_');
 
         return $return_id;
@@ -92,7 +80,7 @@ class AOS_Invoices extends AOS_Invoices_sugar
 
     public function mark_deleted($id)
     {
-        $productQuote = new AOS_Products_Quotes();
+        $productQuote = BeanFactory::newBean('AOS_Products_Quotes');
         $productQuote->mark_lines_deleted($this);
         parent::mark_deleted($id);
     }

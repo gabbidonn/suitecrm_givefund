@@ -43,7 +43,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
  */
 
 
-require_once('include/MVC/View/views/view.detail.php');
 
 class ProspectsViewDetail extends ViewDetail
 {
@@ -52,19 +51,7 @@ class ProspectsViewDetail extends ViewDetail
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function ProspectsViewDetail()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     public function display()
@@ -72,7 +59,7 @@ class ProspectsViewDetail extends ViewDetail
         if (isset($this->bean->lead_id) && !empty($this->bean->lead_id)) {
 
             //get lead name
-            $lead = new Lead();
+            $lead = BeanFactory::newBean('Leads');
             $lead->retrieve($this->bean->lead_id);
             $this->ss->assign('lead', $lead);
         }

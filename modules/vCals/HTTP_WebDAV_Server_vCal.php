@@ -74,25 +74,9 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
 
         public function __construct()
         {
-            $this->vcal_focus = new vCal();
-            $this->user_focus = new User();
+            $this->vcal_focus = BeanFactory::newBean('vCals');
+            $this->user_focus = BeanFactory::newBean('Users');
         }
-
-        /**
-         * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-         */
-        public function HTTP_WebDAV_Server_vCal()
-        {
-            $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-            if (isset($GLOBALS['log'])) {
-                $GLOBALS['log']->deprecated($deprecatedMessage);
-            } else {
-                trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-            }
-            self::__construct();
-        }
-
-
 
         /**
          * Serve a webdav request
@@ -125,8 +109,10 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
             // set root directory, defaults to webserver document root if not set
             if ($base) {
                 $this->base = realpath($base); // TODO throw if not a directory
-            } elseif (!$this->base) {
-                $this->base = $_SERVER['DOCUMENT_ROOT'];
+            } else {
+                if (!$this->base) {
+                    $this->base = $_SERVER['DOCUMENT_ROOT'];
+                }
             }
 
 
@@ -141,10 +127,6 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
                 }
             } else {
                 $this->path = $this->_urldecode($_SERVER["PATH_INFO"]);
-
-                if (ini_get("magic_quotes_gpc")) {
-                    $this->path = stripslashes($this->path);
-                }
 
                 $query_str = preg_replace('/^\//', '', $this->path);
                 $query_arr =  array();
@@ -173,22 +155,26 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
             if (! empty($query_arr['user_id'])) {
                 $this->user_focus->retrieve(clean_string($query_arr['user_id']));
                 $this->user_focus->loadPreferences();
-            } elseif (! empty($query_arr['email'])) {
-                // clean the string!
-                $query_arr['email'] = clean_string($query_arr['email']);
-                //get user info
-                $this->user_focus->retrieve_by_email_address($query_arr['email']);
-            } elseif (! empty($query_arr['user_name'])) {
-                // clean the string!
-                $query_arr['user_name'] = clean_string($query_arr['user_name']);
-
-                //get user info
-                $arr = array('user_name' => $query_arr['user_name']);
-                $this->user_focus->retrieve_by_string_fields($arr);
             } else {
-                $errorMessage = 'vCal Server - Invalid request.';
-                $log->warning($errorMessage);
-                print $errorMessage;
+                if (! empty($query_arr['email'])) {
+                    // clean the string!
+                    $query_arr['email'] = clean_string($query_arr['email']);
+                    //get user info
+                    $this->user_focus->retrieve_by_email_address($query_arr['email']);
+                } else {
+                    if (! empty($query_arr['user_name'])) {
+                        // clean the string!
+                        $query_arr['user_name'] = clean_string($query_arr['user_name']);
+
+                        //get user info
+                        $arr = array('user_name' => $query_arr['user_name']);
+                        $this->user_focus->retrieve_by_string_fields($arr);
+                    } else {
+                        $errorMessage = 'vCal Server - Invalid request.';
+                        $log->warning($errorMessage);
+                        print $errorMessage;
+                    }
+                }
             }
 
             /**
@@ -374,7 +360,7 @@ require_once 'include/HTTP_WebDAV_Server/Server.php';
             }
 
             // open input stream
-            $options["stream"] = fopen("php://input", "r");
+            $options["stream"] = fopen("php://input", 'rb');
             $content = '';
 
             // read in input stream

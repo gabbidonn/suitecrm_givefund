@@ -45,25 +45,13 @@ class LeadsController extends SugarController
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function LeadsController()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
     public function pre_editview()
     {
         //IF we have a prospect id leads convert it to a lead
         if (empty($this->bean->id) && !empty($_REQUEST['return_module']) &&$_REQUEST['return_module'] == 'Prospects') {
-            $prospect=new Prospect();
+            $prospect=BeanFactory::newBean('Prospects');
             $prospect->retrieve($_REQUEST['return_id']);
             foreach ($prospect->field_defs as $key=>$value) {
                 if ($key == 'id' or $key=='deleted') {

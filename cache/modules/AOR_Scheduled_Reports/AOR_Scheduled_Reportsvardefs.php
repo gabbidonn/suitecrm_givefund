@@ -159,6 +159,16 @@
       'bean_name' => 'User',
       'source' => 'non-db',
     ),
+    'SecurityGroups' => 
+    array (
+      'name' => 'SecurityGroups',
+      'type' => 'link',
+      'relationship' => 'securitygroups_aor_scheduled_reports',
+      'module' => 'SecurityGroups',
+      'bean_name' => 'SecurityGroup',
+      'source' => 'non-db',
+      'vname' => 'LBL_SECURITYGROUPS',
+    ),
     'schedule' => 
     array (
       'required' => true,
@@ -242,7 +252,7 @@
       'required' => true,
       'save' => true,
       'id_name' => 'aor_report_id',
-      'link' => 'aor_scheduled_reports_aor_reports',
+      'link' => 'aor_report',
       'table' => 'aor_reports',
       'module' => 'AOR_Reports',
       'rname' => 'name',
@@ -277,6 +287,21 @@
       'rhs_key' => 'created_by',
       'relationship_type' => 'one-to-many',
     ),
+    'securitygroups_aor_scheduled_reports' => 
+    array (
+      'lhs_module' => 'SecurityGroups',
+      'lhs_table' => 'securitygroups',
+      'lhs_key' => 'id',
+      'rhs_module' => 'AOR_Scheduled_Reports',
+      'rhs_table' => 'aor_scheduled_reports',
+      'rhs_key' => 'id',
+      'relationship_type' => 'many-to-many',
+      'join_table' => 'securitygroups_records',
+      'join_key_lhs' => 'securitygroup_id',
+      'join_key_rhs' => 'record_id',
+      'relationship_role_column' => 'module',
+      'relationship_role_column_value' => 'AOR_Scheduled_Reports',
+    ),
   ),
   'optimistic_locking' => true,
   'unified_search' => false,
@@ -294,6 +319,7 @@
   ),
   'templates' => 
   array (
+    'security_groups' => 'security_groups',
     'basic' => 'basic',
   ),
   'custom_fields' => false,

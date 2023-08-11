@@ -23,7 +23,7 @@
       'vname' => 'LBL_CAMPAIGN_NAME',
       'dbType' => 'varchar',
       'type' => 'name',
-      'len' => '50',
+      'len' => '255',
       'comment' => 'The name of the campaign',
       'importable' => 'required',
       'required' => true,
@@ -464,6 +464,14 @@
       'link_class' => 'ProspectLink',
       'link_file' => 'modules/Campaigns/ProspectLink.php',
     ),
+    'notes' => 
+    array (
+      'name' => 'notes',
+      'type' => 'link',
+      'relationship' => 'campaign_notes',
+      'source' => 'non-db',
+      'vname' => 'LBL_NOTES',
+    ),
     'survey' => 
     array (
       'name' => 'survey',
@@ -644,6 +652,18 @@
       'rhs_table' => 'opportunities',
       'rhs_key' => 'campaign_id',
       'relationship_type' => 'one-to-many',
+    ),
+    'campaign_notes' => 
+    array (
+      'lhs_module' => 'Campaigns',
+      'lhs_table' => 'campaigns',
+      'lhs_key' => 'id',
+      'rhs_module' => 'Notes',
+      'rhs_table' => 'notes',
+      'rhs_key' => 'parent_id',
+      'relationship_type' => 'one-to-many',
+      'relationship_role_column' => 'parent_type',
+      'relationship_role_column_value' => 'Campaigns',
     ),
     'campaign_email_marketing' => 
     array (

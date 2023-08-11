@@ -112,7 +112,7 @@
                                     </td>
                                     <td>
                                         <input name='old_password' id='old_password' type='password' tabindex='2'
-                                               onkeyup="password_confirmation();">
+                                               onkeyup="password_confirmation();" autocomplete="new-password">
                                     </td>
                                     <td width='40%'>
                                     </td>
@@ -235,8 +235,10 @@
                     </slot>&nbsp;{sugar_help text=$MOD.LBL_RECEIVE_NOTIFICATIONS_TEXT}
                 </td>
                 <td width="33%">
-                    <slot><input name='receive_notifications' class="checkbox" tabindex='12' type="checkbox"
-                                 value="12" {$RECEIVE_NOTIFICATIONS}></slot>
+                    <slot>
+                        <input type='hidden' value='0' name='receive_notifications'>
+                        <input name='receive_notifications' class="checkbox" tabindex='12' type="checkbox" value="1" {$RECEIVE_NOTIFICATIONS}>
+                    </slot>
                 </td>
             </tr>
 
@@ -459,6 +461,32 @@
                         <select tabindex='14'
                                 name='fdow'>{html_options options=$FDOWOPTIONS selected=$FDOWCURRENT}</select>
                     </slot>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="google_options" style="display:{$HIDE_IF_GAUTH_UNCONFIGURED}">
+        <table width="100%" border="0" cellspacing="1" cellpadding="0" class="edit view">
+            <tr>
+                <th align="left" scope="row" colspan="4"><h4>{$MOD.LBL_GOOGLE_API_SETTINGS}</h4></th>
+            </tr>
+            <tr>
+                <td width="17%" scope="row">
+                    <slot>{$MOD.LBL_GOOGLE_API_TOKEN}:</slot>&nbsp;{sugar_help text=$MOD.LBL_GOOGLE_API_TOKEN_HELP}
+                </td>
+                    <td width="20%">
+                    <slot>Current API Token is: <span style="color:{$GOOGLE_API_TOKEN_COLOR}">{$GOOGLE_API_TOKEN}</span> &nbsp;&nbsp;<input style="display:{$GOOGLE_API_TOKEN_ENABLE_NEW}" class="btn btn-primary btn-sm" id="google_gettoken" type="button" value="{$GOOGLE_API_TOKEN_BTN}" onclick="window.open('{$GOOGLE_API_TOKEN_NEW_URL}', '_self')" /></slot>
+                </td>
+                <td width="63%">
+                    <slot>&nbsp;</slot>
+                </td>
+            </tr>
+            <tr>
+                <td width="17%" scope="row">
+                    <slot>{$MOD.LBL_GSYNC_CAL}:</slot>
+                </td>
+                <td>
+                    <slot><input tabindex='12' name='gsync_cal' class="checkbox" type="checkbox" {$GSYNC_CAL}></slot>
                 </td>
             </tr>
         </table>

@@ -771,7 +771,7 @@
       'relationship_type' => 'one-to-many',
     ),
   ),
-  'optimistic_lock' => true,
+  'optimistic_locking' => false,
   'templates' => 
   array (
     'assignable' => 'assignable',

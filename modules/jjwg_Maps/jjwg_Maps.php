@@ -275,21 +275,6 @@ class jjwg_Maps extends jjwg_Maps_sugar
     }
 
     /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function jjwg_Maps($init=true)
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($init);
-    }
-
-
-    /**
      * Load Configuration Settings using Administration Module
      *
      */
@@ -304,7 +289,7 @@ class jjwg_Maps extends jjwg_Maps_sugar
             $GLOBALS['sugar_config']['resource_management']['default_limit'] = 20000;
         }
 
-        $admin = new Administration();
+        $admin = BeanFactory::newBean('Administration');
         $admin->retrieveSettings('jjwg', true);
         $settings = $admin->settings;
 
@@ -410,7 +395,7 @@ class jjwg_Maps extends jjwg_Maps_sugar
      */
     public function saveConfiguration($data = array())
     {
-        $admin = new Administration();
+        $admin = BeanFactory::newBean('Administration');
         //$admin->retrieveSettings('jjwg', true);
         //$settings = $admin->settings;
         $category = 'jjwg';
@@ -422,13 +407,13 @@ class jjwg_Maps extends jjwg_Maps_sugar
 
             if (isset($data['valid_geocode_modules'])) {
                 if (is_array($data['valid_geocode_modules'])) {
-                    $data['valid_geocode_modules'] = join(', ', $data['valid_geocode_modules']);
+                    $data['valid_geocode_modules'] = implode(', ', $data['valid_geocode_modules']);
                 }
                 $admin->saveSetting($category, 'valid_geocode_modules', $data['valid_geocode_modules']);
             }
             if (isset($data['valid_geocode_tables'])) {
                 if (is_array($data['valid_geocode_tables'])) {
-                    $data['valid_geocode_tables'] = join(', ', $data['valid_geocode_tables']);
+                    $data['valid_geocode_tables'] = implode(', ', $data['valid_geocode_tables']);
                 }
                 $admin->saveSetting($category, 'valid_geocode_tables', $data['valid_geocode_tables']);
             }
@@ -936,7 +921,7 @@ class jjwg_Maps extends jjwg_Maps_sugar
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         // Add proxy option if user enabled proxy
-        $admin_config = new Administration();
+        $admin_config = BeanFactory::newBean('Administration');
         $admin_config->retrieveSettings('proxy');
         if (!empty($admin_config->settings['proxy_on'])) {
             $proxy_host = $admin_config->settings['proxy_host'];
@@ -1003,9 +988,10 @@ class jjwg_Maps extends jjwg_Maps_sugar
         if ($return_full_array) {
             $GLOBALS['log']->debug(__METHOD__.' $googlemaps: '.print_r($googlemaps, true));
             return $googlemaps;
+        } else {
+            $GLOBALS['log']->debug(__METHOD__.' $aInfo: '.print_r($aInfo, true));
+            return $aInfo;
         }
-        $GLOBALS['log']->debug(__METHOD__.' $aInfo: '.print_r($aInfo, true));
-        return $aInfo;
     }
 
     /**
@@ -1112,13 +1098,18 @@ class jjwg_Maps extends jjwg_Maps_sugar
                 $GLOBALS['log']->debug(__METHOD__.' Project to Opportunity');
                 $result = $this->db->limitQuery($query, 0, 1);
                 $opportunity = $this->db->fetchByAssoc($result);
-                // Find Account - Assume only one related Account for the Opportunity
-                $query = "SELECT accounts.*, accounts_cstm.* FROM accounts LEFT JOIN accounts_cstm ON accounts.id = accounts_cstm.id_c " .
-                        " LEFT JOIN accounts_opportunities ON accounts.id = accounts_opportunities.account_id AND accounts_opportunities.deleted = 0 " .
-                        " WHERE accounts.deleted = 0 AND accounts_opportunities.opportunity_id = '" . $opportunity['id'] . "'";
-                $GLOBALS['log']->debug(__METHOD__.' Opportunity to Account');
-                $result = $this->db->limitQuery($query, 0, 1);
-                $fields = $this->db->fetchByAssoc($result);
+                if ($opportunity === false) {
+                    $result = null;
+                    $fields = null;
+                } else {
+                    // Find Account - Assume only one related Account for the Opportunity
+                    $query = "SELECT accounts.*, accounts_cstm.* FROM accounts LEFT JOIN accounts_cstm ON accounts.id = accounts_cstm.id_c " .
+                            " LEFT JOIN accounts_opportunities ON accounts.id = accounts_opportunities.account_id AND accounts_opportunities.deleted = 0 " .
+                            " WHERE accounts.deleted = 0 AND accounts_opportunities.opportunity_id = '" . $opportunity['id'] . "'";
+                    $GLOBALS['log']->debug(__METHOD__.' Opportunity to Account');
+                    $result = $this->db->limitQuery($query, 0, 1);
+                    $fields = $this->db->fetchByAssoc($result);
+                }
             }
 
             if (!empty($fields)) {
@@ -1133,8 +1124,13 @@ class jjwg_Maps extends jjwg_Maps_sugar
             $result = $this->db->limitQuery($query, 0, 1);
             $meeting = $this->db->fetchByAssoc($result);
 
-            $parent_type = $meeting['parent_type'];
-            $parent_id = $meeting['parent_id'];
+            if ($meeting === false) {
+                $parent_type = null;
+                $parent_id = null;
+            } else {
+                $parent_type = $meeting['parent_type'];
+                $parent_id = $meeting['parent_id'];
+            }
             $GLOBALS['log']->debug(__METHOD__.' Meeting $parent_type: '.$parent_type);
             $GLOBALS['log']->debug(__METHOD__.' Meeting $parent_id: '.$parent_id);
 
@@ -1161,7 +1157,7 @@ class jjwg_Maps extends jjwg_Maps_sugar
 
 
         // If related account address has already been geocoded
-        if (!empty($address) && $fields['jjwg_maps_geocode_status_c'] == 'OK' &&
+        if (!empty($address) && !is_bool($fields) && $fields['jjwg_maps_geocode_status_c'] == 'OK' &&
                 !empty($fields['jjwg_maps_lat_c']) && !empty($fields['jjwg_maps_lng_c'])) {
             $aInfo = array(
                 'address' => $address,
@@ -1178,8 +1174,9 @@ class jjwg_Maps extends jjwg_Maps_sugar
             );
             $GLOBALS['log']->debug(__METHOD__.' $address Found $aInfo: '.print_r($aInfo, true));
             return $aInfo;
+        } else {
+            return false;
         }
-        return false;
     }
 
     /**
@@ -1228,8 +1225,9 @@ class jjwg_Maps extends jjwg_Maps_sugar
             $address = preg_replace("/[\t\s]+/", ' ', $address);
             $GLOBALS['log']->debug(__METHOD__.' $address: '.print_r($address, true));
             return trim($address);
+        } else {
+            return false;
         }
-        return false;
     }
 
     /**

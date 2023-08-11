@@ -43,7 +43,7 @@ if (!defined('sugarEntry')) {
 
 
 /**
- * This class is an implemenatation class for all the rest services
+ * This class is an implementation class for all the rest services
  */
 require_once('service/core/SugarWebServiceImpl.php');
 require_once('SugarWebServiceUtilv3.php');
@@ -76,13 +76,13 @@ class SugarWebServiceImplv3 extends SugarWebServiceImpl
         $GLOBALS['log']->info('Begin: SugarWebServiceImpl->login');
         global $sugar_config, $system_config;
         $error = new SoapError();
-        $user = new User();
+        $user = BeanFactory::newBean('Users');
         $success = false;
         if (!empty($user_auth['encryption']) && $user_auth['encryption'] === 'PLAIN') {
             $user_auth['password'] = md5($user_auth['password']);
         }
         //rrs
-        $system_config = new Administration();
+        $system_config = BeanFactory::newBean('Administration');
         $system_config->retrieveSettings('system');
         $authController = new AuthenticationController();
         //rrs
@@ -134,7 +134,7 @@ class SugarWebServiceImplv3 extends SugarWebServiceImpl
             $_SESSION['authenticated_user_id'] = $current_user->id;
             $_SESSION['unique_key'] = $sugar_config['unique_key'];
             $current_user->call_custom_logic('after_login');
-            $GLOBALS['log']->info('End: SugarWebServiceImpl->login - succesful login');
+            $GLOBALS['log']->info('End: SugarWebServiceImpl->login - successful login');
             $nameValueArray = array();
             global $current_language;
             $nameValueArray['user_id'] = self::$helperObject->get_name_value('user_id', $current_user->id);
@@ -146,7 +146,7 @@ class SugarWebServiceImplv3 extends SugarWebServiceImpl
             $nameValueArray['user_default_team_id'] = self::$helperObject->get_name_value('user_default_team_id', $current_user->default_team);
             $nameValueArray['user_default_dateformat'] = self::$helperObject->get_name_value('user_default_dateformat', $current_user->getPreference('datef'));
             $nameValueArray['user_default_timeformat'] = self::$helperObject->get_name_value('user_default_timeformat', $current_user->getPreference('timef'));
-            $currencyObject = new Currency();
+            $currencyObject = BeanFactory::newBean('Currencies');
             $currencyObject->retrieve($cur_id);
             $nameValueArray['user_currency_name'] = self::$helperObject->get_name_value('user_currency_name', $currencyObject->name);
             $_SESSION['user_language'] = $current_language;
@@ -193,13 +193,16 @@ class SugarWebServiceImplv3 extends SugarWebServiceImpl
     public function get_server_info()
     {
         $GLOBALS['log']->info('Begin: SugarWebServiceImpl->get_server_info');
-        global $sugar_flavor, $sugar_version;
+        global $sugar_flavor, $sugar_version, $suitecrm_version;
         if (empty($sugar_version)) {
             require_once('sugar_version.php');
         }
+        if (empty($suitecrm_version)) {
+            include('suitecrm_version.php');
+        }
         $GLOBALS['log']->info('End: SugarWebServiceImpl->get_server_info');
 
-        return array('flavor' => $sugar_flavor, 'version' => $sugar_version, 'gmt_time' => TimeDate::getInstance()->nowDb());
+        return array('flavor' => $sugar_flavor, 'version' => $sugar_version, 'suitecrm_version' => $suitecrm_version, 'gmt_time' => TimeDate::getInstance()->nowDb());
     } // fn
 
     /**
@@ -329,7 +332,7 @@ class SugarWebServiceImplv3 extends SugarWebServiceImpl
             if ($module == 'Home') {
                 $module = '';
             }
-            $tracker = new Tracker();
+            $tracker = BeanFactory::newBean('Trackers');
             $entryList = $tracker->get_recently_viewed($GLOBALS['current_user']->id, $module);
             foreach ($entryList as $entry) {
                 $results[] = $entry;
@@ -621,7 +624,7 @@ class SugarWebServiceImplv3 extends SugarWebServiceImpl
             $list = $result['rows'];
             $filterFields = $result['fields_set_on_rows'];
 
-            if (sizeof($list) > 0) {
+            if (count($list) > 0) {
                 // get the related module name and instantiate a bean for that.
                 $submodulename = $mod->$link_field_name->getRelatedModuleName();
                 $submoduleclass = $beanList[$submodulename];

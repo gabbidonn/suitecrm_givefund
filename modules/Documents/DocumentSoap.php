@@ -54,26 +54,14 @@ class DocumentSoap
         $this->upload_file = new UploadFile('filename_file');
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function DocumentSoap()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     public function saveFile($document, $portal = false)
     {
         global $sugar_config;
 
-        $focus = new Document();
+        $focus = BeanFactory::newBean('Documents');
 
 
 
@@ -97,7 +85,7 @@ class DocumentSoap
                 $this->upload_file->file_ext = "txt";
             }
 
-            $revision = new DocumentRevision();
+            $revision = BeanFactory::newBean('DocumentRevisions');
             $revision->filename = $this->upload_file->get_stored_file_name();
             $revision->file_mime_type = $this->upload_file->getMimeSoap($revision->filename);
             $revision->file_ext = $this->upload_file->file_ext;

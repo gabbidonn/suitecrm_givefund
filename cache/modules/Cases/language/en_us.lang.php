@@ -1,5 +1,5 @@
 <?php
-// created: 2021-07-06 14:06:09
+// created: 2023-08-11 02:17:07
 $mod_strings = array (
   'LBL_ID' => 'ID',
   'LBL_DATE_ENTERED' => 'Date Created:',
@@ -38,10 +38,10 @@ $mod_strings = array (
   'LBL_SUBJECT' => 'Subject:',
   'ERR_DELETE_RECORD' => 'You must specify a record number to delete the account.',
   'LBL_TOOL_TIP_BOX_TITLE' => 'KnowledgeBase Suggestions',
-  'LBL_TOOL_TIP_TITLE' => 'Title: ',
-  'LBL_TOOL_TIP_BODY' => 'Body: ',
-  'LBL_TOOL_TIP_INFO' => 'Additional Info: ',
-  'LBL_TOOL_TIP_USE' => 'Use as: ',
+  'LBL_TOOL_TIP_TITLE' => 'Title:',
+  'LBL_TOOL_TIP_BODY' => 'Body:',
+  'LBL_TOOL_TIP_INFO' => 'Additional Info:',
+  'LBL_TOOL_TIP_USE' => 'Use as:',
   'LBL_SUGGESTION_BOX' => 'Suggestions',
   'LBL_NO_SUGGESTIONS' => 'No Suggestions',
   'LBL_RESOLUTION_BUTTON' => 'Resolution',
@@ -91,7 +91,7 @@ $mod_strings = array (
   'LBL_AOP_CASE_UPDATES_THREADED' => 'Case Updates Threaded',
   'LBL_CASE_UPDATES_COLLAPSE_ALL' => 'Collapse All',
   'LBL_CASE_UPDATES_EXPAND_ALL' => 'Expand All',
-  'LBL_AOP_CASE_ATTACHMENTS' => 'Attachments: ',
+  'LBL_AOP_CASE_ATTACHMENTS' => 'Attachments:',
   'LBL_AOP_CASE_EVENTS' => 'Case Events',
   'LBL_CASE_ATTACHMENTS_DISPLAY' => 'Case Attachments:',
   'LBL_ADD_CASE_FILE' => 'Add file',
@@ -103,4 +103,5 @@ $mod_strings = array (
   'LBL_CONTACT_CREATED_BY_NAME' => 'Created by contact',
   'LBL_CONTACT_CREATED_BY' => 'Created by',
   'LBL_CASE_UPDATE_FORM' => 'Updates - Attachment form',
+  'LBL_UNKNOWN_CONTACT' => 'Unknown Contact',
 );

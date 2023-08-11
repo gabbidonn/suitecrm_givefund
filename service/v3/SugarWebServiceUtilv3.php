@@ -204,7 +204,7 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices
 
         if ($value->module_dir == 'Bugs') {
             require_once('modules/Releases/Release.php');
-            $seedRelease = new Release();
+            $seedRelease = BeanFactory::newBean('Releases');
             $options = $seedRelease->get_releases(true, "Active");
             $options_ret = array();
             foreach ($options as $name=>$value) {
@@ -355,7 +355,8 @@ class SugarWebServiceUtilv3 extends SoapHelperWebServices
             $response = $seed->get_list(/* Order by date field */"{$meta['date_field']} ASC",  /*Where clause */
                 $query, /* No Offset */
                 0,
-                                        /* No limit */-1, /* Max 10 items */
+                                        /* No limit */
+                -1, /* Max 10 items */
                 10, /*No Deleted */
                 0
             );

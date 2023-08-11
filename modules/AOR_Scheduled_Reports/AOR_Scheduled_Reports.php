@@ -70,19 +70,7 @@ class AOR_Scheduled_Reports extends basic
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function AOR_Scheduled_Reports()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     public function bean_implements($interface)
@@ -95,9 +83,7 @@ class AOR_Scheduled_Reports extends basic
 
     public function save($check_notify = false)
     {
-        if (isset($_POST['email_recipients']) && is_array($_POST['email_recipients'])) {
-            $this->email_recipients = base64_encode(serialize($_POST['email_recipients']));
-        }
+        $this->parseRecipients();
 
         return parent::save($check_notify);
     }
@@ -114,7 +100,7 @@ class AOR_Scheduled_Reports extends basic
                         $emails[] = $params['email'][$key];
                         break;
                     case 'Specify User':
-                        $user = new User();
+                        $user = BeanFactory::newBean('Users');
                         $user->retrieve($params['email'][$key]);
                         $emails[] = $user->emailAddress->getPrimaryAddress($user);
                         break;
@@ -124,13 +110,13 @@ class AOR_Scheduled_Reports extends basic
                             case 'security_group':
                                 if (file_exists('modules/SecurityGroups/SecurityGroup.php')) {
                                     require_once('modules/SecurityGroups/SecurityGroup.php');
-                                    $security_group = new SecurityGroup();
+                                    $security_group = BeanFactory::newBean('SecurityGroups');
                                     $security_group->retrieve($params['email'][$key][1]);
                                     $users = $security_group->get_linked_beans('users', 'User');
                                     $r_users = array();
                                     if ($params['email'][$key][2] != '') {
                                         require_once('modules/ACLRoles/ACLRole.php');
-                                        $role = new ACLRole();
+                                        $role = BeanFactory::newBean('ACLRoles');
                                         $role->retrieve($params['email'][$key][2]);
                                         $role_users = $role->get_linked_beans('users', 'User');
                                         foreach ($role_users as $role_user) {
@@ -148,7 +134,7 @@ class AOR_Scheduled_Reports extends basic
                             // no break
                             case 'role':
                                 require_once('modules/ACLRoles/ACLRole.php');
-                                $role = new ACLRole();
+                                $role = BeanFactory::newBean('ACLRoles');
                                 $role->retrieve($params['email'][$key][2]);
                                 $users = $role->get_linked_beans('users', 'User');
                                 break;
@@ -158,7 +144,7 @@ class AOR_Scheduled_Reports extends basic
                                 $sql = "SELECT id from users WHERE status='Active' AND portal_only=0 ";
                                 $result = $db->query($sql);
                                 while ($row = $db->fetchByAssoc($result)) {
-                                    $user = new User();
+                                    $user = BeanFactory::newBean('Users');
                                     $user->retrieve($row['id']);
                                     $users[$user->id] = $user;
                                 }
@@ -174,21 +160,64 @@ class AOR_Scheduled_Reports extends basic
         return $emails;
     }
 
+    /**
+     * @param DateTime $date
+     * @return bool
+     * @throws Exception
+     */
     public function shouldRun(DateTime $date)
     {
         global $timedate;
-        if (empty($date)) {
-            $date = new DateTime();
-        }
+
+        $runDate = clone $date;
+        $this->handleTimeZone($runDate);
+
         $cron = Cron\CronExpression::factory($this->schedule);
-        if (empty($this->last_run) && $cron->isDue($date)) {
+        if (empty($this->last_run) && $cron->isDue($runDate)) {
             return true;
         }
-        $lastRun = $timedate->fromDb($this->last_run);
+
+        $lastRun = $this->last_run ? $timedate->fromDb($this->last_run) : $timedate->fromDb($this->date_entered);
+
+        $this->handleTimeZone($lastRun);
         $next = $cron->getNextRunDate($lastRun);
-        if ($next < $date) {
-            return true;
-        }
-        return false;
+
+        return $next <= $runDate;
     }
+
+    /**
+     * @param DateTime $date
+     */
+    protected function handleTimeZone(DateTime $date)
+    {
+        global $sugar_config;
+
+        $timezone = !empty($sugar_config['default_timezone']) ? $sugar_config['default_timezone'] : date_default_timezone_get();
+        $timezone = new DateTimeZone($timezone);
+        $offset = $timezone->getOffset($date);
+        $date->modify($offset . 'second');
+    }
+
+    /**
+     * Parse and set recipients
+     * @return void
+     */
+    protected function parseRecipients(): void
+    {
+        $recipients = $_POST['email_recipients'] ?? null;
+        unset($_POST['email_recipients'], $_REQUEST['email_recipients'], $_GET['email_recipients']);
+        $this->email_recipients = null;
+
+        if (is_array($recipients)) {
+            $types = $recipients['email_target_type'] ?? [];
+            $emailInfo = $recipients['email'] ?? [];
+            $recipients = [
+                'email_target_type' => $types,
+                'email' => $emailInfo,
+            ];
+
+            $this->email_recipients = base64_encode(serialize($recipients));
+        }
+    }
+
 }

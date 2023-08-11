@@ -81,9 +81,9 @@
      public $LastChartLayout	= CHART_LAST_LAYOUT_REGULAR;	// Last layout : regular or stacked
 
      /* Class constructor */
-     public function pImage($XSize, $YSize, $DataSet=null, $TransparentBackground=false)
+     public function __construct($XSize, $YSize, $DataSet = null, $TransparentBackground = false)
      {
-         $this->TransparentBackground = $TransparentBackground;
+     $this->TransparentBackground = $TransparentBackground;
 
          if ($DataSet != null) {
              $this->DataSet = $DataSet;
@@ -294,7 +294,7 @@
          if ($FontName != null) {
              $this->FontName = $FontName;
          }
- 
+
          if ($FontSize != null) {
              $this->FontSize = $FontSize;
          }
@@ -365,7 +365,7 @@
              }
              $_SESSION[$this->ImageMapIndex][] = array($Type,$Plots,$Color,$Title,$Message);
          } elseif ($this->ImageMapStorageMode == IMAGE_MAP_STORAGE_FILE) {
-             $Handle = fopen($this->ImageMapStorageFolder."/".$this->ImageMapFileName.".map", 'a');
+             $Handle = fopen($this->ImageMapStorageFolder."/".$this->ImageMapFileName.".map", 'ab');
              fwrite($Handle, $Type.IMAGE_MAP_DELIMITER.$Plots.IMAGE_MAP_DELIMITER.$Color.IMAGE_MAP_DELIMITER.$Title.IMAGE_MAP_DELIMITER.$Message."\r\n");
              fclose($Handle);
          }
@@ -397,7 +397,7 @@
          if (is_array($NewTitle)) {
              $NewTitle = $this->removeVOIDFromArray($OldTitle, $NewTitle);
          }
- 
+
          if ($this->ImageMapStorageMode == IMAGE_MAP_STORAGE_SESSION) {
              if (!isset($_SESSION)) {
                  return(-1);
@@ -419,7 +419,7 @@
              }
          } elseif ($this->ImageMapStorageMode == IMAGE_MAP_STORAGE_FILE) {
              $TempArray = "";
-             $Handle    = @fopen($this->ImageMapStorageFolder."/".$this->ImageMapFileName.".map", "r");
+             $Handle    = @fopen($this->ImageMapStorageFolder."/".$this->ImageMapFileName.".map", 'rb');
              if ($Handle) {
                  while (($Buffer = fgets($Handle, 4096)) !== false) {
                      $Fields      = preg_split("/".IMAGE_MAP_DELIMITER."/", str_replace(array(chr(10),chr(13)), "", $Buffer));
@@ -443,7 +443,7 @@
                      }
                  }
 
-                 $Handle = fopen($this->ImageMapStorageFolder."/".$this->ImageMapFileName.".map", 'w');
+                 $Handle = fopen($this->ImageMapStorageFolder."/".$this->ImageMapFileName.".map", 'wb');
                  foreach ($TempArray as $Key => $Settings) {
                      fwrite($Handle, $Settings[0].IMAGE_MAP_DELIMITER.$Settings[1].IMAGE_MAP_DELIMITER.$Settings[2].IMAGE_MAP_DELIMITER.$Settings[3].IMAGE_MAP_DELIMITER.$Settings[4]."\r\n");
                  }
@@ -475,7 +475,7 @@
              }
          } elseif ($this->ImageMapStorageMode == IMAGE_MAP_STORAGE_FILE) {
              $TempArray = "";
-             $Handle    = @fopen($this->ImageMapStorageFolder."/".$this->ImageMapFileName.".map", "r");
+             $Handle    = @fopen($this->ImageMapStorageFolder."/".$this->ImageMapFileName.".map", 'rb');
              if ($Handle) {
                  while (($Buffer = fgets($Handle, 4096)) !== false) {
                      $Fields      = preg_split("/".IMAGE_MAP_DELIMITER."/", str_replace(array(chr(10),chr(13)), "", $Buffer));
@@ -492,7 +492,7 @@
                      }
                  }
 
-                 $Handle = fopen($this->ImageMapStorageFolder."/".$this->ImageMapFileName.".map", 'w');
+                 $Handle = fopen($this->ImageMapStorageFolder."/".$this->ImageMapFileName.".map", 'wb');
                  foreach ($TempArray as $Key => $Settings) {
                      fwrite($Handle, $Settings[0].IMAGE_MAP_DELIMITER.$Settings[1].IMAGE_MAP_DELIMITER.$Settings[2].IMAGE_MAP_DELIMITER.$Settings[3].IMAGE_MAP_DELIMITER.$Settings[4]."\r\n");
                  }
@@ -518,7 +518,7 @@
              }
          } elseif ($this->ImageMapStorageMode == IMAGE_MAP_STORAGE_FILE) {
              if (file_exists($StorageFolder."/".$UniqueID.".map")) {
-                 $Handle = @fopen($StorageFolder."/".$UniqueID.".map", "r");
+                 $Handle = @fopen($StorageFolder."/".$UniqueID.".map", 'rb');
                  if ($Handle) {
                      while (($Buffer = fgets($Handle, 4096)) !== false) {
                          echo $Buffer;
@@ -539,9 +539,9 @@
      /* Return the HTML converted color from the RGB composite values */
      public function toHTMLColor($R, $G, $B)
      {
-         $R=intval($R);
-         $G=intval($G);
-         $B=intval($B);
+         $R= (int)$R;
+         $G= (int)$G;
+         $B= (int)$B;
          $R=dechex($R<0?0:($R>255?255:$R));
          $G=dechex($G<0?0:($G>255?255:$G));
          $B=dechex($B<0?0:($B>255?255:$B));
@@ -572,7 +572,7 @@
 
          $Picture = imagecreatetruecolor($this->XSize, $this->YSize);
          imagecopy($Picture, $this->Picture, 0, 0, 0, 0, $this->XSize, $this->YSize);
-     
+
          for ($i=1;$i<=$Height;$i++) {
              if ($Y+($i-1) < $this->YSize && $Y-$i > 0) {
                  imagecopymerge($Picture, $this->Picture, $X, $Y+($i-1), $X, $Y-$i, $Width, 1, $StartAlpha-$AlphaStep*$i);

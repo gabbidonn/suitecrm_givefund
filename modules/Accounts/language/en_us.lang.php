@@ -55,7 +55,7 @@ $mod_strings = array(
     // END Dashlet Categories
 
     'ERR_DELETE_RECORD' => 'You must specify a record number in order to delete the account.',
-    'LBL_ACCOUNT_INFORMATION' => 'OVERVIEW',
+    'LBL_ACCOUNT_INFORMATION' => 'OVERVIEW', //No need to be translated in all caps. Translation used just in menu action items when using the SuiteP template
     'LBL_ACCOUNT_NAME' => 'Account Name:',
     'LBL_ACCOUNT' => 'Account:',
     'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
@@ -139,7 +139,7 @@ $mod_strings = array(
     'LBL_SHIPPING_ADDRESS_STREET' => 'Shipping Street:',
     'LBL_SHIPPING_ADDRESS' => 'Shipping Address:',
     'LBL_SIC_CODE' => 'SIC Code:',
-    'LBL_STATE' => 'State:',
+    'LBL_STATE' => 'State/Region:',
     'LBL_TICKER_SYMBOL' => 'Ticker Symbol:',
     'LBL_TYPE' => 'Type:',
     'LBL_WEBSITE' => 'Website:',
@@ -161,4 +161,5 @@ $mod_strings = array(
     'LBL_AOS_CONTRACTS' => 'Contracts',
     'LBL_AOS_INVOICES' => 'Invoices',
     'LBL_AOS_QUOTES' => 'Quotes',
+    'LBL_LIST_WEBSITE' => 'website',
 );

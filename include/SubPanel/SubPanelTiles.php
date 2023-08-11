@@ -144,33 +144,33 @@ class SubPanelTiles
             $tabs = $objSubPanelTilesTabs->getTabs($tabs, $showTabs, $selectedGroup);
             unset($objSubPanelTilesTabs);
             return $tabs;
-        }
-        // see if user current user has custom subpanel layout
-        $objSubPanelTilesTabs = new SubPanelTilesTabs($this->focus);
-        $tabs = $objSubPanelTilesTabs->applyUserCustomLayoutToTabs($tabs);
+        } else {
+            // see if user current user has custom subpanel layout
+            $objSubPanelTilesTabs = new SubPanelTilesTabs($this->focus);
+            $tabs = $objSubPanelTilesTabs->applyUserCustomLayoutToTabs($tabs);
 
-        /* Check if the preference is set now,
-         * because there's no point in executing this code if
-         * we aren't going to render anything.
-         */
-        $subpanelLinksPref = $current_user->getPreference('subpanel_links');
-        if (!isset($subpanelLinksPref)) {
-            $subpanelLinksPref = $GLOBALS['sugar_config']['default_subpanel_links'];
-        }
-
-        if ($showTabs && $subpanelLinksPref) {
-            require_once('include/SubPanel/SugarTab.php');
-            $sugarTab = new SugarTab();
-
-            $displayTabs = array();
-
-            foreach ($tabs as $tab) {
-                $displayTabs []= array('key'=>$tab, 'label'=>translate($this->subpanel_definitions->layout_defs['subpanel_setup'][$tab]['title_key']));
+            /* Check if the preference is set now,
+             * because there's no point in executing this code if
+             * we aren't going to render anything.
+             */
+            $subpanelLinksPref = $current_user->getPreference('subpanel_links');
+            if (!isset($subpanelLinksPref)) {
+                $subpanelLinksPref = $GLOBALS['sugar_config']['default_subpanel_links'];
             }
-            $sugarTab->setup(array(), array(), $displayTabs);
-            $sugarTab->display();
+
+            if ($showTabs && $subpanelLinksPref) {
+                require_once('include/SubPanel/SugarTab.php');
+                $sugarTab = new SugarTab();
+
+                $displayTabs = array();
+
+                foreach ($tabs as $tab) {
+                    $displayTabs []= array('key'=>$tab, 'label'=>translate($this->subpanel_definitions->layout_defs['subpanel_setup'][$tab]['title_key']));
+                }
+                $sugarTab->setup(array(), array(), $displayTabs);
+                $sugarTab->display();
+            }
         }
-        
         return $tabs;
     }
     public function display($showContainer = true, $forceTabless = false)
@@ -190,10 +190,12 @@ class SubPanelTiles
         $tabs_properties = array();
         $tab_names = array();
 
+        $module_sub_panels = [];
+
         $default_div_display = 'inline';
         if (!empty($sugar_config['hide_subpanels_on_login'])) {
             if (!isset($_SESSION['visited_details'][$this->focus->module_dir])) {
-                setcookie($this->focus->module_dir . '_divs', '', 0, null, null, false, true);
+                SugarApplication::setCookie($this->focus->module_dir . '_divs', '', 0, null, null, isSSL(), true);
                 unset($_COOKIE[$this->focus->module_dir . '_divs']);
                 $_SESSION['visited_details'][$this->focus->module_dir] = true;
             }
@@ -211,7 +213,7 @@ class SubPanelTiles
             // so we need to do a merge while attempting as best we can to preserve the sense of the specified order
             // this is complicated by the different ordering schemes used in the two sources for the panels: the user's layout uses an ordinal layout, the panels from getTabs have an explicit ordering driven by the 'order' parameter
             // it's not clear how to best reconcile these two schemes; so we punt on it, and add all new panels to the end of the user's layout. At least this will give them a clue that something has changed...
-            // we also now check for tabs that have been removed since the user saved his or her preferences.
+            // we also now check for tabs that have been removed since the user saved their preferences.
 
             $tabs = $this->getTabs($showContainer, $selected_group) ;
 
@@ -239,7 +241,7 @@ class SubPanelTiles
             if (!class_exists('Relationship')) {
                 require('modules/Relationships/Relationship.php');
             }
-            $rel= new Relationship();
+            $rel= BeanFactory::newBean('Relationships');
             $rel->load_relationship_meta();
         }
 
@@ -373,7 +375,7 @@ class SubPanelTiles
                     $countStr = '...';
                     $extraClass = ' incomplete';
                 }
-                
+
                 $tabs_properties[$t]['title'] .= ' (<span class="subPanelCountHint' . $extraClass . '" data-subpanel="' . $tab . '" data-module="' . $layout_def_key . '" data-record="' . $_REQUEST['record'] . '">' . $countStr . '</span>)';
             }
 
@@ -381,8 +383,11 @@ class SubPanelTiles
             array_push($tab_names, $tab);
         }
 
-        $tab_names = '["' . join($tab_names, '","') . '"]';
+        $tab_names = '["' . implode('","', $tab_names) . '"]';
 
+        if (!isset($module_sub_panels)) {
+            $module_sub_panels = [];
+        }
         $module_sub_panels = array_map('array_keys', $module_sub_panels);
         $module_sub_panels = json_encode($module_sub_panels);
 
@@ -414,6 +419,11 @@ class SubPanelTiles
         return $this->layout_manager;
     }
 
+    /**
+     * @param aSubPanel $thisPanel
+     * @param $panel_query
+     * @return string
+     */
     public function get_buttons($thisPanel, $panel_query=null)
     {
         $subpanel_def = $thisPanel->get_buttons();
@@ -443,11 +453,27 @@ class SubPanelTiles
         $widget_contents = smarty_function_sugar_action_menu(
             [
                 'buttons' => $buttons,
-                'flat' => !empty($thisPanel->_instance_properties['flat']),
                 'class' => 'clickMenu fancymenu',
+                'flat' => $thisPanel->get_inst_prop_value('flat')
             ],
             $this->xTemplate
         );
         return $widget_contents;
+    }
+
+    /**
+     * @param string $html_text
+     * @param aSubPanel $thisPanel
+     * @return string
+     */
+    public function getCheckbox($html_text, $thisPanel)
+    {
+        $template = new Sugar_Smarty();
+
+        if ($thisPanel->get_inst_prop_value('select_link_top')) {
+            $html_text .= $template->fetch('include/SubPanel/tpls/SubPanelCheckbox.tpl');
+        }
+
+        return $html_text;
     }
 }

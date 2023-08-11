@@ -76,6 +76,8 @@ class Project extends SugarBean
     public $new_schema = true;
     public $table_name = 'project';
 
+    public $importable = true;
+
     // This is used to retrieve related fields from form posts.
     public $additional_column_fields = array(
         'account_id',
@@ -102,19 +104,7 @@ class Project extends SugarBean
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function Project()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     /**
@@ -308,7 +298,7 @@ class Project extends SugarBean
         $row = $this->db->fetchByAssoc($result);
 
         while ($row != null) {
-            $projectTaskBean = new ProjectTask();
+            $projectTaskBean = BeanFactory::newBean('ProjectTask');
             $projectTaskBean->id = $row['id'];
             $projectTaskBean->retrieve();
             array_push($projectTasks, $projectTaskBean);
@@ -336,7 +326,8 @@ class Project extends SugarBean
 
     public function save($check_notify = false)
     {
-        global $current_user, $db;
+        global $current_user;
+        $db = DBManagerFactory::getInstance();
         $focus = $this;
 
         //--- check if project template is same or changed.
@@ -491,10 +482,10 @@ class Project extends SugarBean
             $duration_unit = 'Days';
 
             //Get the project template
-            $template = new AM_ProjectTemplates();
+            $template = BeanFactory::newBean('AM_ProjectTemplates');
             $template->retrieve($new_template_id);
 
-            $override_business_hours = intval($template->override_business_hours);
+            $override_business_hours = (int)$template->override_business_hours;
 
 
             //------ build business hours array
@@ -573,7 +564,7 @@ class Project extends SugarBean
             //Create new project tasks from the template tasks
             $count=1;
             while ($row = $db->fetchByAssoc($tasks)) {
-                $project_task = new ProjectTask();
+                $project_task = BeanFactory::newBean('ProjectTask');
                 $project_task->name = $row['name'];
                 $project_task->status = $row['status'];
                 $project_task->priority = strtolower($row['priority']);

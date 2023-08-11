@@ -23,12 +23,12 @@
      public $CRC;
 
      /* Class creator */
-     public function pBarcode128($BasePath="")
+     public function __construct($BasePath = "")
      {
-         $this->Codes   = "";
-         $this->Reverse = "";
+     $this->Codes   = "";
+     $this->Reverse = "";
 
-         $FileHandle = @fopen($BasePath."data/128B.db", "r");
+         $FileHandle = @fopen($BasePath."data/128B.db", 'rb');
 
          if (!$FileHandle) {
              die("Cannot find barcode database (".$BasePath."128B.db).");

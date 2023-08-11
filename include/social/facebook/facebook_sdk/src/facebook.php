@@ -102,7 +102,7 @@ class Facebook extends BaseFacebook
         $base_domain = $this->getBaseDomain();
         $this->sharedSessionID = md5(uniqid(mt_rand(), true));
         $cookie_value = $this->makeSignedRequest(
-      array(
+            array(
         'domain' => $base_domain,
         'id' => $this->sharedSessionID,
       )
@@ -114,7 +114,7 @@ class Facebook extends BaseFacebook
         } else {
             // @codeCoverageIgnoreStart
             self::errorLog(
-        'Shared session ID cookie could not be set! You must ensure you '.
+                'Shared session ID cookie could not be set! You must ensure you '.
         'create the Facebook instance before headers have been sent. This '.
         'will cause authentication issues after the first request.'
       );
@@ -203,7 +203,7 @@ class Facebook extends BaseFacebook
         $cookie_name = $this->getSharedSessionCookieName();
         unset($_COOKIE[$cookie_name]);
         $base_domain = $this->getBaseDomain();
-        setcookie($cookie_name, '', 1, '/', '.'.$base_domain, false, true);
+        SugarApplication::setCookie($cookie_name, '', 1, '/', '.'.$base_domain, false, true);
     }
 
     /**

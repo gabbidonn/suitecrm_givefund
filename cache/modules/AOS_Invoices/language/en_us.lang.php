@@ -1,5 +1,5 @@
 <?php
-// created: 2021-07-06 14:06:12
+// created: 2023-08-11 02:17:20
 $mod_strings = array (
   'LBL_ID' => 'ID',
   'LBL_DATE_ENTERED' => 'Date Created',
@@ -81,7 +81,7 @@ $mod_strings = array (
   'LBL_SHIPPING_ADDRESS_STREET_4' => 'Shipping Street 4',
   'LBL_SHIPPING_ADDRESS_STREET' => 'Shipping Street:',
   'LBL_SHIPPING_ADDRESS' => 'Shipping Address:',
-  'LBL_STATE' => 'State:',
+  'LBL_STATE' => 'State/Region:',
   'LBL_TICKER_SYMBOL' => 'Ticker Symbol:',
   'LBL_TYPE' => 'Type:',
   'LBL_WEBSITE' => 'Website:',

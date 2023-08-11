@@ -59,19 +59,7 @@ class EditViewMetaParser extends MetaParser
         $this->mView = 'EditView';
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function EditViewMetaParser()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     /**
@@ -172,8 +160,11 @@ class EditViewMetaParser extends MetaParser
                }
 
                // If there wasn't any slot numbering/lettering then just default to expect label->vallue pairs
-               $sugarAttrLabel = count($sugarAttrLabel) != 0 ? $sugarAttrLabel : ($slot % 2 == 0) ? true : false;
-               $sugarAttrValue = count($sugarAttrValue) != 0 ? $sugarAttrValue : ($slot % 2 == 1) ? true : false;
+
+               if(count($sugarAttrValue) === 0){
+                   $sugarAttrValue = $slot % 2 === 1;
+               }
+
                $slot++;
 
                if ($sugarAttrValue) {
@@ -198,71 +189,75 @@ class EditViewMetaParser extends MetaParser
                    if (!empty($customField)) {
                        // If it's a custom field we just set the name
                        $name = $customField;
-                   } elseif (empty($formElementNames) && preg_match_all('/[\{]([^\}]*?)[\}]/s', $spanValue, $matches, PREG_SET_ORDER)) {
-                       // We are here if the $spanValue did not contain a form element for editing.
-                       // We will assume that it is read only (since there were no edit form elements)
+                   } else {
+                       if (empty($formElementNames) && preg_match_all('/[\{]([^\}]*?)[\}]/s', $spanValue, $matches, PREG_SET_ORDER)) {
+                           // We are here if the $spanValue did not contain a form element for editing.
+                           // We will assume that it is read only (since there were no edit form elements)
 
 
-                       // If there is more than one matching {} value then try to find the right one to key off
-                       // based on vardefs.php file.  Also, use the entire spanValue as customCode
-                       if (count($matches) > 1) {
-                           $name = $matches[0][1];
-                           $customCode = $spanValue;
-                           foreach ($matches as $pair) {
-                               if (preg_match("/^(mod[\.]|app[\.]).*?/i", $pair[1])) {
-                                   $customCode = str_replace($pair[1], '$'.strtoupper($pair[1]), $customCode);
-                               } else {
-                                   if (!empty($vardefs[$pair[1]])) {
-                                       $name = $pair[1];
-                                       $customCode = str_replace($pair[1], '$fields.'.strtolower($pair[1]).'.value', $customCode);
+                           // If there is more than one matching {} value then try to find the right one to key off
+                           // based on vardefs.php file.  Also, use the entire spanValue as customCode
+                           if (count($matches) > 1) {
+                               $name = $matches[0][1];
+                               $customCode = $spanValue;
+                               foreach ($matches as $pair) {
+                                   if (preg_match("/^(mod[\.]|app[\.]).*?/i", $pair[1])) {
+                                       $customCode = str_replace($pair[1], '$'.strtoupper($pair[1]), $customCode);
                                    } else {
-                                       $phpName = $this->findAssignedVariableName($pair[1], $filePath);
-                                       $customCode = str_replace($pair[1], '$fields.'.strtolower($phpName).'.value', $customCode);
-                                   } //if-else
-                               }
-                           } //foreach
-                       } else {
-                           //If it is only a label, skip
-                           if (preg_match("/^(mod[\.]|app[\.]).*?/i", $matches[0][1])) {
-                               continue;
-                           }
-                           $name = strtolower($matches[0][1]);
-                       }
-                   } elseif (is_array($formElementNames)) {
-                       if (count($formElementNames) == 1) {
-                           if (!empty($vardefs[$formElementNames[0]])) {
-                               $name = $formElementNames[0];
-                           } else {
-                               // Try to use the EdtiView.php file to find author's intent
-                               $name = $this->findAssignedVariableName($formElementNames[0], $filePath);
-
-                               //If it's still empty, just use the entire block as customCode
-                               if (empty($vardefs[$name])) {
-                                   //Replace any { characters just in case
-                                   $customCode = str_replace('{', '{$', $spanValue);
-                               }
-                           } //if-else
-                       } else {
-                           //If it is an Array of form elements, it is likely the _id and _name relate field combo
-                           $relateName = $this->getRelateFieldName($formElementNames);
-                           if (!empty($relateName)) {
-                               $name = $relateName;
-                           } else {
-                               //One last attempt to scan $formElementNames for one vardef field only
-                               $name = $this->findSingleVardefElement($formElementNames, $vardefs);
-                               if (empty($name)) {
-                                   $fields = array();
-                                   $name = $formElementNames[0];
-                                   foreach ($formElementNames as $elementName) {
-                                       if (isset($vardefs[$elementName])) {
-                                           $fields[] = $elementName;
+                                       if (!empty($vardefs[$pair[1]])) {
+                                           $name = $pair[1];
+                                           $customCode = str_replace($pair[1], '$fields.'.strtolower($pair[1]).'.value', $customCode);
                                        } else {
-                                           $fields[] = $this->findAssignedVariableName($elementName, $filePath);
+                                           $phpName = $this->findAssignedVariableName($pair[1], $filePath);
+                                           $customCode = str_replace($pair[1], '$fields.'.strtolower($phpName).'.value', $customCode);
                                        } //if-else
-                                   } //foreach
-                               } //if
-                           } //if-else
-                       } //if-else
+                                   }
+                               } //foreach
+                           } else {
+                               //If it is only a label, skip
+                               if (preg_match("/^(mod[\.]|app[\.]).*?/i", $matches[0][1])) {
+                                   continue;
+                               }
+                               $name = strtolower($matches[0][1]);
+                           }
+                       } else {
+                           if (is_array($formElementNames)) {
+                               if (count($formElementNames) == 1) {
+                                   if (!empty($vardefs[$formElementNames[0]])) {
+                                       $name = $formElementNames[0];
+                                   } else {
+                                       // Try to use the EdtiView.php file to find author's intent
+                                       $name = $this->findAssignedVariableName($formElementNames[0], $filePath);
+
+                                       //If it's still empty, just use the entire block as customCode
+                                       if (empty($vardefs[$name])) {
+                                           //Replace any { characters just in case
+                                           $customCode = str_replace('{', '{$', $spanValue);
+                                       }
+                                   } //if-else
+                               } else {
+                                   //If it is an Array of form elements, it is likely the _id and _name relate field combo
+                                   $relateName = $this->getRelateFieldName($formElementNames);
+                                   if (!empty($relateName)) {
+                                       $name = $relateName;
+                                   } else {
+                                       //One last attempt to scan $formElementNames for one vardef field only
+                                       $name = $this->findSingleVardefElement($formElementNames, $vardefs);
+                                       if (empty($name)) {
+                                           $fields = array();
+                                           $name = $formElementNames[0];
+                                           foreach ($formElementNames as $elementName) {
+                                               if (isset($vardefs[$elementName])) {
+                                                   $fields[] = $elementName;
+                                               } else {
+                                                   $fields[] = $this->findAssignedVariableName($elementName, $filePath);
+                                               } //if-else
+                                           } //foreach
+                                       } //if
+                                   } //if-else
+                               } //if-else
+                           }
+                       }
                    }
 
                    // Build the entry

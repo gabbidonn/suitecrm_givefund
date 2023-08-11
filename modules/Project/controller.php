@@ -38,17 +38,17 @@ class ProjectController extends SugarController
         include_once('modules/Project/gantt.php');
         include_once('modules/Project/project_table.php');
 
-        $project = new Project();
+        $project = BeanFactory::newBean('Project');
         $project->retrieve($_POST["pid"]);
-        
+
         //Get project tasks
         $Task = BeanFactory::getBean('ProjectTask');
         $tasks = $Task->get_full_list("order_number", "project_task.project_id = '".$project->id."'");
-        
+
         //Get the start and end date of the project in database format
         $query = "SELECT min(date_start) FROM project_task WHERE project_id = '{$project->id}'";
         $start_date = $db->getOne($query);
-        
+
         $query = "SELECT max(date_finish) FROM project_task WHERE project_id = '{$project->id}'";
         $end_date = $db->getOne($query);
 
@@ -89,11 +89,12 @@ class ProjectController extends SugarController
     //Create new project task
     public function action_update_GanttChart()
     {
-        global $current_user, $db;
+        global $current_user;
+        $db = DBManagerFactory::getInstance();
 
         $task_name = $_POST['task_name'];
         $project_id = $_POST['project_id'];
-        $override_business_hours = intval($_POST['override_business_hours']);
+        $override_business_hours = (int)$_POST['override_business_hours'];
         $task_id = $_POST['task_id'];
         $predecessor = $_POST['predecessor'];
         $rel_type = $_POST['rel_type'];
@@ -104,8 +105,10 @@ class ProjectController extends SugarController
 
         if ($_POST['milestone'] == 'Milestone') {
             $milestone_flag = '1';
-        } elseif ($_POST['milestone'] == 'Task') {
-            $milestone_flag = '0';
+        } else {
+            if ($_POST['milestone'] == 'Task') {
+                $milestone_flag = '0';
+            }
         }
 
         $dateformat = $current_user->getPreference('datef');
@@ -133,7 +136,7 @@ class ProjectController extends SugarController
 
             if ($bh) {
                 $bh = $bh[0];
-                if ($bh->open) {
+                if ($bh->open_status) {
                     $open_h = $bh ? $bh->opening_hours : 9;
                     $close_h = $bh ? $bh->closing_hours : 17;
 
@@ -219,7 +222,7 @@ class ProjectController extends SugarController
     public function action_delete_task()
     {
         $id = $_POST['task_id'];
-        $task = new ProjectTask();
+        $task = BeanFactory::newBean('ProjectTask');
         $task->retrieve($id);
         $task->deleted = '1';
         $task->save();
@@ -259,7 +262,7 @@ class ProjectController extends SugarController
         $orderArray = json_decode($jArray, true);
 
         foreach ($orderArray as $id => $order_number) {
-            $task = new ProjectTask();
+            $task = BeanFactory::newBean('ProjectTask');
             $task->retrieve($id);
             $task->order_number = $order_number;
             $task->save();
@@ -269,7 +272,7 @@ class ProjectController extends SugarController
     public function action_get_predecessors()
     {
         global $mod_strings;
-        $project = new Project();
+        $project = BeanFactory::newBean('Project');
         $project->retrieve($_REQUEST["project_id"]);
         //Get project tasks
         $Task = BeanFactory::getBean('ProjectTask');
@@ -284,7 +287,7 @@ class ProjectController extends SugarController
 
     public function create_task($name, $start, $end, $project_id, $milestone_flag, $status, $project_task_id, $predecessors, $rel_type, $duration, $duration_unit, $resource, $percent_complete, $description, $actual_duration, $order_number)
     {
-        $task = new ProjectTask();
+        $task = BeanFactory::newBean('ProjectTask');
         $task->name = $name;
         $task->date_start = $start;
         $task->date_finish = $end;
@@ -306,7 +309,7 @@ class ProjectController extends SugarController
 
     public function update_task($id, $name, $start, $end, $project_id, $milestone_flag, $status, $predecessors, $rel_type, $duration, $duration_unit, $resource, $percent_complete, $description, $actual_duration)
     {
-        $task = new ProjectTask();
+        $task = BeanFactory::newBean('ProjectTask');
         $task->retrieve($id);
         $task->name = $name;
         $task->date_start = $start;
@@ -344,12 +347,12 @@ class ProjectController extends SugarController
         //Get  specified dates and users
         $start = $_POST['start'];
         //$end = $_POST['end'];
-        $projects = explode(',', $_POST['projects']);
-        $users = explode(',', $_POST['users']);
-        $contacts = explode(',', $_POST['contacts']);
-        $month = $_POST['month'];
+        $projects = explode(',', $db->quote($_POST['projects']));
+        $users = explode(',', $db->quote($_POST['users']));
+        $contacts = explode(',', $db->quote($_POST['contacts']));
+        $month = is_numeric($_POST['month']) ? $_POST['month'] : '1' ;
         $flag = $_POST['flag'];
-        $chart_type = $_POST['chart_type'];
+        $chart_type = $db->quote($_POST['chart_type']);
         //$type = $_POST['type'];
 
         $start = new DateTime($start);
@@ -454,7 +457,7 @@ class ProjectController extends SugarController
                         $taskarr[$t]['end_date'] = $task->date_finish;
                         $taskarr[$t]['project_id'] = $task->project_id;//parent projects id
                         //get the project name (don't think this is really necessary)
-                        $project = new Project();
+                        $project = BeanFactory::newBean('Project');
                         $project->retrieve($task->project_id);
                         $taskarr[$t]['project_name'] = $project->name;//parent projects id
 
@@ -483,18 +486,20 @@ class ProjectController extends SugarController
     {
         global $mod_strings;
 
-        $start_date = $_REQUEST['start_date'];
-        $end_date = $_REQUEST['end_date'];
-        $resource_id = $_REQUEST['resource_id'];
+        $db = DBManagerFactory::getInstance();
 
-        $projects = explode(",", $_REQUEST['projects']);
+        $start_date = $db->quote($_REQUEST['start_date']);
+        $end_date = $db->quote($_REQUEST['end_date']);
+        $resource_id = $db->quote($_REQUEST['resource_id']);
+
+        $projects = explode(",", $db->quote($_REQUEST['projects']));
         $project_where = "";
         if (count($projects) > 1 || $projects[0] != '') {
             $project_where = " AND project_id IN( '" . implode("','", $projects) . "' )";
         }
 
         $Task = BeanFactory::getBean('ProjectTask');
-        
+
         $tasks = $Task->get_full_list("date_start", "project_task.assigned_user_id = '".$resource_id."' AND ( ( project_task.date_start BETWEEN '".$start_date."'  AND '".$end_date."' ) OR ( project_task.date_finish BETWEEN '".$start_date."' AND '".$end_date."' ) OR ( '".$start_date."' BETWEEN project_task.date_start  AND project_task.date_finish ) OR ( '".$end_date."' BETWEEN project_task.date_start AND project_task.date_finish ) ) AND (project_id is not null AND project_id <> '') " . $project_where);
 
         echo '<table class="qtip_table">';

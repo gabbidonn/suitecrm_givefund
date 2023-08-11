@@ -1,11 +1,9 @@
 <?php
+
 namespace Consolidation\Config\Util;
 
 use Consolidation\Config\Config;
 use Consolidation\Config\ConfigInterface;
-use Consolidation\Config\Util\ArrayUtil;
-use Consolidation\Config\Util\ConfigInterpolatorInterface;
-use Consolidation\Config\Util\ConfigInterpolatorTrait;
 
 /**
  * Overlay different configuration objects that implement ConfigInterface
@@ -15,12 +13,17 @@ use Consolidation\Config\Util\ConfigInterpolatorTrait;
  * individual configuration context. When using overlays, always call
  * getDefault / setDefault on the ConfigOverlay object itself.
  */
-class ConfigOverlay implements ConfigInterface, ConfigInterpolatorInterface
+class ConfigOverlay implements ConfigInterface, ConfigInterpolatorInterface, ConfigRuntimeInterface
 {
     use ConfigInterpolatorTrait;
+
+    /**
+     * @var array
+     */
     protected $contexts = [];
 
     const DEFAULT_CONTEXT = 'default';
+
     const PROCESS_CONTEXT = 'process';
 
     public function __construct()
@@ -36,6 +39,11 @@ class ConfigOverlay implements ConfigInterface, ConfigInterpolatorInterface
      * highest priority.
      *
      * If a context has already been added, its priority will not change.
+     *
+     * @param string $name
+     * @param \Consolidation\Config\ConfigInterface $config
+     *
+     * @return $this
      */
     public function addContext($name, ConfigInterface $config)
     {
@@ -54,6 +62,7 @@ class ConfigOverlay implements ConfigInterface, ConfigInterpolatorInterface
      * is later relaced with a different configuration set via addContext().
      *
      * @param string $name
+     *
      * @return $this
      */
     public function addPlaceholder($name)
@@ -67,6 +76,7 @@ class ConfigOverlay implements ConfigInterface, ConfigInterpolatorInterface
      * context.
      *
      * @param string $name
+     *
      * @return $this
      */
     public function increasePriority($name)
@@ -76,11 +86,21 @@ class ConfigOverlay implements ConfigInterface, ConfigInterpolatorInterface
         return $this->addContext($name, $config);
     }
 
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
     public function hasContext($name)
     {
         return isset($this->contexts[$name]);
     }
 
+    /**
+     * @param string $name
+     *
+     * @return \Consolidation\Config\ConfigInterface
+     */
     public function getContext($name)
     {
         if ($this->hasContext($name)) {
@@ -89,6 +109,17 @@ class ConfigOverlay implements ConfigInterface, ConfigInterpolatorInterface
         return new Config();
     }
 
+    /**
+     * @return \Consolidation\Config\ConfigInterface
+     */
+    public function runtimeConfig()
+    {
+        return $this->getContext(self::PROCESS_CONTEXT);
+    }
+
+    /**
+     * @param string $name
+     */
     public function removeContext($name)
     {
         unset($this->contexts[$name]);
@@ -96,6 +127,10 @@ class ConfigOverlay implements ConfigInterface, ConfigInterpolatorInterface
 
     /**
      * Determine if a non-default config value exists.
+     *
+     * @param string $key
+     *
+     * @return false|\Consolidation\Config\ConfigInterface
      */
     public function findContext($key)
     {
@@ -108,7 +143,7 @@ class ConfigOverlay implements ConfigInterface, ConfigInterpolatorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function has($key)
     {
@@ -116,7 +151,7 @@ class ConfigOverlay implements ConfigInterface, ConfigInterpolatorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function get($key, $default = null)
     {
@@ -126,6 +161,12 @@ class ConfigOverlay implements ConfigInterface, ConfigInterpolatorInterface
         return $this->getSingle($key, $default);
     }
 
+    /**
+     * @param string $key
+     * @param mixed $default
+     *
+     * @return mixed
+     */
     public function getSingle($key, $default = null)
     {
         $context = $this->findContext($key);
@@ -135,6 +176,11 @@ class ConfigOverlay implements ConfigInterface, ConfigInterpolatorInterface
         return $default;
     }
 
+    /**
+     * @param string $key
+     *
+     * @return array
+     */
     public function getUnion($key)
     {
         $result = [];
@@ -148,7 +194,7 @@ class ConfigOverlay implements ConfigInterface, ConfigInterpolatorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function set($key, $value)
     {
@@ -157,39 +203,30 @@ class ConfigOverlay implements ConfigInterface, ConfigInterpolatorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function import($data)
     {
         $this->unsupported(__FUNCTION__);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function replace($data)
     {
         $this->unsupported(__FUNCTION__);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function combine($data)
     {
         $this->unsupported(__FUNCTION__);
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function unsupported($fn)
     {
         throw new \Exception("The method '$fn' is not supported for the ConfigOverlay class.");
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function export()
     {
@@ -202,7 +239,23 @@ class ConfigOverlay implements ConfigInterface, ConfigInterpolatorInterface
     }
 
     /**
-     * @inheritdoc
+     * exportAll returns the export of all contexts, separated into
+     * separate buckets keyed by context name.
+     *
+     * @return array
+     */
+    public function exportAll()
+    {
+        $export = [];
+        foreach ($this->contexts as $name => $config) {
+            $exportToInsert = $config->export();
+            $export[$name] = $exportToInsert;
+        }
+        return $export;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function hasDefault($key)
     {
@@ -210,7 +263,7 @@ class ConfigOverlay implements ConfigInterface, ConfigInterpolatorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getDefault($key, $default = null)
     {
@@ -218,7 +271,7 @@ class ConfigOverlay implements ConfigInterface, ConfigInterpolatorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setDefault($key, $value)
     {

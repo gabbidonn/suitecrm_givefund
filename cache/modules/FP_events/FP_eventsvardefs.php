@@ -363,10 +363,9 @@
       'merge_filter' => 'disabled',
       'len' => 100,
       'size' => '20',
-      'options' => 'email_templet_list',
+      'options' => 'emailTemplates_type_list',
       'studio' => 'visible',
       'dependency' => false,
-      'inline_edit' => false,
     ),
     'accept_redirect' => 
     array (

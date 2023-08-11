@@ -39,12 +39,12 @@
  */
 
 if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
+    die('Not A Valid Entry Point');
 }
 
 
 /**
- * This class is an implemenatation class for all the rest services
+ * This class is an implementation class for all the rest services
  */
 require_once('service/v3/SugarWebServiceImplv3.php');
 require_once('SugarWebServiceUtilv3_1.php');
@@ -98,7 +98,7 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
     {
         $GLOBALS['log']->info('Begin: SugarWebServiceImpl->get_module_fields_md5(v3_1) for module: ' . print_r(
             $module_name,
-                true
+            true
         ));
 
         $results = array();
@@ -112,7 +112,7 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
 
         $GLOBALS['log']->info('End: SugarWebServiceImpl->get_module_fields_md5 (v3_1) for module: ' . print_r(
             $module_name,
-                true
+            true
         ));
 
         return $results;
@@ -138,7 +138,7 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
 
 
     /**
-     * Retrieve a list of SugarBean's based on provided IDs. This API will not wotk with report module
+     * Retrieve a list of SugarBean's based on provided IDs. This API will not work with report module
      *
      * @param String $session -- Session ID returned by a previous call to login.
      * @param String $module_name -- The name of the module to return records from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method)..
@@ -243,7 +243,7 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
         if (self::$helperObject->isLogLevelDebug()) {
             $GLOBALS['log']->debug('SoapHelperWebServices->set_entry - input data is ' . var_export(
                 $name_value_list,
-                    true
+                true
             ));
         } // if
         $error = new SoapError();
@@ -263,6 +263,13 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
         $class_name = $beanList[$module_name];
         require_once($beanFiles[$class_name]);
         $seed = new $class_name();
+
+        $valid = $this->validateFields($name_value_list, $module_name);
+        if ($valid === false) {
+            $GLOBALS['log']->info('End: SugarWebServiceImpl->set_entry');
+            return;
+        }
+
         foreach ($name_value_list as $name => $value) {
             if (is_array($value) && $value['name'] == 'id') {
                 $seed->retrieve($value['value']);
@@ -293,12 +300,12 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
             $seed,
             'Save',
             $error,
-                'no_access'
+            'no_access'
         ) || ($seed->deleted == 1 && !self::$helperObject->checkACLAccess(
-                    $seed,
-                    'Delete',
-                    $error,
-                    'no_access'
+            $seed,
+            'Delete',
+            $error,
+            'no_access'
                 ))
         ) {
             $GLOBALS['log']->info('End: SugarWebServiceImpl->set_entry');
@@ -343,10 +350,10 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
         $GLOBALS['log']->info('Begin: SugarWebServiceImpl->login');
         global $sugar_config, $system_config;
         $error = new SoapError();
-        $user = new User();
+        $user = BeanFactory::newBean('Users');
         $success = false;
         //rrs
-        $system_config = new Administration();
+        $system_config = BeanFactory::newBean('Administration');
         $system_config->retrieveSettings('system');
         $authController = new AuthenticationController();
         //rrs
@@ -399,7 +406,7 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
             $password = self::$helperObject->decrypt_string($user_auth['password']);
             if ($authController->login(
                 $user_auth['user_name'],
-                    $password
+                $password
             ) && isset($_SESSION['authenticated_user_id'])
             ) {
                 $success = true;
@@ -420,7 +427,7 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
             $_SESSION['authenticated_user_id'] = $current_user->id;
             $_SESSION['unique_key'] = $sugar_config['unique_key'];
             $current_user->call_custom_logic('after_login');
-            $GLOBALS['log']->info('End: SugarWebServiceImpl->login - succesful login');
+            $GLOBALS['log']->info('End: SugarWebServiceImpl->login - successful login');
             $nameValueArray = array();
             global $current_language;
             $nameValueArray['user_id'] = self::$helperObject->get_name_value('user_id', $current_user->id);
@@ -447,12 +454,12 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
 
             $num_grp_sep = $current_user->getPreference('num_grp_sep');
             $dec_sep = $current_user->getPreference('dec_sep');
-            $nameValueArray['user_number_seperator'] = self::$helperObject->get_name_value(
-                'user_number_seperator',
+            $nameValueArray['user_number_separator'] = self::$helperObject->get_name_value(
+                'user_number_separator',
                 empty($num_grp_sep) ? $sugar_config['default_number_grouping_seperator'] : $num_grp_sep
             );
-            $nameValueArray['user_decimal_seperator'] = self::$helperObject->get_name_value(
-                'user_decimal_seperator',
+            $nameValueArray['user_decimal_separator'] = self::$helperObject->get_name_value(
+                'user_decimal_separator',
                 empty($dec_sep) ? $sugar_config['default_decimal_seperator'] : $dec_sep
             );
 
@@ -466,7 +473,7 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
             );
 
 
-            $currencyObject = new Currency();
+            $currencyObject = BeanFactory::newBean('Currencies');
             $currencyObject->retrieve($cur_id);
             $nameValueArray['user_currency_name'] = self::$helperObject->get_name_value(
                 'user_currency_name',
@@ -629,31 +636,31 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
     /**
      * Retrieve a list of beans.  This is the primary method for getting list of SugarBeans from Sugar using the SOAP API.
      *
-     * @param String $session -- Session ID returned by a previous call to login.
-     * @param String $module_name -- The name of the module to return records from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method)..
-     * @param String $query -- SQL where clause without the word 'where'
-     * @param String $order_by -- SQL order by clause without the phrase 'order by'
+     * @param string $session -- Session ID returned by a previous call to login.
+     * @param string $module_name -- The name of the module to return records from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method)..
+     * @param string $query -- SQL where clause without the word 'where'
+     * @param string $order_by -- SQL order by clause without the phrase 'order by'
      * @param integer $offset -- The record offset to start from.
-     * @param Array $select_fields -- A list of the fields to be included in the results. This optional parameter allows for only needed fields to be retrieved.
-     * @param Array $link_name_to_fields_array -- A list of link_names and for each link_name, what fields value to be returned. For ex.'link_name_to_fields_array' => array(array('name' =>  'email_addresses', 'value' => array('id', 'email_address', 'opt_out', 'primary_address')))
+     * @param array $select_fields -- A list of the fields to be included in the results. This optional parameter allows for only needed fields to be retrieved.
+     * @param array $link_name_to_fields_array -- A list of link_names and for each link_name, what fields value to be returned. For ex.'link_name_to_fields_array' => array(array('name' =>  'email_addresses', 'value' => array('id', 'email_address', 'opt_out', 'primary_address')))
      * @param integer $max_results -- The maximum number of records to return.  The default is the sugar configuration value for 'list_max_entries_per_page'
-     * @param integer $deleted -- false if deleted records should not be include, true if deleted records should be included.
-     * @return Array 'result_count' -- integer - The number of records returned
+     * @param bool $deleted -- false if deleted records should not be include, true if deleted records should be included.
+     * @return array 'result_count' -- integer - The number of records returned
      *               'next_offset' -- integer - The start of the next page (This will always be the previous offset plus the number of rows returned.  It does not indicate if there is additional data unless you calculate that the next_offset happens to be closer than it should be.
      *               'entry_list' -- Array - The records that were retrieved
      *                 'relationship_list' -- Array - The records link field data. The example is if asked about accounts email address then return data would look like Array ( [0] => Array ( [name] => email_addresses [records] => Array ( [0] => Array ( [0] => Array ( [name] => id [value] => 3fb16797-8d90-0a94-ac12-490b63a6be67 ) [1] => Array ( [name] => email_address [value] => hr.kid.qa@example.com ) [2] => Array ( [name] => opt_out [value] => 0 ) [3] => Array ( [name] => primary_address [value] => 1 ) ) [1] => Array ( [0] => Array ( [name] => id [value] => 403f8da1-214b-6a88-9cef-490b63d43566 ) [1] => Array ( [name] => email_address [value] => kid.hr@example.name ) [2] => Array ( [name] => opt_out [value] => 0 ) [3] => Array ( [name] => primary_address [value] => 0 ) ) ) ) )
      * @exception 'SoapFault' -- The SOAP error, if any
      */
     public function get_entry_list(
-        $session,
-        $module_name,
-        $query,
-        $order_by,
-        $offset,
-        $select_fields,
-        $link_name_to_fields_array,
-        $max_results,
-        $deleted,
+        $session = null,
+        $module_name = null,
+        $query = null,
+        $order_by = null,
+        $offset = null,
+        $select_fields = null,
+        $link_name_to_fields_array = null,
+        $max_results = null,
+        $deleted = false,
         $favorites = false
     ) {
         $GLOBALS['log']->info('Begin: SugarWebServiceImpl->get_entry_list');
@@ -748,7 +755,7 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
         } // foreach
 
         // Calculate the offset for the start of the next page
-        $next_offset = $offset + sizeof($output_list);
+        $next_offset = $offset + count($output_list);
 
         $returnRelationshipList = array();
         foreach ($linkoutput_list as $rel) {
@@ -771,7 +778,7 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
         $GLOBALS['log']->info('End: SugarWebServiceImpl->get_entry_list');
 
         return array(
-            'result_count' => sizeof($output_list),
+            'result_count' => count($output_list),
             'total_count' => $totalRecordCount,
             'next_offset' => $next_offset,
             'entry_list' => $output_list,
@@ -1033,6 +1040,98 @@ class SugarWebServiceImplv3_1 extends SugarWebServiceImplv3
 
         return array('entry_list' => $output_list);
     } // fn
+
+    /**
+     * Validate fields
+     * @param array $name_value_list
+     * @param string $module
+     * @return bool
+     */
+    protected function validateFields(array $name_value_list, string $module): bool {
+        global $log;
+
+        $bean = BeanFactory::newBean($module);
+        $errors = [];
+        foreach ($name_value_list as $field => $value) {
+
+            $fieldName = $field;
+            $fieldValue = $value;
+
+            if (is_array($value)) {
+                $fieldName = $value['name'];
+                $fieldValue = $value['value'];
+            }
+
+            if (empty($fieldValue)) {
+                continue;
+            }
+
+            if ($fieldName === 'id' || $this->isIdField($bean, $fieldName)){
+                $error = $this->validateId($fieldName, $fieldValue);
+
+                if (!empty($error)) {
+                    $errors[] = $error;
+                }
+            }
+        }
+
+        if (empty($errors)) {
+            return true;
+        }
+
+        foreach ($errors as $error) {
+            $log->fatal('V4 API field validation | Error: ' . $error);
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if field is of id type
+     *
+     * @param SugarBean $bean
+     * @param mixed $field
+     * @return bool
+     */
+    protected function isIdField(SugarBean $bean, $field): bool {
+        $fieldDefinition = $bean->field_defs[$field] ?? [];
+        $fieldType = $fieldDefinition ?? '';
+
+        $isId = false;
+        if ($fieldType === 'id') {
+            $isId = true;
+        }
+
+        return $isId;
+    }
+
+    /**
+     * Check if it is a valid id field
+     *
+     * @param SugarBean $bean
+     * @param string $field
+     * @param mixed $valud
+     * @return string
+     */
+    protected function validateId(string $field, $value): string {
+
+        if (!is_string($value) && !is_numeric($value)) {
+            return "Invalid id field '$field'. Value not a string nor a number";
+        }
+
+        if (empty($value)) {
+            return '';
+        }
+
+        $idValidator = new \SuiteCRM\Utility\SuiteValidator();
+        if ($idValidator->isValidId($value)) {
+            return '';
+        }
+
+        $pattern = $idValidator->getIdValidationPattern();
+
+        return "Invalid id field '$field' with value '$value'. Id must follow pattern '$pattern'";
+    }
 }
 
 SugarWebServiceImplv3_1::$helperObject = new SugarWebServiceUtilv3_1();

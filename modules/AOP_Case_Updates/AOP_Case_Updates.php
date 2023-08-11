@@ -82,19 +82,7 @@ class AOP_Case_Updates extends Basic
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function AOP_Case_Updates()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
     /**
      * @param $interface
@@ -277,7 +265,7 @@ class AOP_Case_Updates extends Basic
         $GLOBALS['log']->info('AOPCaseUpdates: sendEmail called');
         require_once 'include/SugarPHPMailer.php';
         $mailer = new SugarPHPMailer();
-        $admin = new Administration();
+        $admin = BeanFactory::newBean('Administration');
         $admin->retrieveSettings();
 
         $mailer->prepForOutbound();
@@ -306,7 +294,7 @@ class AOP_Case_Updates extends Basic
         try {
             if ($mailer->send()) {
                 require_once 'modules/Emails/Email.php';
-                $emailObj = new Email();
+                $emailObj = BeanFactory::newBean('Emails');
                 $emailObj->to_addrs_names = implode(',', $emails);
                 $emailObj->type = 'out';
                 $emailObj->deleted = '0';

@@ -554,7 +554,7 @@
       'relationship_type' => 'one-to-many',
     ),
   ),
-  'optimistic_lock' => true,
+  'optimistic_locking' => false,
   'indices' => 
   array (
     'id' => 

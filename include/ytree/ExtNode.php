@@ -92,21 +92,6 @@ class ExtNode
     }
 
     /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function ExtNode($id, $label, $show_expanded = true)
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($id, $label, $show_expanded);
-    }
-
-
-    /**
      * @param $name
      * @param $value
      * @param bool $is_param
@@ -126,7 +111,7 @@ class ExtNode
      * add a child node.
      * @param $node
      */
-    public function add_node($node)
+    function add_node($node)
     {
         $this->nodes[$node->uid] = $node;
     }
@@ -138,7 +123,7 @@ class ExtNode
      * nodes: definition of children nodes.
      *
      */
-    public function get_definition()
+    function get_definition()
     {
         $ret = array();
 

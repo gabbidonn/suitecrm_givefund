@@ -11,25 +11,13 @@ class Jjwg_MarkersViewMarker_Edit_Map extends SugarView
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function Jjwg_MarkersViewMarker_Edit_Map()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     public function display()
     {
 
-    // Users local settings for decimal seperator and number grouping seperator
+    // Users local settings for decimal separator and number grouping separator
         $dec_sep = $GLOBALS['sugar_config']['default_decimal_seperator'];
         $user_dec_sep = $GLOBALS['current_user']->getPreference('dec_sep');
         $dec_sep = (empty($user_dec_sep) ? $GLOBALS['sugar_config']['default_decimal_seperator'] : $user_dec_sep);

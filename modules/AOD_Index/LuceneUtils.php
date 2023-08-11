@@ -25,12 +25,11 @@
 
 
 
-function requireLucene()
-{
-    set_include_path(get_include_path() . PATH_SEPARATOR . "modules/AOD_Index/Lib");
-    require_once('Zend/Search/Lucene.php');
-}
-
+/**
+ * @deprecated since v7.12.0
+ * @param $revisionId
+ * @return string
+ */
 function getDocumentRevisionPath($revisionId)
 {
     return "upload/$revisionId";
@@ -38,6 +37,7 @@ function getDocumentRevisionPath($revisionId)
 
 /**
  * Given a path to a PPTX document returns a lucene document with filename and contents set.
+ * @deprecated since v7.12.0
  * @param $path
  * @return Zend_Search_Lucene_Document
  */
@@ -50,6 +50,7 @@ function createPPTXDocument($path)
 
 /**
  * Given a path to a XLSX document returns a lucene document with filename and contents set.
+ * @deprecated since v7.12.0
  * @param $path
  * @return Zend_Search_Lucene_Document
  */
@@ -61,6 +62,7 @@ function createXLSXDocument($path)
 }
 /**
  * Given a path to a HTML document returns a lucene document with filename and contents set.
+ * @deprecated since v7.12.0
  * @param $path
  * @return Zend_Search_Lucene_Document
  */
@@ -70,8 +72,10 @@ function createHTMLDocument($path)
     $doc->addField(Zend_Search_Lucene_Field::Text('filename', basename($path)));
     return $doc;
 }
+
 /**
  * Given a path to a DocX document returns a lucene document with filename and contents set.
+ * @deprecated since v7.12.0
  * @param $path
  * @return Zend_Search_Lucene_Document
  */
@@ -84,12 +88,13 @@ function createDocXDocument($path)
 
 /**
  * Given a path to a Doc document returns a lucene document with filename and contents set.
+ * @deprecated since v7.12.0
  * @param $path
  * @return Zend_Search_Lucene_Document
  */
 function createDocDocument($path)
 {
-    $fileHandle = fopen($path, "r");
+    $fileHandle = fopen($path, 'rb');
     $line = @fread($fileHandle, filesize($path));
     $lines = explode(chr(0x0D), $line);
     $outtext = "";
@@ -111,6 +116,7 @@ function createDocDocument($path)
 
 /**
  * Given a path to a PDF document returns a lucene document with filename and contents set.
+ * @deprecated since v7.12.0
  * @param $path
  * @return Zend_Search_Lucene_Document
  */
@@ -126,6 +132,7 @@ function createPDFDocument($path)
 
 /**
  * Given a path to an ODT doc returns a lucene document with contents and filename set.
+ * @deprecated since v7.12.0
  * @param $path
  * @return bool|Zend_Search_Lucene_Document
  */
@@ -154,6 +161,7 @@ function createOdtDocument($path)
 
 /**
  * Given a path to a plain text doc returns a lucene document with $filename and $contents set appropriately.
+ * @deprecated since v7.12.0
  * @param $path
  * @return Zend_Search_Lucene_Document
  */
@@ -168,6 +176,7 @@ function createTextDocument($path)
 
 /**
  * Given the path to an rtf document returns a lucene document with $filename and $contents set appropriately.
+ * @deprecated since v7.12.0
  * @param $path
  * @return Zend_Search_Lucene_Document
  */
@@ -181,6 +190,11 @@ function createRTFDocument($path)
     return $doc;
 }
 
+/**
+ * @deprecated since v7.12.0
+ * @param $s
+ * @return bool
+ */
 function rtf_isPlainText($s)
 {
     $arrfailAt = array("*", "fonttbl", "colortbl", "datastore", "themedata");
@@ -192,6 +206,11 @@ function rtf_isPlainText($s)
     return true;
 }
 
+/**
+ * @deprecated since v7.12.0
+ * @param $filename
+ * @return string
+ */
 function rtf2text($filename)
 {
     // Read the data from the input file.

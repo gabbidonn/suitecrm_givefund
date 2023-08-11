@@ -67,7 +67,19 @@ class ImportViewConfirm extends ImportView
     {
         global $mod_strings, $app_strings, $current_user;
         global $sugar_config, $locale;
-        
+
+        if (isset($_FILES['userfile']['name']) && !hasValidFileName('import_upload_file_name', $_FILES['userfile']['name'])) {
+            LoggerManager::getLogger()->fatal('Invalid import file name');
+            echo $app_strings['LBL_LOGGER_INVALID_FILENAME'];
+            return;
+        }
+
+        if (isset($_REQUEST['tmp_file']) && !hasValidFileName('import_upload_file_name', $_REQUEST['tmp_file'])) {
+            LoggerManager::getLogger()->fatal('Invalid import file name');
+            echo $app_strings['LBL_LOGGER_INVALID_FILENAME'];
+            return;
+        }
+
         $this->ss->assign("IMPORT_MODULE", $_REQUEST['import_module']);
         $this->ss->assign("TYPE", (!empty($_REQUEST['type']) ? $_REQUEST['type'] : "import"));
         $this->ss->assign("SOURCE_ID", $_REQUEST['source_id']);
@@ -81,7 +93,7 @@ class ImportViewConfirm extends ImportView
         $importSource = isset($_REQUEST['source']) ? $_REQUEST['source'] : 'csv' ;
 
         // Clear out this user's last import
-        $seedUsersLastImport = new UsersLastImport();
+        $seedUsersLastImport = BeanFactory::newBean('Import_2');
         $seedUsersLastImport->mark_deleted_by_user_id($current_user->id);
         ImportCacheFiles::clearCacheFiles();
 
@@ -162,8 +174,10 @@ class ImportViewConfirm extends ImportView
             $hasHeader = !empty($_REQUEST['has_header']) ? $_REQUEST['has_header'] : $hasHeader;
             if ($hasHeader == 'on') {
                 $hasHeader = true;
-            } elseif ($hasHeader == 'off') {
-                $hasHeader = false;
+            } else {
+                if ($hasHeader == 'off') {
+                    $hasHeader = false;
+                }
             }
         }
 
@@ -246,15 +260,16 @@ class ImportViewConfirm extends ImportView
     {
         if (empty($importSource) || $importSource == 'csv') {
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     private function getImportMap($importSource)
     {
         if (strncasecmp("custom:", $importSource, 7) == 0) {
             $id = substr($importSource, 7);
-            $import_map_seed = new ImportMap();
+            $import_map_seed = BeanFactory::newBean('Import_1');
             $import_map_seed->retrieve($id, false);
 
             $this->ss->assign("SOURCE_ID", $import_map_seed->id);

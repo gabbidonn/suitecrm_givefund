@@ -50,19 +50,7 @@ class ProductsParseRule extends BaseRule
     {
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function ProductsParseRule()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     public function preParse($panels, $view)
@@ -73,12 +61,18 @@ class ProductsParseRule extends BaseRule
                     foreach ($row as $key=>$column) {
                         if ($this->matches($column, '/^url$/i')) {
                             $panels[$name][$rowCount][$key] = 'website';
-                        } elseif ($this->matches($column, '/^manufacturer$/i')) {
-                            $panels[$name][$rowCount][$key] = 'manufacturer_name';
-                        } elseif ($this->matches($column, '/^category$/i')) {
-                            $panels[$name][$rowCount][$key] = 'category_name';
-                        } elseif ($this->matches($column, '/^type$/i')) {
-                            $panels[$name][$rowCount][$key] = 'type_name';
+                        } else {
+                            if ($this->matches($column, '/^manufacturer$/i')) {
+                                $panels[$name][$rowCount][$key] = 'manufacturer_name';
+                            } else {
+                                if ($this->matches($column, '/^category$/i')) {
+                                    $panels[$name][$rowCount][$key] = 'category_name';
+                                } else {
+                                    if ($this->matches($column, '/^type$/i')) {
+                                        $panels[$name][$rowCount][$key] = 'type_name';
+                                    }
+                                }
+                            }
                         }
                     } //foreach
                 } //foreach

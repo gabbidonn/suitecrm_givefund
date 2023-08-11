@@ -80,7 +80,7 @@ function getModuleFields(
                     if (array_key_exists($mod->module_dir, $blockedModuleFields)) {
                         if (in_array(
                             $arr['name'],
-                                $blockedModuleFields[$mod->module_dir]
+                            $blockedModuleFields[$mod->module_dir]
                             ) && !$current_user->isAdmin()
                         ) {
                             $GLOBALS['log']->debug('hiding ' . $arr['name'] . ' field from ' . $current_user->name);
@@ -182,7 +182,7 @@ function getModuleTreeData($module)
                         'module_label'=> $module_label)
     );
 
-    if ($module != '') {
+    if ($module != '' && ACLController::checkAccess($module, 'list', true)) {
         if (isset($beanList[$module]) && $beanList[$module]) {
             $mod = new $beanList[$module]();
 
@@ -191,6 +191,10 @@ function getModuleTreeData($module)
                     $rel_module = $arr['module'];
                 } elseif ($mod->load_relationship($name)) {
                     $rel_module = $mod->$name->getRelatedModuleName();
+                }
+
+                if (!ACLController::checkAccess($rel_module, 'list', true)) {
+                    continue;
                 }
 
                 $rel_module_label = isset($app_list_strings['moduleList'][$rel_module]) ? $app_list_strings['moduleList'][$rel_module] : $rel_module;
@@ -355,6 +359,7 @@ function getModuleField(
     $displayParams = array();
 
     if (!is_file($file)
+        || $view === 'EditView'
         || inDeveloperMode()
         || !empty($_SESSION['developerMode'])) {
         if (!isset($vardef)) {
@@ -473,7 +478,7 @@ function getModuleField(
 
         // Save it to the cache file
         if ($fh = @sugar_fopen($file, 'w')) {
-            fputs($fh, $contents);
+            fwrite($fh, $contents);
             fclose($fh);
         }
     }
@@ -518,14 +523,20 @@ function getModuleField(
         // fill in enums
         if (isset($fieldlist[$name]['options']) && is_string($fieldlist[$name]['options']) && isset($app_list_strings[$fieldlist[$name]['options']])) {
             $fieldlist[$name]['options'] = $app_list_strings[$fieldlist[$name]['options']];
-        }
-        // Bug 32626: fall back on checking the mod_strings if not in the app_list_strings
+        } // Bug 32626: fall back on checking the mod_strings if not in the app_list_strings
         elseif (isset($fieldlist[$name]['options']) && is_string($fieldlist[$name]['options']) && isset($mod_strings[$fieldlist[$name]['options']])) {
             $fieldlist[$name]['options'] = $mod_strings[$fieldlist[$name]['options']];
         }
         // Bug 22730: make sure all enums have the ability to select blank as the default value.
-        if (!isset($fieldlist[$name]['options'][''])) {
+        // Make sure the enum has an 'options' array to append a new value to.
+        if (isset($fieldlist[$name]['options']) && is_array($fieldlist[$name]['options']) && !isset($fieldlist[$name]['options'][''])) {
             $fieldlist[$name]['options'][''] = '';
+        }
+
+        if ($fieldlist[$name]['type'] == 'enum' || $fieldlist[$name]['type'] == 'multienum' || $fieldlist[$name]['type'] == 'dynamicenum') {
+            if ($params['value_set'] === true && $value === "") {
+                $fieldlist[$name]['default'] = $value;
+            }
         }
     }
 
@@ -563,13 +574,17 @@ function getModuleField(
     if (isset($fieldlist[$fieldname]['id_name']) && $fieldlist[$fieldname]['id_name'] != '' && $fieldlist[$fieldname]['id_name'] != $fieldlist[$fieldname]['name']) {
         $rel_value = $value;
 
-        require_once("include/TemplateHandler/TemplateHandler.php");
-        $template_handler = new TemplateHandler();
-        $quicksearch_js = $template_handler->createQuickSearchCode($fieldlist, $fieldlist, $view);
-        $quicksearch_js = str_replace($fieldname, $aow_field.'_display', $quicksearch_js);
-        $quicksearch_js = str_replace($fieldlist[$fieldname]['id_name'], $aow_field, $quicksearch_js);
+        // avoid printing js content in CLI commands for example cron
+        $sapi_type = php_sapi_name();
+        if (substr($sapi_type, 0, 3) != 'cli') {
+            require_once("include/TemplateHandler/TemplateHandler.php");
+            $template_handler = new TemplateHandler();
+            $quicksearch_js = $template_handler->createQuickSearchCode($fieldlist, $fieldlist, $view);
+            $quicksearch_js = str_replace($fieldname, $aow_field.'_display', $quicksearch_js);
+            $quicksearch_js = str_replace($fieldlist[$fieldname]['id_name'], $aow_field, $quicksearch_js);
 
-        echo $quicksearch_js;
+        	echo $quicksearch_js;
+        }
 
         if (isset($fieldlist[$fieldname]['module']) && $fieldlist[$fieldname]['module'] == 'Users') {
             $rel_value = get_assigned_user_name($value);
@@ -608,7 +623,11 @@ function getModuleField(
         $fieldlist[$fieldname]['name'] = $aow_field;
     } elseif (isset($fieldlist[$fieldname]['type']) && ($fieldlist[$fieldname]['type'] == 'datetimecombo' || $fieldlist[$fieldname]['type'] == 'datetime' || $fieldlist[$fieldname]['type'] == 'date')) {
         $value = $focus->convertField($value, $fieldlist[$fieldname]);
-        $displayValue = $timedate->to_display_date_time($value);
+        if($fieldlist[$fieldname]['type'] === "date"){
+            $displayValue = $timedate->to_display_date($value);
+        }else{
+            $displayValue = $timedate->to_display_date_time($value);
+        }
         $fieldlist[$fieldname]['value'] = $fieldlist[$aow_field]['value'] = $displayValue;
         $fieldlist[$fieldname]['name'] = $aow_field;
     } else {
@@ -632,7 +651,7 @@ function getModuleField(
         if ($currency_id != '' && !stripos($fieldname, '_USD')) {
             $userCurrencyId = $current_user->getPreference('currency');
             if ($currency_id != $userCurrencyId) {
-                $currency = new Currency();
+                $currency = BeanFactory::newBean('Currencies');
                 $currency->retrieve($currency_id);
                 $value = $currency->convertToDollar($value);
                 $currency->retrieve($userCurrencyId);
@@ -851,7 +870,7 @@ function setLastUser($user_id, $id)
 eoq;
 
     if ($fh = @sugar_fopen($file, 'w')) {
-        fputs($fh, $content);
+        fwrite($fh, $content);
         fclose($fh);
     }
     return true;
@@ -932,7 +951,8 @@ function fixUpFormatting($module, $field, $value)
     switch ($bean->field_defs[$field]['type']) {
         case 'datetime':
         case 'datetimecombo':
-            if (empty($value)) {
+            // If value is array, don't attempt to convert to DB format
+            if (empty($value) || is_array($value)) {
                 break;
             }
             if ($value == 'NULL') {
@@ -945,7 +965,8 @@ function fixUpFormatting($module, $field, $value)
             }
             break;
         case 'date':
-            if (empty($value)) {
+            // If value is array, don't attempt to convert to DB format
+            if (empty($value) || is_array($value)) {
                 break;
             }
             if ($value == 'NULL') {
@@ -975,7 +996,7 @@ function fixUpFormatting($module, $field, $value)
         case 'currency':
         case 'float':
             if ($value === '' || $value == null || $value == 'NULL') {
-                continue;
+                break;
             }
             if (is_string($value)) {
                 $value = (float)unformat_number($value);
@@ -988,7 +1009,7 @@ function fixUpFormatting($module, $field, $value)
         case 'tinyint':
         case 'int':
             if ($value === '' || $value == null || $value == 'NULL') {
-                continue;
+                break;
             }
             if (is_string($value)) {
                 $value = (int)unformat_number($value);
@@ -999,14 +1020,11 @@ function fixUpFormatting($module, $field, $value)
                 $value = false;
             } elseif (true === $value || 1 == $value) {
                 $value = true;
-            } elseif (in_array(strval($value), $boolean_false_values)) {
+            } elseif (in_array((string)$value, $boolean_false_values)) {
                 $value = false;
             } else {
                 $value = true;
             }
-            break;
-        case 'encrypt':
-            $value = $this->encrpyt_before_save($value);
             break;
     }
     return $value;

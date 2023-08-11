@@ -152,26 +152,9 @@ function __construct ($file, $alt_include = "", $mainblock="main") {
 	$this->alternate_include_directory = $alt_include;
 	$this->mainblock=$mainblock;
 	$this->filecontents=$this->r_getfile($file);	/* read in template file */
-	//if(substr_count($file, 'backup') == 1)_ppd($this->filecontents);
 	$this->blocks=$this->maketree($this->filecontents,$mainblock);	/* preprocess some stuff */
 	//$this->scan_globals();
 }
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    function XTemplate($file, $alt_include = "", $mainblock="main"){
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if(isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        }
-        else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($file, $alt_include, $mainblock);
-    }
-
-
 
 /***************************************************************************/
 /***[ public stuff ]********************************************************/

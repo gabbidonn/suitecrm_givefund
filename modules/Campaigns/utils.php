@@ -363,7 +363,7 @@ function campaign_log_lead_or_contact_entry($campaign_id, $parent_bean, $child_b
     //create campaign tracker id and retrieve related bio bean
     $tracker_id = create_guid();
     //create new campaign log record.
-    $campaign_log = new CampaignLog();
+    $campaign_log = BeanFactory::newBean('CampaignLog');
     $campaign_log->campaign_id = $campaign_id;
     $campaign_log->target_tracker_key = $tracker_id;
     $campaign_log->related_id = $parent_bean->id;
@@ -413,16 +413,13 @@ function get_subscription_lists_query($focus, $additional_fields = null)
     $all_news_type_pl_query .= "and c.campaign_type = 'NewsLetter'  and pl.deleted = 0 and c.deleted=0 and plc.deleted=0 ";
     $all_news_type_pl_query .= "and (pl.list_type like 'exempt%' or pl.list_type ='default') ";
 
-    /* BEGIN - SECURITY GROUPS */
-    if ($focus->bean_implements('ACL') && ACLController::requireSecurityGroup('Campaigns', 'list')) {
-        require_once('modules/SecurityGroups/SecurityGroup.php');
-        global $current_user;
-        $owner_where = $focus->getOwnerWhere($current_user->id);
-        $group_where = SecurityGroup::getGroupWhere('c', 'Campaigns', $current_user->id);
-        $all_news_type_pl_query .= " AND ( c.assigned_user_id ='".$current_user->id."' or ".$group_where.") ";
+    $campaign = BeanFactory::newBean('Campaigns');
+    $campaign->table_name = 'c';
+    $accessWhere = $campaign->buildAccessWhere('list');
+    if (!empty($accessWhere)) {
+        $all_news_type_pl_query .= ' AND ' . $accessWhere;
     }
-    /* END - SECURITY GROUPS */
-
+    
     $all_news_type_list =$focus->db->query($all_news_type_pl_query);
 
     //build array of all newsletter campaigns
@@ -495,8 +492,9 @@ function get_subscription_lists($focus, $descriptions = false)
                         unset($unsubs_arr[$news_list['name']]);
                     }
                 }
+            } else {
+                //do nothing, there is no match
             }
-            //do nothing, there is no match
         }
         //if this newsletter id never matched a user subscription..
         //..then add to available(unsubscribed) NewsLetters if list is not of type exempt
@@ -559,8 +557,9 @@ function get_subscription_lists_keyed($focus)
                         $match = 'true';
                     }
                 }
+            } else {
+                //do nothing, there is no match
             }
-            //do nothing, there is no match
         }
         //if this newsletter id never matched a user subscription..
         //..then add to available(unsubscribed) NewsLetters if list is not of type exempt
@@ -618,7 +617,7 @@ function process_subscriptions($subscription_string_to_parse)
 
         //--grab all the lists for the passed in campaign id
         $pl_qry ="select id, list_type from prospect_lists where id in (select prospect_list_id from prospect_list_campaigns ";
-        $pl_qry .= "where campaign_id = '$campaign') and deleted = 0 ";
+        $pl_qry .= "where campaign_id = " . $focus->db->quoted($campaign) . ") and deleted = 0 ";
         $GLOBALS['log']->debug("In Campaigns Util: subscribe function, about to run query: ".$pl_qry);
         $pl_qry_result = $focus->db->query($pl_qry);
 
@@ -630,7 +629,7 @@ function process_subscriptions($subscription_string_to_parse)
 
         //--grab all the prospect_lists this user belongs to
         $curr_pl_qry ="select prospect_list_id, related_id  from prospect_lists_prospects ";
-        $curr_pl_qry .="where related_id = '$focus->id'  and deleted = 0 ";
+        $curr_pl_qry .="where related_id = " . $focus->db->quoted($focus->id) . " and deleted = 0 ";
         $GLOBALS['log']->debug("In Campaigns Util: subscribe function, about to run query: ".$curr_pl_qry);
         $curr_pl_qry_result = $focus->db->query($curr_pl_qry);
 
@@ -661,7 +660,7 @@ function process_subscriptions($subscription_string_to_parse)
                     //--if we are in here then user is subscribing to a list in which they are exempt.
                     // we need to remove the user from this unsubscription list.
                     //Begin by retrieving unsubscription prospect list
-                    $exempt_subscription_list = new ProspectList();
+                    $exempt_subscription_list = BeanFactory::newBean('ProspectLists');
 
 
                     $exempt_result = $exempt_subscription_list->retrieve($exempt_id);
@@ -688,7 +687,7 @@ function process_subscriptions($subscription_string_to_parse)
             //do nothing, user is already subscribed
         } else {
             //user is not subscribed already, so add to subscription list
-            $subscription_list = new ProspectList();
+            $subscription_list = BeanFactory::newBean('ProspectLists');
             $subs_result = $subscription_list->retrieve($prospect_list);
             if ($subs_result == null) {//error happened while retrieving this list, iterate and continue
                 return;
@@ -710,7 +709,7 @@ function process_subscriptions($subscription_string_to_parse)
         $relationship = strtolower($focus->getObjectName()).'s';
         //--grab all the list for this campaign id
         $pl_qry ="select id, list_type from prospect_lists where id in (select prospect_list_id from prospect_list_campaigns ";
-        $pl_qry .= "where campaign_id = '$campaign') and deleted = 0 ";
+        $pl_qry .= "where campaign_id = " . $focus->db->quoted($campaign) . ") and deleted = 0 ";
         $pl_qry_result = $focus->db->query($pl_qry);
         //build the array with list information
         $pl_arr = array();
@@ -753,7 +752,7 @@ function process_subscriptions($subscription_string_to_parse)
         //unsubscribe subscripted newsletter
         foreach ($pl_arr as $subscription_list) {
             //create a new instance of the prospect list
-            $exempt_list = new ProspectList();
+            $exempt_list = BeanFactory::newBean('ProspectLists');
             $exempt_list->retrieve($subscription_list['id']);
             $exempt_list->load_relationship($relationship);
             //if list type is default, then delete the relationship
@@ -809,7 +808,7 @@ function process_subscriptions($subscription_string_to_parse)
 
         //Start with email components
         //monitored mailbox section
-        $focus = new Administration();
+        $focus = BeanFactory::newBean('Administration');
         $focus->retrieveSettings(); //retrieve all admin settings.
 
 
@@ -839,6 +838,8 @@ function process_subscriptions($subscription_string_to_parse)
             $email_health =$email_health +1;
             $msg .= "<tr><td ><font color='red'><b> ".$mod_strings['LBL_MAILBOX_CHECK2_BAD']." </b></font></td></tr>";
             $errors['mailbox2'] = $mod_strings['LBL_MAILBOX_CHECK2_BAD'];
+        } else {
+            //do nothing, address has been changed
         }
         //do nothing, address has been changed
 
@@ -931,7 +932,7 @@ function process_subscriptions($subscription_string_to_parse)
  */
  function campaign_log_mail_merge($campaign_id, $targets)
  {
-     $campaign= new Campaign();
+     $campaign= BeanFactory::newBean('Campaigns');
      $campaign->retrieve($campaign_id);
 
      if (empty($campaign->id)) {
@@ -1037,7 +1038,7 @@ function write_mail_merge_log_entry($campaign_id, $pl_row)
                     $rel_bean->retrieve($id);
 
                     //create new campaign log record.
-                    $campaign_log = new CampaignLog();
+                    $campaign_log = BeanFactory::newBean('CampaignLog');
                     $campaign_log->campaign_id = $campaign_id;
                     $campaign_log->target_tracker_key = $tracker_id;
                     $campaign_log->target_id = $rel_bean->id;

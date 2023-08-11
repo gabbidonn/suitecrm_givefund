@@ -47,19 +47,7 @@ class AOS_Line_Item_Groups extends AOS_Line_Item_Groups_sugar
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function AOS_Line_Item_Groups()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     public function save_groups($post_data, $parent, $key = '')
@@ -78,7 +66,7 @@ class AOS_Line_Item_Groups extends AOS_Line_Item_Groups_sugar
             if ($postData == 1) {
                 $this->mark_deleted($post_data[$key . 'id'][$i]);
             } else {
-                $product_quote_group = new AOS_Line_Item_Groups();
+                $product_quote_group = BeanFactory::newBean('AOS_Line_Item_Groups');
                 foreach ($this->field_defs as $field_def) {
                     $field_name = $field_def['name'];
                     if (isset($post_data[$key . $field_name][$i])) {
@@ -108,7 +96,7 @@ class AOS_Line_Item_Groups extends AOS_Line_Item_Groups_sugar
         }
 
         require_once('modules/AOS_Products_Quotes/AOS_Products_Quotes.php');
-        $productQuote = new AOS_Products_Quotes();
+        $productQuote = BeanFactory::newBean('AOS_Products_Quotes');
         $productQuote->save_lines($post_data, $parent, $groups, 'product_');
         $productQuote->save_lines($post_data, $parent, $groups, 'service_');
     }

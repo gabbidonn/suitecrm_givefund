@@ -57,7 +57,7 @@ $dictionary['ProspectList'] = array(
             'name' => 'name',
             'vname' => 'LBL_NAME',
             'type' => 'varchar',
-            'len' => '50',
+            'len' => '255',
             'importable' => 'required',
             'unified_search' => true,
             'full_text_search' => array('boost' => 3),
@@ -233,7 +233,7 @@ $dictionary['ProspectList'] = array(
     'relationships' => array(
         'prospectlists_assigned_user' =>
             array('lhs_module' => 'Users', 'lhs_table' => 'users', 'lhs_key' => 'id',
-                'rhs_module' => 'prospectlists', 'rhs_table' => 'prospect_lists', 'rhs_key' => 'assigned_user_id',
+                'rhs_module' => 'ProspectLists', 'rhs_table' => 'prospect_lists', 'rhs_key' => 'assigned_user_id',
                 'relationship_type' => 'one-to-many')
     )
 );

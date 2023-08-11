@@ -8011,6 +8011,16 @@
     'rhs_key' => 'user_id',
     'relationship_type' => 'one-to-many',
   ),
+  'users_users_password_link' => 
+  array (
+    'name' => 'users_users_password_link',
+    'lhs_module' => 'Users',
+    'lhs_table' => 'users',
+    'lhs_key' => 'id',
+    'rhs_table' => 'users_signatures',
+    'rhs_key' => 'user_id',
+    'relationship_type' => 'one-to-many',
+  ),
   'users_email_addresses' => 
   array (
     'name' => 'users_email_addresses',
@@ -8656,7 +8666,7 @@
     'lhs_module' => 'Users',
     'lhs_table' => 'users',
     'lhs_key' => 'id',
-    'rhs_module' => 'prospectlists',
+    'rhs_module' => 'ProspectLists',
     'rhs_table' => 'prospect_lists',
     'rhs_key' => 'assigned_user_id',
     'relationship_type' => 'one-to-many',
@@ -9351,6 +9361,19 @@
     'rhs_key' => 'campaign_id',
     'relationship_type' => 'one-to-many',
   ),
+  'campaign_notes' => 
+  array (
+    'name' => 'campaign_notes',
+    'lhs_module' => 'Campaigns',
+    'lhs_table' => 'campaigns',
+    'lhs_key' => 'id',
+    'rhs_module' => 'Notes',
+    'rhs_table' => 'notes',
+    'rhs_key' => 'parent_id',
+    'relationship_type' => 'one-to-many',
+    'relationship_role_column' => 'parent_type',
+    'relationship_role_column_value' => 'Campaigns',
+  ),
   'campaign_email_marketing' => 
   array (
     'name' => 'campaign_email_marketing',
@@ -9416,6 +9439,76 @@
     'lhs_table' => 'campaigns',
     'lhs_key' => 'id',
     'relationship_type' => 'one-to-many',
+  ),
+  'securitygroups_emailmarketing' => 
+  array (
+    'name' => 'securitygroups_emailmarketing',
+    'lhs_module' => 'SecurityGroups',
+    'lhs_table' => 'securitygroups',
+    'lhs_key' => 'id',
+    'rhs_module' => 'EmailMarketing',
+    'rhs_table' => 'email_marketing',
+    'rhs_key' => 'id',
+    'relationship_type' => 'many-to-many',
+    'join_table' => 'securitygroups_records',
+    'join_key_lhs' => 'securitygroup_id',
+    'join_key_rhs' => 'record_id',
+    'relationship_role_column' => 'module',
+    'relationship_role_column_value' => 'EmailMarketing',
+    'fields' => 
+    array (
+      0 => 
+      array (
+        'name' => 'id',
+        'type' => 'char',
+        'len' => '36',
+        'required' => true,
+        'default' => '',
+      ),
+      1 => 
+      array (
+        'name' => 'securitygroup_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      2 => 
+      array (
+        'name' => 'record_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      3 => 
+      array (
+        'name' => 'module',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      4 => 
+      array (
+        'name' => 'date_modified',
+        'type' => 'datetime',
+      ),
+      5 => 
+      array (
+        'name' => 'modified_user_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      6 => 
+      array (
+        'name' => 'created_by',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      7 => 
+      array (
+        'name' => 'deleted',
+        'type' => 'bool',
+        'len' => '1',
+        'required' => true,
+        'default' => '0',
+      ),
+    ),
   ),
   'email_template_email_marketings' => 
   array (
@@ -10536,8 +10629,64 @@
     'lhs_key' => 'id',
     'rhs_module' => 'Meetings',
     'rhs_table' => 'meetings',
-    'rhs_key' => 'parent_id',
-    'relationship_type' => 'one-to-many',
+    'rhs_key' => 'id',
+    'relationship_type' => 'many-to-many',
+    'join_table' => 'emails_beans',
+    'join_key_lhs' => 'email_id',
+    'join_key_rhs' => 'bean_id',
+    'relationship_role_column' => 'bean_module',
+    'relationship_role_column_value' => 'Meetings',
+    'fields' => 
+    array (
+      0 => 
+      array (
+        'name' => 'id',
+        'type' => 'varchar',
+        'dbType' => 'id',
+        'len' => '36',
+      ),
+      1 => 
+      array (
+        'name' => 'email_id',
+        'type' => 'varchar',
+        'dbType' => 'id',
+        'len' => '36',
+        'comment' => 'FK to emails table',
+      ),
+      2 => 
+      array (
+        'name' => 'bean_id',
+        'dbType' => 'id',
+        'type' => 'varchar',
+        'len' => '36',
+        'comment' => 'FK to various beans\'s tables',
+      ),
+      3 => 
+      array (
+        'name' => 'bean_module',
+        'type' => 'varchar',
+        'len' => '100',
+        'comment' => 'bean\'s Module',
+      ),
+      4 => 
+      array (
+        'name' => 'campaign_data',
+        'type' => 'text',
+      ),
+      5 => 
+      array (
+        'name' => 'date_modified',
+        'type' => 'datetime',
+      ),
+      6 => 
+      array (
+        'name' => 'deleted',
+        'type' => 'bool',
+        'len' => '1',
+        'default' => '0',
+        'required' => false,
+      ),
+    ),
   ),
   'meetings_modified_user' => 
   array (
@@ -10726,6 +10875,131 @@
     'rhs_module' => 'DocumentRevisions',
     'rhs_table' => 'document_revisions',
     'rhs_key' => 'created_by',
+    'relationship_type' => 'one-to-many',
+  ),
+  'securitygroups_inboundemail' => 
+  array (
+    'name' => 'securitygroups_inboundemail',
+    'lhs_module' => 'SecurityGroups',
+    'lhs_table' => 'securitygroups',
+    'lhs_key' => 'id',
+    'rhs_module' => 'InboundEmail',
+    'rhs_table' => 'inbound_email',
+    'rhs_key' => 'id',
+    'relationship_type' => 'many-to-many',
+    'join_table' => 'securitygroups_records',
+    'join_key_lhs' => 'securitygroup_id',
+    'join_key_rhs' => 'record_id',
+    'relationship_role_column' => 'module',
+    'relationship_role_column_value' => 'InboundEmail',
+    'fields' => 
+    array (
+      0 => 
+      array (
+        'name' => 'id',
+        'type' => 'char',
+        'len' => '36',
+        'required' => true,
+        'default' => '',
+      ),
+      1 => 
+      array (
+        'name' => 'securitygroup_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      2 => 
+      array (
+        'name' => 'record_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      3 => 
+      array (
+        'name' => 'module',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      4 => 
+      array (
+        'name' => 'date_modified',
+        'type' => 'datetime',
+      ),
+      5 => 
+      array (
+        'name' => 'modified_user_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      6 => 
+      array (
+        'name' => 'created_by',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      7 => 
+      array (
+        'name' => 'deleted',
+        'type' => 'bool',
+        'len' => '1',
+        'required' => true,
+        'default' => '0',
+      ),
+    ),
+  ),
+  'inbound_emails_distribution_user' => 
+  array (
+    'name' => 'inbound_emails_distribution_user',
+    'lhs_module' => 'Users',
+    'lhs_table' => 'users',
+    'lhs_key' => 'id',
+    'rhs_module' => 'InboundEmail',
+    'rhs_table' => 'inbound_email',
+    'rhs_key' => 'distribution_user_id',
+    'relationship_type' => 'one-to-many',
+  ),
+  'inbound_emails_autoreply_email_templates' => 
+  array (
+    'name' => 'inbound_emails_autoreply_email_templates',
+    'lhs_module' => 'EmailTemplates',
+    'lhs_table' => 'email_templates',
+    'lhs_key' => 'id',
+    'rhs_module' => 'InboundEmail',
+    'rhs_table' => 'inbound_email',
+    'rhs_key' => 'template_id',
+    'relationship_type' => 'one-to-many',
+  ),
+  'inbound_emails_case_email_templates' => 
+  array (
+    'name' => 'inbound_emails_case_email_templates',
+    'lhs_module' => 'EmailTemplates',
+    'lhs_table' => 'email_templates',
+    'lhs_key' => 'id',
+    'rhs_module' => 'InboundEmail',
+    'rhs_table' => 'inbound_email',
+    'rhs_key' => 'create_case_template_id',
+    'relationship_type' => 'one-to-many',
+  ),
+  'inbound_emails_external_oauth_connections' => 
+  array (
+    'name' => 'inbound_emails_external_oauth_connections',
+    'lhs_module' => 'ExternalOAuthConnection',
+    'lhs_table' => 'external_oauth_connections',
+    'lhs_key' => 'id',
+    'rhs_module' => 'InboundEmail',
+    'rhs_table' => 'inbound_email',
+    'rhs_key' => 'external_oauth_connection_id',
+    'relationship_type' => 'one-to-many',
+  ),
+  'inbound_outbound_email_accounts' => 
+  array (
+    'name' => 'inbound_outbound_email_accounts',
+    'lhs_module' => 'OutboundEmailAccounts',
+    'lhs_table' => 'outbound_email',
+    'lhs_key' => 'id',
+    'rhs_module' => 'InboundEmail',
+    'rhs_table' => 'inbound_email',
+    'rhs_key' => 'outbound_email_id',
     'relationship_type' => 'one-to-many',
   ),
   'inbound_email_created_by' => 
@@ -11925,6 +12199,76 @@
     'rhs_table' => 'aor_scheduled_reports',
     'rhs_key' => 'created_by',
     'relationship_type' => 'one-to-many',
+  ),
+  'securitygroups_aor_scheduled_reports' => 
+  array (
+    'name' => 'securitygroups_aor_scheduled_reports',
+    'lhs_module' => 'SecurityGroups',
+    'lhs_table' => 'securitygroups',
+    'lhs_key' => 'id',
+    'rhs_module' => 'AOR_Scheduled_Reports',
+    'rhs_table' => 'aor_scheduled_reports',
+    'rhs_key' => 'id',
+    'relationship_type' => 'many-to-many',
+    'join_table' => 'securitygroups_records',
+    'join_key_lhs' => 'securitygroup_id',
+    'join_key_rhs' => 'record_id',
+    'relationship_role_column' => 'module',
+    'relationship_role_column_value' => 'AOR_Scheduled_Reports',
+    'fields' => 
+    array (
+      0 => 
+      array (
+        'name' => 'id',
+        'type' => 'char',
+        'len' => '36',
+        'required' => true,
+        'default' => '',
+      ),
+      1 => 
+      array (
+        'name' => 'securitygroup_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      2 => 
+      array (
+        'name' => 'record_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      3 => 
+      array (
+        'name' => 'module',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      4 => 
+      array (
+        'name' => 'date_modified',
+        'type' => 'datetime',
+      ),
+      5 => 
+      array (
+        'name' => 'modified_user_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      6 => 
+      array (
+        'name' => 'created_by',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      7 => 
+      array (
+        'name' => 'deleted',
+        'type' => 'bool',
+        'len' => '1',
+        'required' => true,
+        'default' => '0',
+      ),
+    ),
   ),
   'aos_contracts_modified_user' => 
   array (
@@ -13510,6 +13854,87 @@
     'rhs_key' => 'assigned_user_id',
     'relationship_type' => 'one-to-many',
   ),
+  'securitygroups_outboundemailaccounts' => 
+  array (
+    'name' => 'securitygroups_outboundemailaccounts',
+    'lhs_module' => 'SecurityGroups',
+    'lhs_table' => 'securitygroups',
+    'lhs_key' => 'id',
+    'rhs_module' => 'OutboundEmailAccounts',
+    'rhs_table' => 'outbound_email',
+    'rhs_key' => 'id',
+    'relationship_type' => 'many-to-many',
+    'join_table' => 'securitygroups_records',
+    'join_key_lhs' => 'securitygroup_id',
+    'join_key_rhs' => 'record_id',
+    'relationship_role_column' => 'module',
+    'relationship_role_column_value' => 'OutboundEmailAccounts',
+    'fields' => 
+    array (
+      0 => 
+      array (
+        'name' => 'id',
+        'type' => 'char',
+        'len' => '36',
+        'required' => true,
+        'default' => '',
+      ),
+      1 => 
+      array (
+        'name' => 'securitygroup_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      2 => 
+      array (
+        'name' => 'record_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      3 => 
+      array (
+        'name' => 'module',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      4 => 
+      array (
+        'name' => 'date_modified',
+        'type' => 'datetime',
+      ),
+      5 => 
+      array (
+        'name' => 'modified_user_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      6 => 
+      array (
+        'name' => 'created_by',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      7 => 
+      array (
+        'name' => 'deleted',
+        'type' => 'bool',
+        'len' => '1',
+        'required' => true,
+        'default' => '0',
+      ),
+    ),
+  ),
+  'outbound_email_owner_user' => 
+  array (
+    'name' => 'outbound_email_owner_user',
+    'lhs_module' => 'Users',
+    'lhs_table' => 'users',
+    'lhs_key' => 'id',
+    'rhs_module' => 'OutboundEmailAccounts',
+    'rhs_table' => 'outbound_email',
+    'rhs_key' => 'user_id',
+    'relationship_type' => 'one-to-many',
+  ),
   'outbound_email_modified_user' => 
   array (
     'name' => 'outbound_email_modified_user',
@@ -13542,6 +13967,201 @@
     'rhs_table' => 'outbound_email',
     'rhs_key' => 'assigned_user_id',
     'relationship_type' => 'one-to-many',
+  ),
+  'externaloauthconnection_modified_user' => 
+  array (
+    'name' => 'externaloauthconnection_modified_user',
+    'lhs_module' => 'Users',
+    'lhs_table' => 'users',
+    'lhs_key' => 'id',
+    'rhs_module' => 'ExternalOAuthConnection',
+    'rhs_table' => 'external_oauth_connections',
+    'rhs_key' => 'modified_user_id',
+    'relationship_type' => 'one-to-many',
+  ),
+  'externaloauthconnection_created_by' => 
+  array (
+    'name' => 'externaloauthconnection_created_by',
+    'lhs_module' => 'Users',
+    'lhs_table' => 'users',
+    'lhs_key' => 'id',
+    'rhs_module' => 'ExternalOAuthConnection',
+    'rhs_table' => 'external_oauth_connections',
+    'rhs_key' => 'created_by',
+    'relationship_type' => 'one-to-many',
+  ),
+  'securitygroups_externaloauthconnection' => 
+  array (
+    'name' => 'securitygroups_externaloauthconnection',
+    'lhs_module' => 'SecurityGroups',
+    'lhs_table' => 'securitygroups',
+    'lhs_key' => 'id',
+    'rhs_module' => 'ExternalOAuthConnection',
+    'rhs_table' => 'external_oauth_connections',
+    'rhs_key' => 'id',
+    'relationship_type' => 'many-to-many',
+    'join_table' => 'securitygroups_records',
+    'join_key_lhs' => 'securitygroup_id',
+    'join_key_rhs' => 'record_id',
+    'relationship_role_column' => 'module',
+    'relationship_role_column_value' => 'ExternalOAuthConnection',
+    'fields' => 
+    array (
+      0 => 
+      array (
+        'name' => 'id',
+        'type' => 'char',
+        'len' => '36',
+        'required' => true,
+        'default' => '',
+      ),
+      1 => 
+      array (
+        'name' => 'securitygroup_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      2 => 
+      array (
+        'name' => 'record_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      3 => 
+      array (
+        'name' => 'module',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      4 => 
+      array (
+        'name' => 'date_modified',
+        'type' => 'datetime',
+      ),
+      5 => 
+      array (
+        'name' => 'modified_user_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      6 => 
+      array (
+        'name' => 'created_by',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      7 => 
+      array (
+        'name' => 'deleted',
+        'type' => 'bool',
+        'len' => '1',
+        'required' => true,
+        'default' => '0',
+      ),
+    ),
+  ),
+  'external_oauth_connections_external_oauth_providers' => 
+  array (
+    'name' => 'external_oauth_connections_external_oauth_providers',
+    'lhs_module' => 'ExternalOAuthProvider',
+    'lhs_table' => 'external_oauth_providers',
+    'lhs_key' => 'id',
+    'rhs_module' => 'ExternalOAuthConnection',
+    'rhs_table' => 'external_oauth_connections',
+    'rhs_key' => 'external_oauth_provider_id',
+    'relationship_type' => 'one-to-many',
+  ),
+  'externaloauthprovider_modified_user' => 
+  array (
+    'name' => 'externaloauthprovider_modified_user',
+    'lhs_module' => 'Users',
+    'lhs_table' => 'users',
+    'lhs_key' => 'id',
+    'rhs_module' => 'ExternalOAuthProvider',
+    'rhs_table' => 'external_oauth_providers',
+    'rhs_key' => 'modified_user_id',
+    'relationship_type' => 'one-to-many',
+  ),
+  'externaloauthprovider_created_by' => 
+  array (
+    'name' => 'externaloauthprovider_created_by',
+    'lhs_module' => 'Users',
+    'lhs_table' => 'users',
+    'lhs_key' => 'id',
+    'rhs_module' => 'ExternalOAuthProvider',
+    'rhs_table' => 'external_oauth_providers',
+    'rhs_key' => 'created_by',
+    'relationship_type' => 'one-to-many',
+  ),
+  'securitygroups_externaloauthprovider' => 
+  array (
+    'name' => 'securitygroups_externaloauthprovider',
+    'lhs_module' => 'SecurityGroups',
+    'lhs_table' => 'securitygroups',
+    'lhs_key' => 'id',
+    'rhs_module' => 'ExternalOAuthProvider',
+    'rhs_table' => 'external_oauth_providers',
+    'rhs_key' => 'id',
+    'relationship_type' => 'many-to-many',
+    'join_table' => 'securitygroups_records',
+    'join_key_lhs' => 'securitygroup_id',
+    'join_key_rhs' => 'record_id',
+    'relationship_role_column' => 'module',
+    'relationship_role_column_value' => 'ExternalOAuthProvider',
+    'fields' => 
+    array (
+      0 => 
+      array (
+        'name' => 'id',
+        'type' => 'char',
+        'len' => '36',
+        'required' => true,
+        'default' => '',
+      ),
+      1 => 
+      array (
+        'name' => 'securitygroup_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      2 => 
+      array (
+        'name' => 'record_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      3 => 
+      array (
+        'name' => 'module',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      4 => 
+      array (
+        'name' => 'date_modified',
+        'type' => 'datetime',
+      ),
+      5 => 
+      array (
+        'name' => 'modified_user_id',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      6 => 
+      array (
+        'name' => 'created_by',
+        'type' => 'char',
+        'len' => '36',
+      ),
+      7 => 
+      array (
+        'name' => 'deleted',
+        'type' => 'bool',
+        'len' => '1',
+        'required' => true,
+        'default' => '0',
+      ),
+    ),
   ),
   'templatesectionline_modified_user' => 
   array (
@@ -14104,6 +14724,17 @@
     'rhs_module' => 'SurveyQuestionOptions',
     'rhs_table' => 'surveyquestionoptions',
     'rhs_key' => 'survey_question_id',
+    'lhs_module' => 'SurveyQuestions',
+    'lhs_table' => 'surveyquestions',
+    'lhs_key' => 'id',
+    'relationship_type' => 'one-to-many',
+  ),
+  'surveyquestions_surveyquestionresponses' => 
+  array (
+    'name' => 'surveyquestions_surveyquestionresponses',
+    'rhs_module' => 'SurveyQuestionResponses',
+    'rhs_table' => 'surveyquestionresponses',
+    'rhs_key' => 'surveyquestion_id',
     'lhs_module' => 'SurveyQuestions',
     'lhs_table' => 'surveyquestions',
     'lhs_key' => 'id',

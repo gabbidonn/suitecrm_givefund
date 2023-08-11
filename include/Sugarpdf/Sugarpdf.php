@@ -163,7 +163,7 @@ class Sugarpdf extends TCPDF
 
         $this->SetProtection($protection, blowfishDecode(blowfishGetKey('sugarpdf_pdf_user_password'), PDF_USER_PASSWORD), blowfishDecode(blowfishGetKey('sugarpdf_pdf_owner_password'), PDF_OWNER_PASSWORD));
         $this->setCellHeightRatio(K_CELL_HEIGHT_RATIO);
-        $this->setJPEGQuality(intval(PDF_JPEG_QUALITY));
+        $this->setJPEGQuality((int)PDF_JPEG_QUALITY);
         $this->setPDFVersion(PDF_PDF_VERSION);
 
         // set default header data
@@ -273,13 +273,13 @@ class Sugarpdf extends TCPDF
     * @access public
     * @see include/tcpdf/TCPDF#SetFont()
     */
-    public function SetFont($family, $style='', $size=0, $fontfile='')
+    public function SetFont($family, $style = '', $size = null, $fontfile = '', $subset = 'default', $out = true)
     {
         if (empty($fontfile) && defined('K_PATH_CUSTOM_FONTS')) {
             // This will force addFont to search the custom directory for font before the OOB directory
-            $fontfile = K_PATH_CUSTOM_FONTS."phantomFile.phantom";
+            $fontfile = K_PATH_CUSTOM_FONTS . "phantomFile.phantom";
         }
-        parent::SetFont($family, $style, $size, $fontfile);
+        parent::SetFont($family, $style, $size, $fontfile, $subset, $out);
     }
 
     public function Info()
@@ -304,9 +304,9 @@ class Sugarpdf extends TCPDF
      * The cell method is used by all the methods which print text (Write, MultiCell).
      * @see include/tcpdf/TCPDF#Cell()
      */
-    public function Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=0, $link='', $stretch=0, $ignore_min_height=false)
+    public function Cell($w, $h = 0, $txt = '', $border = 0, $ln = 0, $align = '', $fill = false, $link = '', $stretch = 0, $ignore_min_height = false, $calign = 'T', $valign = 'M')
     {
-        parent::Cell($w, $h, prepare_string($txt), $border, $ln, $align, $fill, $link, $stretch, $ignore_min_height);
+        parent::Cell($w, $h, prepare_string($txt), $border, $ln, $align, $fill, $link, $stretch, $ignore_min_height, $calign, $valign);
     }
 
     /**
@@ -398,9 +398,11 @@ class Sugarpdf extends TCPDF
                 if ($even && !empty($options['evencolor'])) {
                     $this->SetFillColorArray($this->convertHTMLColorToDec($options['evencolor']));
                     $cellOptions['fillstate']=1;
-                } elseif (!$even && !empty($options['oddcolor'])) {
-                    $this->SetFillColorArray($this->convertHTMLColorToDec($options['oddcolor']));
-                    $cellOptions['fillstate']=1;
+                } else {
+                    if (!$even && !empty($options['oddcolor'])) {
+                        $this->SetFillColorArray($this->convertHTMLColorToDec($options['oddcolor']));
+                        $cellOptions['fillstate']=1;
+                    }
                 }
 
                 if ($firstrow) {
@@ -491,8 +493,9 @@ class Sugarpdf extends TCPDF
         $html=$this->wrap("table", $html, $options);
         if ($returnHtml) {
             return $html;
+        } else {
+            $this->writeHTML($html);
         }
-        $this->writeHTML($html);
     }
 
     /**
@@ -637,7 +640,7 @@ class Sugarpdf extends TCPDF
     * @since 4.5.011
     * @OVERRIDE
     */
-    public function getNumLines($txt, $w=0)
+    public function getNumLines($txt, $w = 0, $reseth = false, $autopadding = true, $cellpadding = '', $border = 0)
     {
         $lines = 0;
         if (empty($w) or ($w <= 0)) {
@@ -659,50 +662,53 @@ class Sugarpdf extends TCPDF
             if (empty($block)) {
                 $lines++;
             // If the block is in more than one line
-            } elseif (ceil($this->GetStringWidth($block) / $wmax)>1) {
-                //divide into words
-                $words = explode(" ", $block);
-                //TODO explode with space is not the best things to do...
-                $wordBlock = "";
-                $first=true;
-                $lastNum = 0;
-                $run = false;
-
-                for ($i=0; $i<count($words); $i++) {
-                    if ($first) {
-                        $wordBlock = $words[$i];
-                    } else {
-                        $wordBlock .= " ".$words[$i];
-                    }
-                    if (ceil($this->GetStringWidth($wordBlock) / $wmax)>1) {
-                        if ($first) {
-                            $lastNum = ceil($this->GetStringWidth($wordBlock) / $wmax);
-                            $run = true;
-                            $first = false;
-                        } else {
-                            if ($run && $lastNum == ceil($this->GetStringWidth($wordBlock) / $wmax)) {
-                                // save the number of line if it is the last loop
-                                if ($i+1 == count($words)) {
-                                    $lines += ceil($this->GetStringWidth($wordBlock) / $wmax);
-                                }
-                                continue;
-                            }
-                            $first = true;
-                            $lines += ceil($this->GetStringWidth(substr($wordBlock, 0, (strlen($wordBlock) - strlen(" ".$words[$i])))) / $wmax);
-                            $i--;
-                            $lastNum = 0;
-                            $run = false;
-                        }
-                    } else {
-                        $first = false;
-                    }
-                    // save the number of line if it is the last loop
-                    if ($i+1 == count($words)) {
-                        $lines += ceil($this->GetStringWidth($wordBlock) / $wmax);
-                    }
-                }
             } else {
-                $lines++;
+                if (ceil($this->GetStringWidth($block) / $wmax)>1) {
+                    //divide into words
+                    $words = explode(" ", $block);
+                    //TODO explode with space is not the best things to do...
+                    $wordBlock = "";
+                    $first=true;
+                    $lastNum = 0;
+                    $run = false;
+
+                    for ($i=0; $i<count($words); $i++) {
+                        if ($first) {
+                            $wordBlock = $words[$i];
+                        } else {
+                            $wordBlock .= " ".$words[$i];
+                        }
+                        if (ceil($this->GetStringWidth($wordBlock) / $wmax)>1) {
+                            if ($first) {
+                                $lastNum = ceil($this->GetStringWidth($wordBlock) / $wmax);
+                                $run = true;
+                                $first = false;
+                            } else {
+                                if ($run && $lastNum == ceil($this->GetStringWidth($wordBlock) / $wmax)) {
+                                    // save the number of line if it is the last loop
+                                    if ($i+1 == count($words)) {
+                                        $lines += ceil($this->GetStringWidth($wordBlock) / $wmax);
+                                    }
+                                    continue;
+                                } else {
+                                    $first = true;
+                                    $lines += ceil($this->GetStringWidth(substr($wordBlock, 0, (strlen($wordBlock) - strlen(" ".$words[$i])))) / $wmax);
+                                    $i--;
+                                    $lastNum = 0;
+                                    $run = false;
+                                }
+                            }
+                        } else {
+                            $first = false;
+                        }
+                        // save the number of line if it is the last loop
+                        if ($i+1 == count($words)) {
+                            $lines += ceil($this->GetStringWidth($wordBlock) / $wmax);
+                        }
+                    }
+                } else {
+                    $lines++;
+                }
             }
         }
         return $lines;

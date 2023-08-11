@@ -52,7 +52,6 @@ if (!defined('sugarEntry') || !sugarEntry) {
  ********************************************************************************/
 
 
-require_once('include/MVC/View/views/view.detail.php');
 
 class OpportunitiesViewDetail extends ViewDetail
 {
@@ -61,24 +60,12 @@ class OpportunitiesViewDetail extends ViewDetail
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function OpportunitiesViewDetail()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     public function display()
     {
-        $currency = new Currency();
+        $currency = BeanFactory::newBean('Currencies');
         if (isset($this->bean->currency_id) && !empty($this->bean->currency_id)) {
             $currency->retrieve($this->bean->currency_id);
             if ($currency->deleted != 1) {

@@ -63,7 +63,7 @@ class SugarWebServiceUtilv4_1 extends SugarWebServiceUtilv4
             if (!empty($_SESSION['is_valid_session']) && $this->is_valid_ip_address('ip_address') && $_SESSION['type'] == 'user') {
                 global $current_user;
                 require_once('modules/Users/User.php');
-                $current_user = new User();
+                $current_user = BeanFactory::newBean('Users');
                 $current_user->retrieve($_SESSION['user_id']);
                 $this->login_success();
                 $GLOBALS['log']->info('Begin: SoapHelperWebServices->validate_authenticated - passed');
@@ -133,13 +133,14 @@ class SugarWebServiceUtilv4_1 extends SugarWebServiceUtilv4
                 $params['where'] = $optional_where;
             }
 
+            if (!empty($order_by)) {
+                $params['order_by'] = $order_by;
+            }
+
             $related_beans = $bean->$link_field_name->getBeans($params);
             //Create a list of field/value rows based on $link_module_fields
             $list = array();
             $filterFields = array();
-            if (!empty($order_by) && !empty($related_beans)) {
-                $related_beans = order_beans($related_beans, $order_by);
-            }
             foreach ($related_beans as $id => $bean) {
                 if (empty($filterFields) && !empty($link_module_fields)) {
                     $filterFields = $this->filter_fields($bean, $link_module_fields);

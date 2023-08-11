@@ -1,5 +1,5 @@
 <?php
-// created: 2021-07-06 14:06:09
+// created: 2023-08-11 02:17:08
 $mod_strings = array (
   'LBL_SECURITYGROUPS' => 'Security Groups',
   'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Security Groups',
@@ -113,6 +113,7 @@ $mod_strings = array (
   'LBL_REMOVE' => 'Remove',
   'LBL_VIEW_DETAIL' => 'View Details',
   'LBL_OVERRIDE_BUSINESS_HOURS' => 'Consider Working days',
+  'LBL_IMPORT_PROJECTS' => 'Import Projects',
   'LBL_PROJECTS_SEARCH' => 'Search Projects',
   'LBL_USERS_SEARCH' => 'Search Users',
   'LBL_CONTACTS_SEARCH' => 'Select  Contacts',

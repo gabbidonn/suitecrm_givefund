@@ -41,13 +41,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
-/*********************************************************************************
 
- * Description: TODO:  To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 
 
@@ -125,19 +119,7 @@ class DocumentRevision extends SugarBean
         $this->disable_row_level_security =true; //no direct access to this module.
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function DocumentRevision()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     public function save($check_notify = false)
@@ -159,7 +141,7 @@ class DocumentRevision extends SugarBean
     }
     public function get_summary_text()
     {
-        return "$this->filename";
+        return (string)$this->filename;
     }
 
     public function retrieve($id = -1, $encode=false, $deleted=true)
@@ -224,11 +206,11 @@ class DocumentRevision extends SugarBean
         $localLabels = return_module_language($current_language, 'DocumentRevisions');
 
         // prep - get source Document
-        $document = new Document();
+        $document = BeanFactory::newBean('Documents');
 
         // use passed revision ID
         if (!empty($revId)) {
-            $tempDoc = new DocumentRevision();
+            $tempDoc = BeanFactory::newBean('DocumentRevisions');
             $tempDoc->retrieve($revId);
         } else {
             $tempDoc = $this;

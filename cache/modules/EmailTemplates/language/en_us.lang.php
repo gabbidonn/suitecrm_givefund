@@ -1,5 +1,5 @@
 <?php
-// created: 2021-07-06 14:06:10
+// created: 2023-08-11 02:17:10
 $mod_strings = array (
   'LBL_SECURITYGROUPS' => 'Security Groups',
   'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Security Groups',
@@ -31,6 +31,7 @@ $mod_strings = array (
   'LBL_SHOW_ALT_TEXT' => 'Show Plain Text',
   'LBL_SUBJECT' => 'Subject:',
   'LBL_SUITE_DOCUMENT' => 'Document',
+  'LBL_UPLOAD_FILE' => 'Upload File',
   'LBL_TEXT_BODY' => 'Text Body',
   'LBL_USERS' => 'Users',
   'LNK_EMAIL_TEMPLATE_LIST' => 'View Email Templates',

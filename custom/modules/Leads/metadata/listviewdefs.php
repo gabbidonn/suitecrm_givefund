@@ -1,13 +1,13 @@
 <?php
-$listViewDefs ['Leads'] = 
-array (
+// created: 2023-08-10 16:22:39
+$listViewDefs['Leads'] = array (
   'EVENT_NAME_C' => 
   array (
     'type' => 'varchar',
     'default' => true,
     'label' => 'LBL_EVENT_NAME',
     'width' => '10%',
-     'link' => true,
+    'link' => true,
   ),
   'CHARITY_NAME_C' => 
   array (
@@ -201,5 +201,3 @@ array (
     'default' => false,
   ),
 );
-;
-?>

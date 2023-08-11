@@ -40,11 +40,11 @@
  */
 class Crypt_Blowfish_DefaultKey
 {
-    public $P = array();
+    var $P = array();
 
-    public $S = array();
+    var $S = array();
 
-    public function __construct()
+    function __construct()
     {
         $this->P = array(
             0x243F6A88, 0x85A308D3, 0x13198A2E, 0x03707344,
@@ -320,19 +320,5 @@ class Crypt_Blowfish_DefaultKey
                 0xB74E6132, 0xCE77E25B, 0x578FDFE3, 0x3AC372E6
             )
         );
-    }
-
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function Crypt_Blowfish_DefaultKey()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
     }
 }

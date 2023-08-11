@@ -77,7 +77,7 @@ class BreadCrumbStack
         $this->stack = array();
         $this->stackMap = array();
 
-        $admin = new Administration();
+        $admin = BeanFactory::newBean('Administration');
         $admin->retrieveSettings('tracker');
 
         $this->deleteInvisible = !empty($admin->settings['tracker_Tracker']);
@@ -104,20 +104,6 @@ class BreadCrumbStack
     }
 
     /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function BreadCrumbStack($user_id, $modules='')
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct($user_id, $modules);
-    }
-
-    /**
      * contains
      * Returns true if the stack contains the specified item_id, false otherwise.
      *
@@ -128,8 +114,9 @@ class BreadCrumbStack
     {
         if (!empty($this->stackMap)) {
             return array_key_exists($item_id, $this->stackMap);
+        } else {
+            return false;
         }
-        return false;
     }
 
     /**

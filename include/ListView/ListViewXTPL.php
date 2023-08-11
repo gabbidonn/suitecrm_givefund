@@ -62,19 +62,7 @@ class ListViewXTPL extends ListViewDisplay
         parent::__construct();
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function ListViewXTPL()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     /**
@@ -157,7 +145,6 @@ class ListViewXTPL extends ListViewDisplay
     public function processPagination()
     {
         global $app_strings;
-        //_pp($this->data['pageData']);
         if (empty($this->data['pageData']['urls']['prevPage'])) {
             $startLink = SugarThemeRegistry::current()->getImage("start_off", "border='0' align='absmiddle'", null, null, '.gif', $app_strings['LNK_LIST_START'])."&nbsp;".$app_strings['LNK_LIST_START'];
             $prevLink = SugarThemeRegistry::current()->getImage("previous_off", "border='0' align='absmiddle'", null, null, '.gif', $app_strings['LNK_LIST_PREVIOUS'])."&nbsp;".$app_strings['LNK_LIST_PREVIOUS'];

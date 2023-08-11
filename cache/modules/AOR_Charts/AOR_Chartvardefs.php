@@ -182,7 +182,7 @@
       'id_name' => 'aor_report_id',
       'link' => 'aor_charts_aor_reports',
       'table' => 'aor_reports',
-      'module' => 'AOR_Report',
+      'module' => 'AOR_Reports',
       'rname' => 'name',
     ),
     'aor_report_id' => 

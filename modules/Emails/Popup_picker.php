@@ -63,19 +63,7 @@ class Popup_Picker
     {
     }
 
-    /**
-     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
-     */
-    public function Popup_Picker()
-    {
-        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
-            $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
-            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
-        }
-        self::__construct();
-    }
+
 
 
     /*
@@ -153,7 +141,7 @@ class Popup_Picker
         $form->reset('main.SearchHeader');
 
         // create the listview
-        $seed_bean = new Email();
+        $seed_bean = BeanFactory::newBean('Emails');
         $ListView = new ListView();
         $ListView->show_export_button = false;
         $ListView->process_for_popups = true;
