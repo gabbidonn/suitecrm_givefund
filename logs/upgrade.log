@@ -1,0 +1,234 @@
+[2023-08-11 02:40:44] upgrade.INFO: Running step: check-legacy-config [] []
+[2023-08-11 02:40:44] upgrade.INFO: step: check-legacy-config | status: done [] []
+[2023-08-11 02:40:44] upgrade.INFO: step: check-legacy-config | messages: [] []
+[2023-08-11 02:40:44] upgrade.INFO: Found legacy config. Proceeding with migration [] []
+[2023-08-11 02:40:44] upgrade.INFO: step: check-legacy-config | debug: no debug info [] []
+[2023-08-11 02:40:44] upgrade.INFO: Running step: setup-env [] []
+[2023-08-11 02:40:44] upgrade.INFO: step: setup-env | status: done [] []
+[2023-08-11 02:40:44] upgrade.INFO: step: setup-env | messages: [] []
+[2023-08-11 02:40:44] upgrade.INFO: Created .env.local [] []
+[2023-08-11 02:40:44] upgrade.INFO: step: setup-env | debug: no debug info [] []
+[2023-08-11 02:40:44] upgrade.INFO: Running step: change-theme [] []
+[2023-08-11 02:40:44] upgrade.INFO: step: change-theme | status: done [] []
+[2023-08-11 02:40:44] upgrade.INFO: step: change-theme | messages: [] []
+[2023-08-11 02:40:44] upgrade.INFO: Set suite8 theme as default theme [] []
+[2023-08-11 02:40:44] upgrade.INFO: step: change-theme | debug: no debug info [] []
+[2023-08-11 02:48:07] upgrade.INFO: Running step: manual-config-check [] []
+[2023-08-11 02:48:07] upgrade.INFO: step: manual-config-check | status: done [] []
+[2023-08-11 02:48:07] upgrade.INFO: step: manual-config-check | messages: [] []
+[2023-08-11 02:48:07] upgrade.INFO: Manual config check done [] []
+[2023-08-11 02:48:07] upgrade.INFO: step: manual-config-check | debug: no debug info [] []
+[2023-08-11 02:48:07] upgrade.INFO: Running step: change-rewrite-base [] []
+[2023-08-11 02:48:07] upgrade.INFO: step: change-rewrite-base | status: done [] []
+[2023-08-11 02:48:07] upgrade.INFO: step: change-rewrite-base | messages: [] []
+[2023-08-11 02:48:07] upgrade.INFO: Updated htaccess RewriteBase [] []
+[2023-08-11 02:48:07] upgrade.INFO: step: change-rewrite-base | debug: no debug info [] []
+[2023-08-11 02:51:36] upgrade.INFO: Running step: manual-rewrite-base-check [] []
+[2023-08-11 02:51:36] upgrade.INFO: step: manual-rewrite-base-check | status: done [] []
+[2023-08-11 02:51:36] upgrade.INFO: step: manual-rewrite-base-check | messages: [] []
+[2023-08-11 02:51:36] upgrade.INFO: Manual RewriteBase check done [] []
+[2023-08-11 02:51:36] upgrade.INFO: step: manual-rewrite-base-check | debug: no debug info [] []
+[2023-08-11 02:51:36] upgrade.INFO: Running step: install-portability [] []
+[2023-08-11 02:51:37] upgrade.INFO: step: install-portability | status: done [] []
+[2023-08-11 02:51:37] upgrade.INFO: step: install-portability | messages: [] []
+[2023-08-11 02:51:37] upgrade.INFO: Successfully installed the portability folder [] []
+[2023-08-11 02:51:37] upgrade.INFO: step: install-portability | debug: no debug info [] []
+[2023-08-11 03:03:25] upgrade.INFO: Running step: check-legacy-config [] []
+[2023-08-11 03:03:25] upgrade.INFO: step: check-legacy-config | status: done [] []
+[2023-08-11 03:03:25] upgrade.INFO: step: check-legacy-config | messages: [] []
+[2023-08-11 03:03:25] upgrade.INFO: Found legacy config. Proceeding with migration [] []
+[2023-08-11 03:03:25] upgrade.INFO: step: check-legacy-config | debug: no debug info [] []
+[2023-08-11 03:03:25] upgrade.INFO: Running step: setup-env [] []
+[2023-08-11 03:03:26] upgrade.INFO: step: setup-env | status: done [] []
+[2023-08-11 03:03:26] upgrade.INFO: step: setup-env | messages: [] []
+[2023-08-11 03:03:26] upgrade.INFO: Created .env.local [] []
+[2023-08-11 03:03:26] upgrade.INFO: step: setup-env | debug: no debug info [] []
+[2023-08-11 03:03:26] upgrade.INFO: Running step: change-theme [] []
+[2023-08-11 03:03:26] upgrade.INFO: step: change-theme | status: done [] []
+[2023-08-11 03:03:26] upgrade.INFO: step: change-theme | messages: [] []
+[2023-08-11 03:03:26] upgrade.INFO: Set suite8 theme as default theme [] []
+[2023-08-11 03:03:26] upgrade.INFO: step: change-theme | debug: no debug info [] []
+[2023-08-11 03:03:43] upgrade.INFO: Running step: manual-config-check [] []
+[2023-08-11 03:03:43] upgrade.INFO: step: manual-config-check | status: done [] []
+[2023-08-11 03:03:43] upgrade.INFO: step: manual-config-check | messages: [] []
+[2023-08-11 03:03:43] upgrade.INFO: Manual config check done [] []
+[2023-08-11 03:03:43] upgrade.INFO: step: manual-config-check | debug: no debug info [] []
+[2023-08-11 03:03:43] upgrade.INFO: Running step: change-rewrite-base [] []
+[2023-08-11 03:03:43] upgrade.INFO: step: change-rewrite-base | status: done [] []
+[2023-08-11 03:03:43] upgrade.INFO: step: change-rewrite-base | messages: [] []
+[2023-08-11 03:03:43] upgrade.INFO: Updated htaccess RewriteBase [] []
+[2023-08-11 03:03:43] upgrade.INFO: step: change-rewrite-base | debug: no debug info [] []
+[2023-08-11 03:03:57] upgrade.INFO: Running step: manual-rewrite-base-check [] []
+[2023-08-11 03:03:57] upgrade.INFO: step: manual-rewrite-base-check | status: done [] []
+[2023-08-11 03:03:57] upgrade.INFO: step: manual-rewrite-base-check | messages: [] []
+[2023-08-11 03:03:57] upgrade.INFO: Manual RewriteBase check done [] []
+[2023-08-11 03:03:57] upgrade.INFO: step: manual-rewrite-base-check | debug: no debug info [] []
+[2023-08-11 03:03:57] upgrade.INFO: Running step: install-portability [] []
+[2023-08-11 03:03:58] upgrade.INFO: step: install-portability | status: done [] []
+[2023-08-11 03:03:58] upgrade.INFO: step: install-portability | messages: [] []
+[2023-08-11 03:03:58] upgrade.INFO: Successfully installed the portability folder [] []
+[2023-08-11 03:03:58] upgrade.INFO: step: install-portability | debug: no debug info [] []
+[2023-08-11 03:14:37] upgrade.INFO: Running step: backup-original-modules [] []
+[2023-08-11 03:15:49] upgrade.INFO: step: backup-original-modules | status: done [] []
+[2023-08-11 03:15:49] upgrade.INFO: step: backup-original-modules | messages: [] []
+[2023-08-11 03:15:49] upgrade.INFO: Successfully backed up files [] []
+[2023-08-11 03:15:49] upgrade.INFO: step: backup-original-modules | debug: no debug info [] []
+[2023-08-11 03:15:49] upgrade.INFO: Running step: check-package [] []
+[2023-08-11 03:15:49] upgrade.INFO: step: check-package | status: done [] []
+[2023-08-11 03:15:49] upgrade.INFO: step: check-package | messages: [] []
+[2023-08-11 03:15:49] upgrade.INFO: Package found in path [] []
+[2023-08-11 03:15:49] upgrade.INFO: step: check-package | debug: [] []
+[2023-08-11 03:15:49] upgrade.INFO: Check package existence in: /bitnami/suitecrm/tmp/package/upgrade/SuiteCRM-8.3.1.zip [] []
+[2023-08-11 03:15:49] upgrade.INFO: Running step: extract-package [] []
+[2023-08-11 03:20:36] upgrade.INFO: step: extract-package | status: done [] []
+[2023-08-11 03:20:36] upgrade.INFO: step: extract-package | messages: [] []
+[2023-08-11 03:20:36] upgrade.INFO: Package extracted [] []
+[2023-08-11 03:20:36] upgrade.INFO: step: extract-package | debug: [] []
+[2023-08-11 03:20:36] upgrade.INFO: Trying to extract to: /bitnami/suitecrm/tmp/package/upgrade/SuiteCRM-8.3.1-extracted [] []
+[2023-08-11 03:20:36] upgrade.INFO: Running step: check-permissions [] []
+[2023-08-11 03:20:36] upgrade.INFO: step: check-permissions | status: done [] []
+[2023-08-11 03:20:36] upgrade.INFO: step: check-permissions | messages: [] []
+[2023-08-11 03:20:36] upgrade.INFO: Permissions checked [] []
+[2023-08-11 03:20:36] upgrade.INFO: step: check-permissions | debug: no debug info [] []
+[2023-08-11 03:20:36] upgrade.INFO: Running step: install-upgrade-package [] []
+[2023-08-11 03:30:54] upgrade.INFO: step: install-upgrade-package | status: done [] []
+[2023-08-11 03:30:54] upgrade.INFO: step: install-upgrade-package | messages: [] []
+[2023-08-11 03:30:54] upgrade.INFO: Successfully installed package [] []
+[2023-08-11 03:30:54] upgrade.INFO: step: install-upgrade-package | debug: [] []
+[2023-08-11 03:30:54] upgrade.INFO: sync manifest generated: {".editorconfig":{"path":".editorconfig","action":"copy","type":"file"},".env":{"path":".env","action":"copy","type":"file"},".eslintrc.js":{"path":".eslintrc.js","action":"copy","type":"file"},"LICENSE.txt":{"path":"LICENSE.txt","action":"copy","type":"file"},"README.md":{"path":"README.md","action":"copy","type":"file"},"VERSION":{"path":"VERSION","action":"copy","type":"file"},"angular.json":{"path":"angular.json","action":"copy","type":"file"},"composer.json":{"path":"composer.json","action":"copy","type":"file"},"composer.lock":{"path":"composer.lock","action":"copy","type":"file"},"files.md5":{"path":"files.md5","action":"copy","type":"file"},"package.json":{"path":"package.json","action":"copy","type":"file"},"proxy.conf.env.json":{"path":"proxy.conf.env.json","action":"copy","type":"file"},"symfony.lock":{"path":"symfony.lock","action":"copy","type":"file"},"tsconfig.json":{"path":"tsconfig.json","action":"copy","type":"file"},"tslint.json":{"path":"tslint.json","action":"copy","type":"file"},"yarn.lock":{"path":"yarn.lock","action":"copy","type":"file"},".DS_Store":{"path":".DS_Store","action":"delete","type":"file"},"Archive.zip":{"path":"Archive.zip","action":"delete","type":"file"},"bin":{"path":"bin","action":"copy","type":"dir"},"config":{"path":"config","action":"copy","type":"dir"},"core":{"path":"core","action":"copy","type":"dir"},"vendor":{"path":"vendor","action":"copy","type":"dir"},"SuiteCRM-8.3.1-7.13-migration":{"path":"SuiteCRM-8.3.1-7.13-migration","action":"delete","type":"dir"},"database_backup":{"path":"database_backup","action":"delete","type":"dir"},"docker":{"path":"docker","action":"delete","type":"dir"},"public\/.htaccess":{"path":"public\/.htaccess","action":"copy","type":"file"},"public\/favicon.ico":{"path":"public\/favicon.ico","action":"copy","type":"file"},"public\/index.php":{"path":"public\/index.php","action":"copy","type":"file"},"public\/robots.txt":{"path":"public\/robots.txt","action":"copy","type":"file"},"public\/site.webmanifest":{"path":"public\/site.webmanifest","action":"copy","type":"file"},"public\/.DS_Store":{"path":"public\/.DS_Store","action":"delete","type":"file"},"public\/bundles":{"path":"public\/bundles","action":"copy","type":"dir"},"public\/dist":{"path":"public\/dist","action":"copy","type":"dir"},"public\/legacy\/HandleAjaxCall.php":{"path":"public\/legacy\/HandleAjaxCall.php","action":"copy","type":"file"},"public\/legacy\/LICENSE.txt":{"path":"public\/legacy\/LICENSE.txt","action":"copy","type":"file"},"public\/legacy\/README.md":{"path":"public\/legacy\/README.md","action":"copy","type":"file"},"public\/legacy\/RoboFile.php":{"path":"public\/legacy\/RoboFile.php","action":"copy","type":"file"},"public\/legacy\/SugarSecurity.php":{"path":"public\/legacy\/SugarSecurity.php","action":"copy","type":"file"},"public\/legacy\/TreeData.php":{"path":"public\/legacy\/TreeData.php","action":"copy","type":"file"},"public\/legacy\/campaign_tracker.php":{"path":"public\/legacy\/campaign_tracker.php","action":"copy","type":"file"},"public\/legacy\/composer.json":{"path":"public\/legacy\/composer.json","action":"copy","type":"file"},"public\/legacy\/composer.lock":{"path":"public\/legacy\/composer.lock","action":"copy","type":"file"},"public\/legacy\/cron.php":{"path":"public\/legacy\/cron.php","action":"copy","type":"file"},"public\/legacy\/crossdomain.xml":{"path":"public\/legacy\/crossdomain.xml","action":"copy","type":"file"},"public\/legacy\/deprecated.php":{"path":"public\/legacy\/deprecated.php","action":"copy","type":"file"},"public\/legacy\/dictionary.php":{"path":"public\/legacy\/dictionary.php","action":"copy","type":"file"},"public\/legacy\/download.php":{"path":"public\/legacy\/download.php","action":"copy","type":"file"},"public\/legacy\/emailmandelivery.php":{"path":"public\/legacy\/emailmandelivery.php","action":"copy","type":"file"},"public\/legacy\/export.php":{"path":"public\/legacy\/export.php","action":"copy","type":"file"},"public\/legacy\/files.md5":{"path":"public\/legacy\/files.md5","action":"copy","type":"file"},"public\/legacy\/ical_server.php":{"path":"public\/legacy\/ical_server.php","action":"copy","type":"file"},"public\/legacy\/index.php":{"path":"public\/legacy\/index.php","action":"copy","type":"file"},"public\/legacy\/install.php":{"path":"public\/legacy\/install.php","action":"copy","type":"file"},"public\/legacy\/json_server.php":{"path":"public\/legacy\/json_server.php","action":"copy","type":"file"},"public\/legacy\/log_file_restricted.html":{"path":"public\/legacy\/log_file_restricted.html","action":"copy","type":"file"},"public\/legacy\/maintenance.php":{"path":"public\/legacy\/maintenance.php","action":"copy","type":"file"},"public\/legacy\/pdf.php":{"path":"public\/legacy\/pdf.php","action":"copy","type":"file"},"public\/legacy\/php_version.php":{"path":"public\/legacy\/php_version.php","action":"copy","type":"file"},"public\/legacy\/phpcs.xml":{"path":"public\/legacy\/phpcs.xml","action":"copy","type":"file"},"public\/legacy\/robots.txt":{"path":"public\/legacy\/robots.txt","action":"copy","type":"file"},"public\/legacy\/run_job.php":{"path":"public\/legacy\/run_job.php","action":"copy","type":"file"},"public\/legacy\/soap.php":{"path":"public\/legacy\/soap.php","action":"copy","type":"file"},"public\/legacy\/sugar_version.json":{"path":"public\/legacy\/sugar_version.json","action":"copy","type":"file"},"public\/legacy\/sugar_version.php":{"path":"public\/legacy\/sugar_version.php","action":"copy","type":"file"},"public\/legacy\/suitecrm_version.php":{"path":"public\/legacy\/suitecrm_version.php","action":"copy","type":"file"},"public\/legacy\/vCard.php":{"path":"public\/legacy\/vCard.php","action":"copy","type":"file"},"public\/legacy\/vcal_server.php":{"path":"public\/legacy\/vcal_server.php","action":"copy","type":"file"},"public\/legacy\/.buildcomplete":{"path":"public\/legacy\/.buildcomplete","action":"delete","type":"file"},"public\/legacy\/.ftpquota":{"path":"public\/legacy\/.ftpquota","action":"delete","type":"file"},"public\/legacy\/.gitignore":{"path":"public\/legacy\/.gitignore","action":"delete","type":"file"},"public\/legacy\/.initialized":{"path":"public\/legacy\/.initialized","action":"delete","type":"file"},"public\/legacy\/.pullapprove.yml":{"path":"public\/legacy\/.pullapprove.yml","action":"delete","type":"file"},"public\/legacy\/.restored":{"path":"public\/legacy\/.restored","action":"delete","type":"file"},"public\/legacy\/.travis.yml":{"path":"public\/legacy\/.travis.yml","action":"delete","type":"file"},"public\/legacy\/CODE_OF_CONDUCT.md":{"path":"public\/legacy\/CODE_OF_CONDUCT.md","action":"delete","type":"file"},"public\/legacy\/SuiteCRM-Upgrade-7.10.x-to-7.12.12.zip":{"path":"public\/legacy\/SuiteCRM-Upgrade-7.10.x-to-7.12.12.zip","action":"delete","type":"file"},"public\/legacy\/codeception.yml":{"path":"public\/legacy\/codeception.yml","action":"delete","type":"file"},"public\/legacy\/codecov.yml":{"path":"public\/legacy\/codecov.yml","action":"delete","type":"file"},"public\/legacy\/error_log":{"path":"public\/legacy\/error_log","action":"delete","type":"file"},"public\/legacy\/info.php":{"path":"public\/legacy\/info.php","action":"delete","type":"file"},"public\/legacy\/manifest.php":{"path":"public\/legacy\/manifest.php","action":"delete","type":"file"},"public\/legacy\/suitecrm.log_dis":{"path":"public\/legacy\/suitecrm.log_dis","action":"delete","type":"file"},"public\/legacy\/travis.php.ini":{"path":"public\/legacy\/travis.php.ini","action":"delete","type":"file"},"public\/legacy\/ModuleInstall":{"path":"public\/legacy\/ModuleInstall","action":"copy","type":"dir"},"public\/legacy\/XTemplate":{"path":"public\/legacy\/XTemplate","action":"copy","type":"dir"},"public\/legacy\/Zend":{"path":"public\/legacy\/Zend","action":"copy","type":"dir"},"public\/legacy\/data":{"path":"public\/legacy\/data","action":"copy","type":"dir"},"public\/legacy\/include":{"path":"public\/legacy\/include","action":"copy","type":"dir"},"public\/legacy\/install":{"path":"public\/legacy\/install","action":"copy","type":"dir"},"public\/legacy\/jssource":{"path":"public\/legacy\/jssource","action":"copy","type":"dir"},"public\/legacy\/lib":{"path":"public\/legacy\/lib","action":"copy","type":"dir"},"public\/legacy\/metadata":{"path":"public\/legacy\/metadata","action":"copy","type":"dir"},"public\/legacy\/service":{"path":"public\/legacy\/service","action":"copy","type":"dir"},"public\/legacy\/soap":{"path":"public\/legacy\/soap","action":"copy","type":"dir"},"public\/legacy\/themes":{"path":"public\/legacy\/themes","action":"copy","type":"dir"},"public\/legacy\/vendor":{"path":"public\/legacy\/vendor","action":"copy","type":"dir"},"public\/legacy\/.github":{"path":"public\/legacy\/.github","action":"delete","type":"dir"},"public\/legacy\/70476-upload":{"path":"public\/legacy\/70476-upload","action":"delete","type":"dir"},"public\/legacy\/build":{"path":"public\/legacy\/build","action":"delete","type":"dir"},"public\/legacy\/conf":{"path":"public\/legacy\/conf","action":"delete","type":"dir"},"public\/legacy\/licenses":{"path":"public\/legacy\/licenses","action":"delete","type":"dir"},"public\/legacy\/Api\/index.php":{"path":"public\/legacy\/Api\/index.php","action":"copy","type":"file"},"public\/legacy\/Api\/Core":{"path":"public\/legacy\/Api\/Core","action":"copy","type":"dir"},"public\/legacy\/Api\/docs":{"path":"public\/legacy\/Api\/docs","action":"copy","type":"dir"},"public\/legacy\/Api\/V8\/BeanDecorator":{"path":"public\/legacy\/Api\/V8\/BeanDecorator","action":"copy","type":"dir"},"public\/legacy\/Api\/V8\/Config":{"path":"public\/legacy\/Api\/V8\/Config","action":"copy","type":"dir"},"public\/legacy\/Api\/V8\/Controller":{"path":"public\/legacy\/Api\/V8\/Controller","action":"copy","type":"dir"},"public\/legacy\/Api\/V8\/Factory":{"path":"public\/legacy\/Api\/V8\/Factory","action":"copy","type":"dir"},"public\/legacy\/Api\/V8\/Helper":{"path":"public\/legacy\/Api\/V8\/Helper","action":"copy","type":"dir"},"public\/legacy\/Api\/V8\/JsonApi":{"path":"public\/legacy\/Api\/V8\/JsonApi","action":"copy","type":"dir"},"public\/legacy\/Api\/V8\/Middleware":{"path":"public\/legacy\/Api\/V8\/Middleware","action":"copy","type":"dir"},"public\/legacy\/Api\/V8\/Param":{"path":"public\/legacy\/Api\/V8\/Param","action":"copy","type":"dir"},"public\/legacy\/Api\/V8\/Service":{"path":"public\/legacy\/Api\/V8\/Service","action":"copy","type":"dir"},"public\/legacy\/Api\/V8\/OAuth2\/.gitignore":{"path":"public\/legacy\/Api\/V8\/OAuth2\/.gitignore","action":"copy","type":"file"},"public\/legacy\/Api\/V8\/OAuth2\/Entity":{"path":"public\/legacy\/Api\/V8\/OAuth2\/Entity","action":"copy","type":"dir"},"public\/legacy\/Api\/V8\/OAuth2\/Repository":{"path":"public\/legacy\/Api\/V8\/OAuth2\/Repository","action":"copy","type":"dir"},"public\/legacy\/modules\/BeanDictionary.php":{"path":"public\/legacy\/modules\/BeanDictionary.php","action":"copy","type":"file"},"public\/legacy\/modules\/TableDictionary.php":{"path":"public\/legacy\/modules\/TableDictionary.php","action":"copy","type":"file"},"public\/legacy\/modules\/ACL":{"path":"public\/legacy\/modules\/ACL","action":"copy","type":"dir"},"public\/legacy\/modules\/ACLActions":{"path":"public\/legacy\/modules\/ACLActions","action":"copy","type":"dir"},"public\/legacy\/modules\/ACLRoles":{"path":"public\/legacy\/modules\/ACLRoles","action":"copy","type":"dir"},"public\/legacy\/modules\/AM_ProjectTemplates":{"path":"public\/legacy\/modules\/AM_ProjectTemplates","action":"copy","type":"dir"},"public\/legacy\/modules\/AM_TaskTemplates":{"path":"public\/legacy\/modules\/AM_TaskTemplates","action":"copy","type":"dir"},"public\/legacy\/modules\/AOBH_BusinessHours":{"path":"public\/legacy\/modules\/AOBH_BusinessHours","action":"copy","type":"dir"},"public\/legacy\/modules\/AOK_KnowledgeBase":{"path":"public\/legacy\/modules\/AOK_KnowledgeBase","action":"copy","type":"dir"},"public\/legacy\/modules\/AOK_Knowledge_Base_Categories":{"path":"public\/legacy\/modules\/AOK_Knowledge_Base_Categories","action":"copy","type":"dir"},"public\/legacy\/modules\/AOP_Case_Events":{"path":"public\/legacy\/modules\/AOP_Case_Events","action":"copy","type":"dir"},"public\/legacy\/modules\/AOP_Case_Updates":{"path":"public\/legacy\/modules\/AOP_Case_Updates","action":"copy","type":"dir"},"public\/legacy\/modules\/AOR_Charts":{"path":"public\/legacy\/modules\/AOR_Charts","action":"copy","type":"dir"},"public\/legacy\/modules\/AOR_Conditions":{"path":"public\/legacy\/modules\/AOR_Conditions","action":"copy","type":"dir"},"public\/legacy\/modules\/AOR_Fields":{"path":"public\/legacy\/modules\/AOR_Fields","action":"copy","type":"dir"},"public\/legacy\/modules\/AOR_Reports":{"path":"public\/legacy\/modules\/AOR_Reports","action":"copy","type":"dir"},"public\/legacy\/modules\/AOR_Scheduled_Reports":{"path":"public\/legacy\/modules\/AOR_Scheduled_Reports","action":"copy","type":"dir"},"public\/legacy\/modules\/AOS_Contracts":{"path":"public\/legacy\/modules\/AOS_Contracts","action":"copy","type":"dir"},"public\/legacy\/modules\/AOS_Invoices":{"path":"public\/legacy\/modules\/AOS_Invoices","action":"copy","type":"dir"},"public\/legacy\/modules\/AOS_Line_Item_Groups":{"path":"public\/legacy\/modules\/AOS_Line_Item_Groups","action":"copy","type":"dir"},"public\/legacy\/modules\/AOS_PDF_Templates":{"path":"public\/legacy\/modules\/AOS_PDF_Templates","action":"copy","type":"dir"},"public\/legacy\/modules\/AOS_Product_Categories":{"path":"public\/legacy\/modules\/AOS_Product_Categories","action":"copy","type":"dir"},"public\/legacy\/modules\/AOS_Products":{"path":"public\/legacy\/modules\/AOS_Products","action":"copy","type":"dir"},"public\/legacy\/modules\/AOS_Products_Quotes":{"path":"public\/legacy\/modules\/AOS_Products_Quotes","action":"copy","type":"dir"},"public\/legacy\/modules\/AOS_Quotes":{"path":"public\/legacy\/modules\/AOS_Quotes","action":"copy","type":"dir"},"public\/legacy\/modules\/AOW_Actions":{"path":"public\/legacy\/modules\/AOW_Actions","action":"copy","type":"dir"},"public\/legacy\/modules\/AOW_Conditions":{"path":"public\/legacy\/modules\/AOW_Conditions","action":"copy","type":"dir"},"public\/legacy\/modules\/AOW_Processed":{"path":"public\/legacy\/modules\/AOW_Processed","action":"copy","type":"dir"},"public\/legacy\/modules\/AOW_WorkFlow":{"path":"public\/legacy\/modules\/AOW_WorkFlow","action":"copy","type":"dir"},"public\/legacy\/modules\/Accounts":{"path":"public\/legacy\/modules\/Accounts","action":"copy","type":"dir"},"public\/legacy\/modules\/Activities":{"path":"public\/legacy\/modules\/Activities","action":"copy","type":"dir"},"public\/legacy\/modules\/Administration":{"path":"public\/legacy\/modules\/Administration","action":"copy","type":"dir"},"public\/legacy\/modules\/Alerts":{"path":"public\/legacy\/modules\/Alerts","action":"copy","type":"dir"},"public\/legacy\/modules\/Audit":{"path":"public\/legacy\/modules\/Audit","action":"copy","type":"dir"},"public\/legacy\/modules\/Bugs":{"path":"public\/legacy\/modules\/Bugs","action":"copy","type":"dir"},"public\/legacy\/modules\/Calendar":{"path":"public\/legacy\/modules\/Calendar","action":"copy","type":"dir"},"public\/legacy\/modules\/Calls":{"path":"public\/legacy\/modules\/Calls","action":"copy","type":"dir"},"public\/legacy\/modules\/Calls_Reschedule":{"path":"public\/legacy\/modules\/Calls_Reschedule","action":"copy","type":"dir"},"public\/legacy\/modules\/CampaignLog":{"path":"public\/legacy\/modules\/CampaignLog","action":"copy","type":"dir"},"public\/legacy\/modules\/CampaignTrackers":{"path":"public\/legacy\/modules\/CampaignTrackers","action":"copy","type":"dir"},"public\/legacy\/modules\/Campaigns":{"path":"public\/legacy\/modules\/Campaigns","action":"copy","type":"dir"},"public\/legacy\/modules\/Cases":{"path":"public\/legacy\/modules\/Cases","action":"copy","type":"dir"},"public\/legacy\/modules\/Charts":{"path":"public\/legacy\/modules\/Charts","action":"copy","type":"dir"},"public\/legacy\/modules\/Configurator":{"path":"public\/legacy\/modules\/Configurator","action":"copy","type":"dir"},"public\/legacy\/modules\/Connectors":{"path":"public\/legacy\/modules\/Connectors","action":"copy","type":"dir"},"public\/legacy\/modules\/Contacts":{"path":"public\/legacy\/modules\/Contacts","action":"copy","type":"dir"},"public\/legacy\/modules\/Currencies":{"path":"public\/legacy\/modules\/Currencies","action":"copy","type":"dir"},"public\/legacy\/modules\/Delegates":{"path":"public\/legacy\/modules\/Delegates","action":"copy","type":"dir"},"public\/legacy\/modules\/DocumentRevisions":{"path":"public\/legacy\/modules\/DocumentRevisions","action":"copy","type":"dir"},"public\/legacy\/modules\/Documents":{"path":"public\/legacy\/modules\/Documents","action":"copy","type":"dir"},"public\/legacy\/modules\/DynamicFields":{"path":"public\/legacy\/modules\/DynamicFields","action":"copy","type":"dir"},"public\/legacy\/modules\/EAPM":{"path":"public\/legacy\/modules\/EAPM","action":"copy","type":"dir"},"public\/legacy\/modules\/EmailAddresses":{"path":"public\/legacy\/modules\/EmailAddresses","action":"copy","type":"dir"},"public\/legacy\/modules\/EmailMan":{"path":"public\/legacy\/modules\/EmailMan","action":"copy","type":"dir"},"public\/legacy\/modules\/EmailMarketing":{"path":"public\/legacy\/modules\/EmailMarketing","action":"copy","type":"dir"},"public\/legacy\/modules\/EmailTemplates":{"path":"public\/legacy\/modules\/EmailTemplates","action":"copy","type":"dir"},"public\/legacy\/modules\/EmailText":{"path":"public\/legacy\/modules\/EmailText","action":"copy","type":"dir"},"public\/legacy\/modules\/Emails":{"path":"public\/legacy\/modules\/Emails","action":"copy","type":"dir"},"public\/legacy\/modules\/Employees":{"path":"public\/legacy\/modules\/Employees","action":"copy","type":"dir"},"public\/legacy\/modules\/ExternalOAuthConnection":{"path":"public\/legacy\/modules\/ExternalOAuthConnection","action":"copy","type":"dir"},"public\/legacy\/modules\/ExternalOAuthProvider":{"path":"public\/legacy\/modules\/ExternalOAuthProvider","action":"copy","type":"dir"},"public\/legacy\/modules\/FP_Event_Locations":{"path":"public\/legacy\/modules\/FP_Event_Locations","action":"copy","type":"dir"},"public\/legacy\/modules\/FP_events":{"path":"public\/legacy\/modules\/FP_events","action":"copy","type":"dir"},"public\/legacy\/modules\/Favorites":{"path":"public\/legacy\/modules\/Favorites","action":"copy","type":"dir"},"public\/legacy\/modules\/Groups":{"path":"public\/legacy\/modules\/Groups","action":"copy","type":"dir"},"public\/legacy\/modules\/Help":{"path":"public\/legacy\/modules\/Help","action":"copy","type":"dir"},"public\/legacy\/modules\/History":{"path":"public\/legacy\/modules\/History","action":"copy","type":"dir"},"public\/legacy\/modules\/Home":{"path":"public\/legacy\/modules\/Home","action":"copy","type":"dir"},"public\/legacy\/modules\/Import":{"path":"public\/legacy\/modules\/Import","action":"copy","type":"dir"},"public\/legacy\/modules\/InboundEmail":{"path":"public\/legacy\/modules\/InboundEmail","action":"copy","type":"dir"},"public\/legacy\/modules\/LabelEditor":{"path":"public\/legacy\/modules\/LabelEditor","action":"copy","type":"dir"},"public\/legacy\/modules\/Leads":{"path":"public\/legacy\/modules\/Leads","action":"copy","type":"dir"},"public\/legacy\/modules\/MailMerge":{"path":"public\/legacy\/modules\/MailMerge","action":"copy","type":"dir"},"public\/legacy\/modules\/Meetings":{"path":"public\/legacy\/modules\/Meetings","action":"copy","type":"dir"},"public\/legacy\/modules\/MergeRecords":{"path":"public\/legacy\/modules\/MergeRecords","action":"copy","type":"dir"},"public\/legacy\/modules\/ModuleBuilder":{"path":"public\/legacy\/modules\/ModuleBuilder","action":"copy","type":"dir"},"public\/legacy\/modules\/MySettings":{"path":"public\/legacy\/modules\/MySettings","action":"copy","type":"dir"},"public\/legacy\/modules\/Notes":{"path":"public\/legacy\/modules\/Notes","action":"copy","type":"dir"},"public\/legacy\/modules\/OAuth2Clients":{"path":"public\/legacy\/modules\/OAuth2Clients","action":"copy","type":"dir"},"public\/legacy\/modules\/OAuth2Tokens":{"path":"public\/legacy\/modules\/OAuth2Tokens","action":"copy","type":"dir"},"public\/legacy\/modules\/OAuthKeys":{"path":"public\/legacy\/modules\/OAuthKeys","action":"copy","type":"dir"},"public\/legacy\/modules\/OAuthTokens":{"path":"public\/legacy\/modules\/OAuthTokens","action":"copy","type":"dir"},"public\/legacy\/modules\/Opportunities":{"path":"public\/legacy\/modules\/Opportunities","action":"copy","type":"dir"},"public\/legacy\/modules\/OptimisticLock":{"path":"public\/legacy\/modules\/OptimisticLock","action":"copy","type":"dir"},"public\/legacy\/modules\/OutboundEmailAccounts":{"path":"public\/legacy\/modules\/OutboundEmailAccounts","action":"copy","type":"dir"},"public\/legacy\/modules\/Project":{"path":"public\/legacy\/modules\/Project","action":"copy","type":"dir"},"public\/legacy\/modules\/ProjectTask":{"path":"public\/legacy\/modules\/ProjectTask","action":"copy","type":"dir"},"public\/legacy\/modules\/ProspectLists":{"path":"public\/legacy\/modules\/ProspectLists","action":"copy","type":"dir"},"public\/legacy\/modules\/Prospects":{"path":"public\/legacy\/modules\/Prospects","action":"copy","type":"dir"},"public\/legacy\/modules\/Relationships":{"path":"public\/legacy\/modules\/Relationships","action":"copy","type":"dir"},"public\/legacy\/modules\/Releases":{"path":"public\/legacy\/modules\/Releases","action":"copy","type":"dir"},"public\/legacy\/modules\/Reminders":{"path":"public\/legacy\/modules\/Reminders","action":"copy","type":"dir"},"public\/legacy\/modules\/Reminders_Invitees":{"path":"public\/legacy\/modules\/Reminders_Invitees","action":"copy","type":"dir"},"public\/legacy\/modules\/ResourceCalendar":{"path":"public\/legacy\/modules\/ResourceCalendar","action":"copy","type":"dir"},"public\/legacy\/modules\/Roles":{"path":"public\/legacy\/modules\/Roles","action":"copy","type":"dir"},"public\/legacy\/modules\/SavedSearch":{"path":"public\/legacy\/modules\/SavedSearch","action":"copy","type":"dir"},"public\/legacy\/modules\/Schedulers":{"path":"public\/legacy\/modules\/Schedulers","action":"copy","type":"dir"},"public\/legacy\/modules\/SchedulersJobs":{"path":"public\/legacy\/modules\/SchedulersJobs","action":"copy","type":"dir"},"public\/legacy\/modules\/SecurityGroups":{"path":"public\/legacy\/modules\/SecurityGroups","action":"copy","type":"dir"},"public\/legacy\/modules\/Studio":{"path":"public\/legacy\/modules\/Studio","action":"copy","type":"dir"},"public\/legacy\/modules\/SugarFeed":{"path":"public\/legacy\/modules\/SugarFeed","action":"copy","type":"dir"},"public\/legacy\/modules\/SurveyQuestionOptions":{"path":"public\/legacy\/modules\/SurveyQuestionOptions","action":"copy","type":"dir"},"public\/legacy\/modules\/SurveyQuestionResponses":{"path":"public\/legacy\/modules\/SurveyQuestionResponses","action":"copy","type":"dir"},"public\/legacy\/modules\/SurveyQuestions":{"path":"public\/legacy\/modules\/SurveyQuestions","action":"copy","type":"dir"},"public\/legacy\/modules\/SurveyResponses":{"path":"public\/legacy\/modules\/SurveyResponses","action":"copy","type":"dir"},"public\/legacy\/modules\/Surveys":{"path":"public\/legacy\/modules\/Surveys","action":"copy","type":"dir"},"public\/legacy\/modules\/Tasks":{"path":"public\/legacy\/modules\/Tasks","action":"copy","type":"dir"},"public\/legacy\/modules\/TemplateSectionLine":{"path":"public\/legacy\/modules\/TemplateSectionLine","action":"copy","type":"dir"},"public\/legacy\/modules\/Trackers":{"path":"public\/legacy\/modules\/Trackers","action":"copy","type":"dir"},"public\/legacy\/modules\/UpgradeWizard":{"path":"public\/legacy\/modules\/UpgradeWizard","action":"copy","type":"dir"},"public\/legacy\/modules\/UserPreferences":{"path":"public\/legacy\/modules\/UserPreferences","action":"copy","type":"dir"},"public\/legacy\/modules\/Users":{"path":"public\/legacy\/modules\/Users","action":"copy","type":"dir"},"public\/legacy\/modules\/iCals":{"path":"public\/legacy\/modules\/iCals","action":"copy","type":"dir"},"public\/legacy\/modules\/jjwg_Address_Cache":{"path":"public\/legacy\/modules\/jjwg_Address_Cache","action":"copy","type":"dir"},"public\/legacy\/modules\/jjwg_Areas":{"path":"public\/legacy\/modules\/jjwg_Areas","action":"copy","type":"dir"},"public\/legacy\/modules\/jjwg_Maps":{"path":"public\/legacy\/modules\/jjwg_Maps","action":"copy","type":"dir"},"public\/legacy\/modules\/jjwg_Markers":{"path":"public\/legacy\/modules\/jjwg_Markers","action":"copy","type":"dir"},"public\/legacy\/modules\/vCals":{"path":"public\/legacy\/modules\/vCals","action":"copy","type":"dir"},"public\/legacy\/modules\/AOD_Index":{"path":"public\/legacy\/modules\/AOD_Index","action":"delete","type":"dir"},"public\/legacy\/modules\/AOD_IndexEvent":{"path":"public\/legacy\/modules\/AOD_IndexEvent","action":"delete","type":"dir"},"public\/legacy\/modules\/Spots":{"path":"public\/legacy\/modules\/Spots","action":"delete","type":"dir"}} [] []
+[2023-08-11 03:30:54] upgrade.INFO: Running step: clear-symfony-cache [] []
+[2023-08-11 03:30:59] upgrade.INFO: step: clear-symfony-cache | status: done [] []
+[2023-08-11 03:30:59] upgrade.INFO: step: clear-symfony-cache | messages: [] []
+[2023-08-11 03:30:59] upgrade.INFO: Successfully cleared cache [] []
+[2023-08-11 03:30:59] upgrade.INFO: step: clear-symfony-cache | debug: no debug info [] []
+[2023-08-11 03:34:56] upgrade.INFO: Running step: legacy-post-upgrade [] []
+Fri, 11 Aug 2023 03:34:56 +0000 [UpgradeWizard] - begin check default permissions .
+Fri, 11 Aug 2023 03:34:56 +0000 [UpgradeWizard] - end check default permissions .
+Fri, 11 Aug 2023 03:34:56 +0000 [UpgradeWizard] - begin check logger settings .
+Fri, 11 Aug 2023 03:34:56 +0000 [UpgradeWizard] - begin check logger settings .
+Fri, 11 Aug 2023 03:34:56 +0000 [UpgradeWizard] - begin check lead conversion settings .
+Fri, 11 Aug 2023 03:34:56 +0000 [UpgradeWizard] - end check lead conversion settings .
+Fri, 11 Aug 2023 03:34:56 +0000 [UpgradeWizard] - begin check resource settings .
+Fri, 11 Aug 2023 03:34:56 +0000 [UpgradeWizard] - begin check resource settings .
+Fri, 11 Aug 2023 03:35:03 +0000 [UpgradeWizard] - Call deleteCache
+Fri, 11 Aug 2023 03:37:17 +0000 [UpgradeWizard] - Upgrading user preferences start .
+Fri, 11 Aug 2023 03:37:18 +0000 [UpgradeWizard] - Upgrading user preferences finish .
+Fri, 11 Aug 2023 03:37:21 +0000 [UpgradeWizard] - Call deleteCache
+Fri, 11 Aug 2023 03:37:22 +0000 [UpgradeWizard] - About to repair the database.
+Fri, 11 Aug 2023 03:37:42 +0000 [UpgradeWizard] - Running sql:/* Table : alerts */
+/*COLUMNS*/
+/*MISSING IN DATABASE - snooze -  ROW*/
+/*MISSING IN DATABASE - date_start -  ROW*/
+/* INDEXES */
+ALTER TABLE alerts   add COLUMN `snooze` datetime  NULL ,  add COLUMN `date_start` datetime  NULL 
+
+Fri, 11 Aug 2023 03:37:45 +0000 [UpgradeWizard] - Running sql:/* Table : outbound_email */
+/*COLUMNS*/
+/*MISSING IN DATABASE - reply_to_name -  ROW*/
+/*MISSING IN DATABASE - reply_to_addr -  ROW*/
+/*MISSING IN DATABASE - signature -  ROW*/
+/* INDEXES */
+ALTER TABLE outbound_email   add COLUMN `reply_to_name` varchar(255)  NULL ,  add COLUMN `reply_to_addr` varchar(255)  NULL ,  add COLUMN `signature` text  NULL 
+
+Fri, 11 Aug 2023 03:37:45 +0000 [UpgradeWizard] - Running sql:/* Table : surveys */
+/*COLUMNS*/
+/*MISMATCH WITH DATABASE - status -  ROW [name] => 'status'  [type] => 'varchar'  [len] => '100'  [default] => 'Draft'  */
+/* VARDEF - status -  ROW[required] => ''  [name] => 'status'  [vname] => 'LBL_STATUS'  [type] => 'varchar'  [massupdate] => '0'  [default] => 'LBL_DRAFT'  [no_default] => ''  [comments] => ''  [help] => ''  [importable] => 'true'  [duplicate_merge] => 'disabled'  [duplicate_merge_dom_value] => '0'  [audited] => ''  [inline_edit] => '1'  [reportable] => '1'  [unified_search] => ''  [merge_filter] => 'disabled'  [len] => '100'  [size] => '20'  [options] => 'survey_status_list'  [studio] => 'visible'  [dependency] => ''  [dbType] => 'enum'  */
+/* INDEXES */
+ALTER TABLE surveys   modify COLUMN `status` varchar(100)  DEFAULT 'LBL_DRAFT' NULL 
+
+Fri, 11 Aug 2023 03:37:47 +0000 [UpgradeWizard] - /* Table : securitygroups_records */
+/*COLUMNS*/
+/*MISMATCH WITH DATABASE - module -  ROW [name] => 'module'  [type] => 'char'  [len] => '36'  */
+/* VARDEF - module -  ROW[name] => 'module'  [type] => 'varchar'  [len] => '100'  [dbType] => 'varchar'  [required] => ''  */
+/* INDEXES */
+ALTER TABLE securitygroups_records   modify COLUMN `module` varchar(100)  NULL 
+
+Fri, 11 Aug 2023 03:37:47 +0000 [UpgradeWizard] - database repaired
+Fri, 11 Aug 2023 03:37:47 +0000 [UpgradeWizard] - Start rebuild relationships.
+Fri, 11 Aug 2023 03:37:54 +0000 [UpgradeWizard] - End rebuild relationships.
+Fri, 11 Aug 2023 03:37:54 +0000 [UpgradeWizard] - Begin merge_config_si_settings
+Fri, 11 Aug 2023 03:37:54 +0000 [UpgradeWizard] - End merge_config_si_settings
+Fri, 11 Aug 2023 03:37:54 +0000 [UpgradeWizard] - Begin upgrade_connectors
+Fri, 11 Aug 2023 03:37:54 +0000 [UpgradeWizard] - End upgrade_connectors
+Fri, 11 Aug 2023 03:38:03 +0000 [UpgradeWizard] - Potential PHP generated error messages: 
+Fri, 11 Aug 2023 03:38:03 +0000 [UpgradeWizard] - Upgrade completed successfully.
+[2023-08-11 03:38:03] upgrade.INFO: step: legacy-post-upgrade | status: done [] []
+[2023-08-11 03:38:03] upgrade.INFO: step: legacy-post-upgrade | messages: [] []
+[2023-08-11 03:38:03] upgrade.INFO: Post Upgrade process complete [] []
+[2023-08-11 03:38:03] upgrade.INFO: step: legacy-post-upgrade | debug: [] []
+[2023-08-11 03:38:03] upgrade.INFO: begin check default permissions . [] []
+[2023-08-11 03:38:03] upgrade.INFO: end check default permissions . [] []
+[2023-08-11 03:38:03] upgrade.INFO: begin check logger settings . [] []
+[2023-08-11 03:38:03] upgrade.INFO: begin check logger settings . [] []
+[2023-08-11 03:38:03] upgrade.INFO: begin check lead conversion settings . [] []
+[2023-08-11 03:38:03] upgrade.INFO: end check lead conversion settings . [] []
+[2023-08-11 03:38:03] upgrade.INFO: begin check resource settings . [] []
+[2023-08-11 03:38:03] upgrade.INFO: begin check resource settings . [] []
+[2023-08-11 03:38:03] upgrade.INFO: Call deleteCache [] []
+[2023-08-11 03:38:03] upgrade.INFO: Upgrading user preferences start . [] []
+[2023-08-11 03:38:03] upgrade.INFO: Upgrading user preferences finish . [] []
+[2023-08-11 03:38:03] upgrade.INFO: Call deleteCache [] []
+[2023-08-11 03:38:03] upgrade.INFO: About to repair the database. [] []
+[2023-08-11 03:38:03] upgrade.INFO: Running sql:/* Table : alerts */ /*COLUMNS*/ /*MISSING IN DATABASE - snooze -  ROW*/ /*MISSING IN DATABASE - date_start -  ROW*/ /* INDEXES */ ALTER TABLE alerts   add COLUMN `snooze` datetime  NULL ,  add COLUMN `date_start` datetime  NULL   [] []
+[2023-08-11 03:38:03] upgrade.INFO: Running sql:/* Table : outbound_email */ /*COLUMNS*/ /*MISSING IN DATABASE - reply_to_name -  ROW*/ /*MISSING IN DATABASE - reply_to_addr -  ROW*/ /*MISSING IN DATABASE - signature -  ROW*/ /* INDEXES */ ALTER TABLE outbound_email   add COLUMN `reply_to_name` varchar(255)  NULL ,  add COLUMN `reply_to_addr` varchar(255)  NULL ,  add COLUMN `signature` text  NULL   [] []
+[2023-08-11 03:38:03] upgrade.INFO: Running sql:/* Table : surveys */ /*COLUMNS*/ /*MISMATCH WITH DATABASE - status -  ROW [name] => 'status'  [type] => 'varchar'  [len] => '100'  [default] => 'Draft'  */ /* VARDEF - status -  ROW[required] => ''  [name] => 'status'  [vname] => 'LBL_STATUS'  [type] => 'varchar'  [massupdate] => '0'  [default] => 'LBL_DRAFT'  [no_default] => ''  [comments] => ''  [help] => ''  [importable] => 'true'  [duplicate_merge] => 'disabled'  [duplicate_merge_dom_value] => '0'  [audited] => ''  [inline_edit] => '1'  [reportable] => '1'  [unified_search] => ''  [merge_filter] => 'disabled'  [len] => '100'  [size] => '20'  [options] => 'survey_status_list'  [studio] => 'visible'  [dependency] => ''  [dbType] => 'enum'  */ /* INDEXES */ ALTER TABLE surveys   modify COLUMN `status` varchar(100)  DEFAULT 'LBL_DRAFT' NULL   [] []
+[2023-08-11 03:38:03] upgrade.INFO: /* Table : securitygroups_records */ /*COLUMNS*/ /*MISMATCH WITH DATABASE - module -  ROW [name] => 'module'  [type] => 'char'  [len] => '36'  */ /* VARDEF - module -  ROW[name] => 'module'  [type] => 'varchar'  [len] => '100'  [dbType] => 'varchar'  [required] => ''  */ /* INDEXES */ ALTER TABLE securitygroups_records   modify COLUMN `module` varchar(100)  NULL   [] []
+[2023-08-11 03:38:03] upgrade.INFO: database repaired [] []
+[2023-08-11 03:38:03] upgrade.INFO: Start rebuild relationships. [] []
+[2023-08-11 03:38:03] upgrade.INFO: End rebuild relationships. [] []
+[2023-08-11 03:38:03] upgrade.INFO: Begin merge_config_si_settings [] []
+[2023-08-11 03:38:03] upgrade.INFO: End merge_config_si_settings [] []
+[2023-08-11 03:38:03] upgrade.INFO: Begin upgrade_connectors [] []
+[2023-08-11 03:38:03] upgrade.INFO: End upgrade_connectors [] []
+[2023-08-11 03:38:03] upgrade.INFO: Potential PHP generated error messages:  [] []
+[2023-08-11 03:38:03] upgrade.INFO: Upgrade completed successfully. [] []
+[2023-08-11 03:38:03] upgrade.INFO: Running step: add-new-config-entries [] []
+[2023-08-11 03:38:03] upgrade.INFO: step: add-new-config-entries | status: done [] []
+[2023-08-11 03:38:03] upgrade.INFO: step: add-new-config-entries | messages: [] []
+[2023-08-11 03:38:03] upgrade.INFO: Added new config entries to config file [] []
+[2023-08-11 03:38:03] upgrade.INFO: step: add-new-config-entries | debug: [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry disableAjaxUI [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry anti_malware_scanners [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry system_name [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry stackTrace [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry email_warning_notifications [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry google_auth_json [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry record_modal_pagination_type [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry list_max_entries_per_modal [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry listview_max_height [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry subpanel_max_height [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry subpanel_pagination_type [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry listview_pagination_type [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry valid_image_ext [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry allowed_preview [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry id_validation_pattern [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry session_gc [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry legacy_email_behaviour [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry snooze_alert_timer [] []
+[2023-08-11 03:38:03] upgrade.INFO: Adding entry default_module_access [] []
+[2023-08-11 03:38:03] upgrade.INFO: Running step: metadata-merge [] []
+[2023-08-11 03:38:03] upgrade.INFO: step: metadata-merge | status: done [] []
+[2023-08-11 03:38:03] upgrade.INFO: step: metadata-merge | messages: [] []
+[2023-08-11 03:38:03] upgrade.INFO: Metadata successfully merged [] []
+[2023-08-11 03:38:03] upgrade.INFO: step: metadata-merge | debug: no debug info [] []
+[2023-08-11 03:38:03] upgrade.INFO: Running step: run-migrations [] []
+[2023-08-11 03:38:05] upgrade.INFO: .env already contains LOCK_DSN. Skipping update. [] []
+[2023-08-11 03:38:05] upgrade.INFO: AUTH_TYPE already in .env, skipping. [] []
+[2023-08-11 03:38:05] upgrade.INFO: LDAP CONFIG already in .env, skipping. [] []
+[2023-08-11 03:38:05] upgrade.INFO: LDAP AUTO CREATE CONFIG already in .env, skipping. [] []
+[2023-08-11 03:38:05] upgrade.INFO: SAML CONFIG already in .env, skipping. [] []
+[2023-08-11 03:38:05] upgrade.INFO: LOGIN_THROTTLING_MAX_ATTEMPTS already in .env, skipping. [] []
+[2023-08-11 03:38:05] upgrade.INFO: SAML auto create option already in .env, skipping. [] []
+[2023-08-11 03:38:05] upgrade.INFO: LOGIN_THROTTLING_INTERVAL already in .env, skipping. [] []
+[2023-08-11 03:38:05] upgrade.INFO: Default extension already exists, skipping. [] []
+[2023-08-11 03:38:05] upgrade.INFO: step: run-migrations | status: done [] []
+[2023-08-11 03:38:05] upgrade.INFO: step: run-migrations | messages: [] []
+[2023-08-11 03:38:05] upgrade.INFO: Successfully run migrations [] []
+[2023-08-11 03:38:05] upgrade.INFO: step: run-migrations | debug: [] []
+[2023-08-11 03:38:05] upgrade.INFO: 03:38:04 WARNING   [app] Migration App\Migrations\Version20200608135040 was executed but did not result in any SQL statements. ["version" => "App\Migrations\Version20200608135040"] 03:38:05 WARNING   [app] Migration App\Migrations\Version20220907112919 was executed but did not result in any SQL statements. ["version" => "App\Migrations\Version20220907112919"] 03:38:05 WARNING   [app] Migration App\Migrations\Version20220912082608 was executed but did not result in any SQL statements. ["version" => "App\Migrations\Version20220912082608"] 03:38:05 WARNING   [app] Migration App\Migrations\Version20221003150202 was executed but did not result in any SQL statements. ["version" => "App\Migrations\Version20221003150202"] 03:38:05 WARNING   [app] Migration App\Migrations\Version20230420135520 was executed but did not result in any SQL statements. ["version" => "App\Migrations\Version20230420135520"] 03:38:05 WARNING   [app] Migration App\Migrations\Version20230512153837 was executed but did not result in any SQL statements. ["version" => "App\Migrations\Version20230512153837"]   [] []
+[2023-08-11 03:38:05] upgrade.INFO: Running step: finalize-clear-symfony-cache [] []
+[2023-08-11 03:38:08] upgrade.INFO: step: finalize-clear-symfony-cache | status: done [] []
+[2023-08-11 03:38:08] upgrade.INFO: step: finalize-clear-symfony-cache | messages: [] []
+[2023-08-11 03:38:08] upgrade.INFO: Successfully cleared cache [] []
+[2023-08-11 03:38:08] upgrade.INFO: step: finalize-clear-symfony-cache | debug: no debug info [] []
