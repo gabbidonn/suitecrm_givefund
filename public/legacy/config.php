@@ -1,5 +1,5 @@
 <?php
-// created: 2023-08-11 03:38:03
+// created: 2023-08-11 23:19:43
 $sugar_config = array (
   'addAjaxBannedModules' => 
   array (
@@ -7,6 +7,38 @@ $sugar_config = array (
   ),
   'admin_access_control' => false,
   'admin_export_only' => false,
+  'allowed_preview' => 
+  array (
+    0 => 'pdf',
+    1 => 'gif',
+    2 => 'png',
+    3 => 'jpeg',
+    4 => 'jpg',
+  ),
+  'anti_malware_scanners' => 
+  array (
+    'SuiteCRM\\Utility\\AntiMalware\\Providers\\ClamTCP' => 
+    array (
+      'name' => 'ClamAntiVirus TCP',
+      'support_page' => 'https://www.clamav.net/',
+      'enabled' => false,
+      'path' => NULL,
+      'options' => 
+      array (
+        'ip' => '127.0.0.1',
+        'port' => 3310,
+        'type' => 'local',
+      ),
+    ),
+    'SuiteCRM\\Utility\\AntiMalware\\Providers\\Sophos' => 
+    array (
+      'name' => 'Sophos Anti Virus (Linux)',
+      'support_page' => 'https://www.sophos.com/en-us/products/free-tools/sophos-antivirus-for-linux.aspx',
+      'enabled' => false,
+      'path' => '/opt/sophos-av/bin/savscan',
+      'options' => '-ss',
+    ),
+  ),
   'aod' => 
   array (
     'enable_aod' => true,
@@ -221,6 +253,11 @@ $sugar_config = array (
   'default_locale_name_format' => 's f l',
   'default_max_tabs' => 10,
   'default_module' => 'Home',
+  'default_module_access' => 
+  array (
+    'SecurityGroups' => false,
+    'AOW_WorkFlow' => false,
+  ),
   'default_module_favicon' => false,
   'default_navigation_paradigm' => 'gm',
   'default_number_grouping_seperator' => ',',
@@ -242,6 +279,7 @@ $sugar_config = array (
   'default_user_name' => '',
   'demoData' => 'no',
   'developerMode' => false,
+  'disableAjaxUI' => true,
   'disable_convert_lead' => false,
   'disable_export' => false,
   'disable_persistent_connections' => false,
@@ -256,6 +294,7 @@ $sugar_config = array (
   'email_default_editor' => 'html',
   'email_enable_auto_send_opt_in' => false,
   'email_enable_confirm_opt_in' => 'not-opt-in',
+  'email_warning_notifications' => true,
   'email_xss' => 'YToxMzp7czo2OiJhcHBsZXQiO3M6NjoiYXBwbGV0IjtzOjQ6ImJhc2UiO3M6NDoiYmFzZSI7czo1OiJlbWJlZCI7czo1OiJlbWJlZCI7czo0OiJmb3JtIjtzOjQ6ImZvcm0iO3M6NToiZnJhbWUiO3M6NToiZnJhbWUiO3M6ODoiZnJhbWVzZXQiO3M6ODoiZnJhbWVzZXQiO3M6NjoiaWZyYW1lIjtzOjY6ImlmcmFtZSI7czo2OiJpbXBvcnQiO3M6ODoiXD9pbXBvcnQiO3M6NToibGF5ZXIiO3M6NToibGF5ZXIiO3M6NDoibGluayI7czo0OiJsaW5rIjtzOjY6Im9iamVjdCI7czo2OiJvYmplY3QiO3M6MzoieG1wIjtzOjM6InhtcCI7czo2OiJzY3JpcHQiO3M6Njoic2NyaXB0Ijt9',
   'enable_action_menu' => true,
   'enable_line_editing_detail' => true,
@@ -299,6 +338,7 @@ $sugar_config = array (
       13 => 'oauth_tokens',
     ),
   ),
+  'google_auth_json' => '',
   'hide_subpanels' => true,
   'history_max_viewed' => 50,
   'host_name' => 'localhost',
@@ -317,6 +357,7 @@ $sugar_config = array (
       8 => 'localhost',
     ),
   ),
+  'id_validation_pattern' => '/^[a-zA-Z0-9_-]*$/i',
   'imap_test' => false,
   'import_max_execution_time' => 3600,
   'import_max_records_per_file' => 100,
@@ -336,8 +377,12 @@ $sugar_config = array (
   ),
   'large_scale_test' => false,
   'lead_conv_activity_opt' => 'move',
+  'legacy_email_behaviour' => false,
+  'list_max_entries_per_modal' => 10,
   'list_max_entries_per_page' => '30',
   'list_max_entries_per_subpanel' => 10,
+  'listview_max_height' => 0,
+  'listview_pagination_type' => 'pagination',
   'lock_default_user_name' => false,
   'lock_homepage' => false,
   'lock_subpanels' => false,
@@ -390,6 +435,7 @@ $sugar_config = array (
     'defaultEngine' => 'TCPDFEngine',
   ),
   'portal_view' => 'single_user',
+  'record_modal_pagination_type' => 'pagination',
   'require_accounts' => true,
   'resource_management' => 
   array (
@@ -424,12 +470,22 @@ $sugar_config = array (
   'securitysuite_user_role_precedence' => true,
   'securitysuite_version' => '6.5.17',
   'session_dir' => '',
+  'session_gc' => 
+  array (
+    'enable' => true,
+    'gc_probability' => 1,
+    'gc_divisor' => 100,
+  ),
   'showDetailData' => true,
   'showThemePicker' => true,
   'site_url' => 'localhost/public',
   'slow_query_time_msec' => '100',
+  'snooze_alert_timer' => 600,
+  'stackTrace' => false,
   'stack_trace_errors' => false,
   'strict_id_validation' => false,
+  'subpanel_max_height' => 620,
+  'subpanel_pagination_type' => 'pagination',
   'sugar_version' => '6.5.25',
   'sugarbeet' => false,
   'suitecrm_version' => '7.13.0',
@@ -437,6 +493,7 @@ $sugar_config = array (
   array (
     'confirm_opt_in_template_id' => 'beb0ffe2-413b-9a37-3c6b-5c93e184c044',
   ),
+  'system_name' => 'SuiteCRM',
   'time_formats' => 
   array (
     'H:i' => '23:00',
@@ -471,48 +528,15 @@ $sugar_config = array (
     11 => 'html',
     12 => 'htm',
     13 => 'phtml',
+    14 => 'html',
+    15 => 'htm',
+    16 => 'phtml',
+    17 => 'phar',
   ),
   'upload_dir' => '70476-upload/',
   'upload_maxsize' => 30000000,
   'use_common_ml_dir' => false,
   'use_real_names' => true,
-  'vcal_time' => '2',
-  'verify_client_ip' => false,
-  'disableAjaxUI' => true,
-  'anti_malware_scanners' => 
-  array (
-    'SuiteCRM\\Utility\\AntiMalware\\Providers\\ClamTCP' => 
-    array (
-      'name' => 'ClamAntiVirus TCP',
-      'support_page' => 'https://www.clamav.net/',
-      'enabled' => false,
-      'path' => NULL,
-      'options' => 
-      array (
-        'ip' => '127.0.0.1',
-        'port' => 3310,
-        'type' => 'local',
-      ),
-    ),
-    'SuiteCRM\\Utility\\AntiMalware\\Providers\\Sophos' => 
-    array (
-      'name' => 'Sophos Anti Virus (Linux)',
-      'support_page' => 'https://www.sophos.com/en-us/products/free-tools/sophos-antivirus-for-linux.aspx',
-      'enabled' => false,
-      'path' => '/opt/sophos-av/bin/savscan',
-      'options' => '-ss',
-    ),
-  ),
-  'system_name' => 'SuiteCRM',
-  'stackTrace' => false,
-  'email_warning_notifications' => true,
-  'google_auth_json' => '',
-  'record_modal_pagination_type' => 'pagination',
-  'list_max_entries_per_modal' => 10,
-  'listview_max_height' => 0,
-  'subpanel_max_height' => 620,
-  'subpanel_pagination_type' => 'pagination',
-  'listview_pagination_type' => 'pagination',
   'valid_image_ext' => 
   array (
     0 => 'gif',
@@ -522,26 +546,6 @@ $sugar_config = array (
     4 => 'svg',
     5 => 'bmp',
   ),
-  'allowed_preview' => 
-  array (
-    0 => 'pdf',
-    1 => 'gif',
-    2 => 'png',
-    3 => 'jpeg',
-    4 => 'jpg',
-  ),
-  'id_validation_pattern' => '/^[a-zA-Z0-9_-]*$/i',
-  'session_gc' => 
-  array (
-    'enable' => true,
-    'gc_probability' => 1,
-    'gc_divisor' => 100,
-  ),
-  'legacy_email_behaviour' => false,
-  'snooze_alert_timer' => 600,
-  'default_module_access' => 
-  array (
-    'SecurityGroups' => false,
-    'AOW_WorkFlow' => false,
-  ),
+  'vcal_time' => '2',
+  'verify_client_ip' => false,
 );
