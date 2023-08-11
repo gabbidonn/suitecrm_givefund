@@ -595,6 +595,8 @@
     ),
     'charity_name_c' => 
     array (
+      'inline_edit' => '1',
+      'labelValue' => 'Charity Name',
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'charity_name_c',
@@ -609,7 +611,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
@@ -620,6 +621,8 @@
     ),
     'event_name_c' => 
     array (
+      'inline_edit' => '1',
+      'labelValue' => 'Event Name',
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'event_name_c',
@@ -634,7 +637,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
@@ -645,6 +647,7 @@
     ),
     'jjwg_maps_address_c' => 
     array (
+      'inline_edit' => 1,
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'jjwg_maps_address_c',
@@ -659,7 +662,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
@@ -670,6 +672,7 @@
     ),
     'jjwg_maps_geocode_status_c' => 
     array (
+      'inline_edit' => 1,
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'jjwg_maps_geocode_status_c',
@@ -684,7 +687,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
@@ -695,6 +697,7 @@
     ),
     'jjwg_maps_lat_c' => 
     array (
+      'inline_edit' => 1,
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'jjwg_maps_lat_c',
@@ -709,7 +712,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
@@ -722,6 +724,7 @@
     ),
     'jjwg_maps_lng_c' => 
     array (
+      'inline_edit' => 1,
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'jjwg_maps_lng_c',
@@ -736,7 +739,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
@@ -749,6 +751,8 @@
     ),
     'status_c' => 
     array (
+      'inline_edit' => '1',
+      'labelValue' => 'Status',
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'status_c',
@@ -763,7 +767,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
@@ -777,6 +780,8 @@
     ),
     'venue_c' => 
     array (
+      'inline_edit' => '1',
+      'labelValue' => 'Venue',
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'venue_c',
@@ -791,7 +796,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',

@@ -1321,6 +1321,8 @@
     ),
     'captured_sent_date_c' => 
     array (
+      'inline_edit' => '1',
+      'labelValue' => 'captured sent date',
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'captured_sent_date_c',
@@ -1335,7 +1337,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
@@ -1346,6 +1347,8 @@
     ),
     'charity_name_c' => 
     array (
+      'inline_edit' => '1',
+      'labelValue' => 'Charity Name',
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'charity_name_c',
@@ -1360,7 +1363,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
@@ -1371,6 +1373,8 @@
     ),
     'contact_form_c' => 
     array (
+      'inline_edit' => '1',
+      'labelValue' => 'Contact form',
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'contact_form_c',
@@ -1385,7 +1389,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
@@ -1396,6 +1399,8 @@
     ),
     'date_sent_c' => 
     array (
+      'inline_edit' => '1',
+      'labelValue' => 'Date Sent',
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'date_sent_c',
@@ -1410,7 +1415,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => true,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
@@ -1421,6 +1425,8 @@
     ),
     'event_date_c' => 
     array (
+      'inline_edit' => '1',
+      'labelValue' => 'Event Date',
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'event_date_c',
@@ -1435,7 +1441,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
@@ -1446,6 +1451,8 @@
     ),
     'event_name_c' => 
     array (
+      'inline_edit' => '1',
+      'labelValue' => 'Event Name',
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'event_name_c',
@@ -1460,7 +1467,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
@@ -1471,6 +1477,8 @@
     ),
     'event_type_c' => 
     array (
+      'inline_edit' => '1',
+      'labelValue' => 'Event type',
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'event_type_c',
@@ -1485,7 +1493,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
@@ -1499,6 +1506,7 @@
     ),
     'jjwg_maps_address_c' => 
     array (
+      'inline_edit' => 1,
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'jjwg_maps_address_c',
@@ -1513,7 +1521,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
@@ -1524,6 +1531,7 @@
     ),
     'jjwg_maps_geocode_status_c' => 
     array (
+      'inline_edit' => 1,
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'jjwg_maps_geocode_status_c',
@@ -1538,7 +1546,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
@@ -1549,6 +1556,7 @@
     ),
     'jjwg_maps_lat_c' => 
     array (
+      'inline_edit' => 1,
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'jjwg_maps_lat_c',
@@ -1563,7 +1571,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
@@ -1576,6 +1583,7 @@
     ),
     'jjwg_maps_lng_c' => 
     array (
+      'inline_edit' => 1,
       'required' => false,
       'source' => 'custom_fields',
       'name' => 'jjwg_maps_lng_c',
@@ -1590,7 +1598,6 @@
       'duplicate_merge' => 'disabled',
       'duplicate_merge_dom_value' => '0',
       'audited' => false,
-      'inline_edit' => true,
       'reportable' => true,
       'unified_search' => false,
       'merge_filter' => 'disabled',
